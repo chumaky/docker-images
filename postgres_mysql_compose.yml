@@ -9,7 +9,11 @@ services:
       - 3306:3306
 
   postgres:
-    image: postgres_mysql
+    # if you build image locally and tagged it as "postgres_mysql"
+    #image: postgres_mysql
+
+    # if you want to use prebuilt image
+    image: toleg/postgres_mysql
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
