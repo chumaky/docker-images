@@ -1,5 +1,5 @@
 # About
-Postgres database image with install foreign data wrapper extensions for `mysql`, `sqlite` and `oracle` databases.
+Postgres database image with installed foreign data wrapper extensions for `mysql`, `sqlite` and `oracle` databases.
 
 ## Contents
 - [Docker Files](#docker-files)
@@ -13,7 +13,7 @@ Postgres database image with install foreign data wrapper extensions for `mysql`
 - `postgres_<dbname>_compose.yml`
   - Compose files to showcase a demo how to connect from `postgres` to different databases such as `mysql`.
 
-For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` module installed.
+For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
 
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
