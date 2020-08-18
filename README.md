@@ -3,9 +3,10 @@ Postgres database image with installed foreign data wrapper extensions for `mysq
 
 ## Contents
 - [Docker Files](#docker-files)
-- [Usage](#usage)
 - [Initialization files](#initialization-files)
-
+- [Image building](#image-building)
+- [Demos](#demos)
+  - [Postgres with MySQL](#postgres-with-mysql)
 
 ### Docker files
 - `postgres_<dbname>.docker`
@@ -19,7 +20,15 @@ It will make it listed in `pg_available_extensions` system view but you still ha
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
 
-### Usage
+### Initialization files
+`sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
+- `<dbname>_setup.sql`
+  - Create _non-postgres_ database and populate it with some data
+- `postgres_<dbname> _setup.sql`
+  - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
+
+
+### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
 Build image tagged as `postgres_mysql` and launch `pg_fdw_test` container from it
@@ -34,7 +43,7 @@ CONTAINER ID  IMAGE                            COMMAND   CREATED        STATUS  
 6d6beb18e5b7  localhost/postgres_mysql:latest  postgres  4 seconds ago  Up 4 seconds ago  0.0.0.0:5432->5432/tcp  pg_fdw_test
 ```
 
-Login into database and check that `mysql_fdw` is available for installation
+Login into the database and check that `mysql_fdw` is available for installation
 ```sh
 $ podman exec -it pg_fdw_test psql postgres postgres
 ```
@@ -50,11 +59,40 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 ```
 
 
-### Initialization files
-`sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
-- `<dbname>_setup.sql`
-  - Create _non-postgres_ database and populate it with some data
-- `postgres_<dbname> _setup.sql`
-  - Create foreign data wrapper extension from within postgres to connect to `<dbname>` and access data from it.
+### Demos
+**Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
-**TODO:** add execution of initialization files as part of instance creation from compose files
+#### Postgres with MySQL
+Start `mysql` and `postgres` instances. It will create inside `mysql` instance `dev` database with single `t(id int)` table and populate it with three values `1, 2, 3`.
+```sh
+$ podman-compose -f postgres_mysql_compose.yml up -d
+```
+
+Connect to `postgres` instance and select from `t` table stored in `mysql` database
+```sh
+$ podman exec -it postgres_postgres_1 psql postgres postgres
+```
+```sql
+postgres=# select * from mysql.t;
+ id
+----
+  1
+  2
+  3
+(3 rows)
+```
+
+`DML` operations also work
+```sql
+postgres=# insert into mysql.t values (4);
+INSERT 0 1
+postgres=# delete from mysql.t where id = 1;
+DELETE 1
+postgres=# select * from mysql.t;
+ id
+----
+  2
+  3
+  4
+(3 rows)
+```

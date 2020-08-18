@@ -9,7 +9,7 @@ RUN apk add --no-cache --virtual .rundeps mariadb-dev \
  && apk add --no-cache --virtual .builddeps \
     build-base \
     clang \
-    # postgres 12.2 requires llvm9, 12.3 - already llvm10
+    # postgres 12.2 requires llvm9, 12.4 - already llvm10
     llvm10 \
     # download MYSQL_FDW source files
  && mkdir -p ${SOURCE_FILES} \
