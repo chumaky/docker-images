@@ -68,9 +68,10 @@ Start `mysql` and `postgres` instances. It will create inside `mysql` instance `
 $ podman-compose -f postgres_mysql_compose.yml up -d
 ```
 
-Connect to `postgres` instance and select from `t` table stored in `mysql` database
+Connect to `postgres_1` container and select from `t` table stored in `mysql` database.
+From within `postgres` it's accessible as an external table `t` stored in `mysql` schema.
 ```sh
-$ podman exec -it postgres_postgres_1 psql postgres postgres
+$ podman exec -it postgres_1 psql postgres postgres
 ```
 ```sql
 postgres=# select * from mysql.t;
@@ -95,4 +96,23 @@ postgres=# select * from mysql.t;
   3
   4
 (3 rows)
+```
+
+From within `mysql_1` container we can observer already changed data
+```sh
+$ podman exec -it mysql_1 mysql -uroot -proot
+```
+```sql
+mysql> use dev;
+Database changed
+
+mysql> select * from t;
++----+
+| id |
++----+
+|  2 |
+|  3 |
+|  4 |
++----+
+3 rows in set (0.00 sec)
 ```
