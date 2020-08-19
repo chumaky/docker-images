@@ -63,6 +63,9 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
 #### Postgres with MySQL
+
+**Note:** for more information please see [blog post](https://chumaky.team/blog/postgres-mysql-fdw).
+
 Start `mysql` and `postgres` instances. It will create inside `mysql` instance `dev` database with single `t(id int)` table and populate it with three values `1, 2, 3`.
 ```sh
 $ podman-compose -f postgres_mysql_compose.yml up -d
