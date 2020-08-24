@@ -11,11 +11,11 @@ services:
       - "./sql/mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql:z"
 
   postgres:
-    # if you build image locally and tagged it as "postgres_mysql"
-    #image: postgres_mysql
+    # if you build image locally and tagged it as "postgres_mysql_fdw"
+    #image: postgres_mysql_fdw
 
     # if you want to use prebuilt image
-    image: toleg/postgres_mysql
+    image: toleg/postgres_mysql_fdw
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
