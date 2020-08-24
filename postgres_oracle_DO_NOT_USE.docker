@@ -1,4 +1,7 @@
-FROM postgres:latest
+# IMPORTANT: because of runtime error during using GLIBC libraries under alpine image this image is NOT USABLE
+# oracle_fdw.so Error relocating /usr/lib/libclntsh.so.19.1: canonicalize_file_name: symbol not found
+
+FROM postgres:alpine
 
 # Latest version
 ARG ORACLE_CLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-basic-linuxx64.zip
@@ -16,10 +19,11 @@ ARG ORACLE_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/
 
 ENV ORACLE_HOME=/usr/lib/oracle/client
 
-RUN apt-get update; \
-    apt-get install -y --no-install-recommends ca-certificates wget unzip; \
+ARG GLIBC_VERSION=2.32-r0
+ARG GLIBC_APK_URL=https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-${GLIBC_VERSION}.apk
+
     # instant client
-    wget -O instant_client.zip ${ORACLE_CLIENT_URL}; \
+RUN wget -O instant_client.zip ${ORACLE_CLIENT_URL}; \
     unzip instant_client.zip; \
     # sqlplus
     wget -O sqlplus.zip ${ORACLE_SQLPLUS_URL}; \
@@ -32,10 +36,13 @@ RUN apt-get update; \
     mv instantclient*/* ${ORACLE_HOME}; \
     rm -r instantclient*; \
     rm instant_client.zip sqlplus.zip sdk.zip; \
-    # required runtime libs: libaio
-    apt-get install -y --no-install-recommends libaio1; \
-    apt-get purge -y --auto-remove
+    # required runtime libs: glibc, libaio
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub; \
+    wget -O glibc.apk ${GLIBC_APK_URL}; \
+    apk add glibc.apk libaio; \
+    rm glibc.apk;
 
+ENV LD_LIBRARY_PATH /lib:/usr/lib:${ORACLE_HOME}
 ENV PATH $PATH:${ORACLE_HOME}
 
 
@@ -43,15 +50,14 @@ ARG ORACLE_FDW_VERSION=2_2_0
 ARG ORACLE_FDW_URL=https://github.com/laurenz/oracle_fdw/archive/ORACLE_FDW_${ORACLE_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=tmp/oracle_fdw
 
-    # oracle_fdw
-RUN mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${ORACLE_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
-    cd ${SOURCE_FILES}; \
     # install
-    apt-get install -y --no-install-recommends make gcc postgresql-server-dev-12; \
-    make; \
-    make install; \
-    echo ${ORACLE_HOME} > /etc/ld.so.conf.d/oracle_instantclient.conf; \
-    ldconfig; \
-    # cleanup
-    apt-get purge -y --auto-remove postgresql-server-dev-12 gcc make
+RUN apk add --no-cache --virtual .builddeps \
+    build-base \
+    clang \
+    # postgres 12.2 requires llvm9, 12.4 - already llvm10
+    llvm10; \
+    # oracle_fdw
+    mkdir -p ${SOURCE_FILES}; \
+    wget -O - ${ORACLE_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
+    cd ${SOURCE_FILES};
+
