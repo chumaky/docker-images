@@ -2,7 +2,7 @@
 Postgres database images with installed foreign data wrapper extensions for `mysql`, `sqlite` and `oracle` databases.
 
 ## Contents
-- [Docker/Image files](#docker-image-files)
+- [Docker/Image files](#dockerimage-files)
 - [Initialization files](#initialization-files)
 - [Image building](#image-building)
 - [Demos](#demos)
