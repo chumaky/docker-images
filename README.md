@@ -1,22 +1,25 @@
 # About
-Postgres database image with installed foreign data wrapper extensions for `mysql`, `sqlite` and `oracle` databases.
+Postgres database images with installed foreign data wrapper extensions for `mysql`, `sqlite` and `oracle` databases.
 
 ## Contents
-- [Docker Files](#docker-files)
+- [Docker/Image files](#docker-image-files)
 - [Initialization files](#initialization-files)
 - [Image building](#image-building)
 - [Demos](#demos)
-  - [Postgres with MySQL](#postgres-with-mysql)
 
-### Docker files
+### Docker/Image files
 - `postgres_<dbname>.docker`
   - Base image building file referenced in docker's documentation as `Dockerfile`.
 - `postgres_<dbname>_compose.yml`
   - Compose files to showcase a demo how to connect from `postgres` to different databases such as `mysql`.
+  
+FDW name|Image|Dockerfile|Demo compose/schell script
+-|-|-|-
+mysql_fdw|[postgres_mysql_fdw](https://hub.docker.com/r/toleg/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
+oracle_fdw|[postgres_oracle_fdw](https://hub.docker.com/r/toleg/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
-
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
 
@@ -60,62 +63,4 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 
 
 ### Demos
-**Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
-
-#### Postgres with MySQL
-
-**Note:** for more information please see [blog post](https://chumaky.team/blog/postgres-mysql-fdw).
-
-Start `mysql` and `postgres` instances. It will create inside `mysql` instance `dev` database with single `t(id int)` table and populate it with three values `1, 2, 3`.
-```sh
-$ podman-compose -f postgres_mysql_compose.yml up -d
-```
-
-Connect to `postgres_1` container and select from `t` table stored in `mysql` database.
-From within `postgres` it's accessible as an external table `t` stored in `mysql` schema.
-```sh
-$ podman exec -it postgres_1 psql postgres postgres
-```
-```sql
-postgres=# select * from mysql.t;
- id
-----
-  1
-  2
-  3
-(3 rows)
-```
-
-`DML` operations also work
-```sql
-postgres=# insert into mysql.t values (4);
-INSERT 0 1
-postgres=# delete from mysql.t where id = 1;
-DELETE 1
-postgres=# select * from mysql.t;
- id
-----
-  2
-  3
-  4
-(3 rows)
-```
-
-From within `mysql_1` container we can observer already changed data
-```sh
-$ podman exec -it mysql_1 mysql -uroot -proot
-```
-```sql
-mysql> use dev;
-Database changed
-
-mysql> select * from t;
-+----+
-| id |
-+----+
-|  2 |
-|  3 |
-|  4 |
-+----+
-3 rows in set (0.00 sec)
-```
+- [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
