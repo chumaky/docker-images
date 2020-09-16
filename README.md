@@ -12,7 +12,7 @@ Postgres database images with installed foreign data wrapper extensions for `mys
   - Base image building file referenced in docker's documentation as `Dockerfile`.
 - `postgres_<dbname>_compose.yml`
   - Compose files to showcase a demo how to connect from `postgres` to different databases such as `mysql`.
-  
+
 FDW name|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
 mysql_fdw|[postgres_mysql_fdw](https://hub.docker.com/r/toleg/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
@@ -64,3 +64,4 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 
 ### Demos
 - [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
+- [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)

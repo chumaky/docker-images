@@ -2,7 +2,7 @@ version: "3.7"
 
 # IMPORTANT: starting this configuration via podman on linux doesn't start oracle services within container
 #            this makes it impossible to connect to oracle database.
-#            for working example with podman please see "postgres_oracle_compose.sh" script instead
+#            for working example with podman please see https://chumaky.team/blog/postgres-oracle-fdw
 services:
   oracle:
     image: store/oracle/database-enterprise:12.2.0.1
