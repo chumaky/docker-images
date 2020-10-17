@@ -1,0 +1,24 @@
+FROM postgres:alpine
+
+ARG SQLITE_FDW_VERSION=1.3.0
+ARG SQLITE_FDW_URL=https://github.com/pgspider/sqlite_fdw/archive/v${SQLITE_FDW_VERSION}.tar.gz
+ARG SOURCE_FILES=/tmp/sqlite_fdw
+
+
+    # install packages for runtime and compile into 2 separate packages
+RUN apk add --no-cache --virtual .rundeps sqlite; \
+    apk add --no-cache --virtual .builddeps \
+    sqlite-dev \
+    build-base \
+    clang \
+    llvm10; \
+    # download SQLITE_FDW source files
+    mkdir -p ${SOURCE_FILES}; \
+    wget -O - ${SQLITE_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
+    cd ${SOURCE_FILES}; \
+    # compilation
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apk del .builddeps; \
+    rm -rf ${SOURCE_FILES}
