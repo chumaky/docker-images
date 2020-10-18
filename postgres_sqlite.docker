@@ -6,7 +6,7 @@ ARG SOURCE_FILES=/tmp/sqlite_fdw
 
 
     # install packages for runtime and compile into 2 separate packages
-RUN apk add --no-cache --virtual .rundeps sqlite; \
+RUN apk add --no-cache --virtual .rundeps sqlite sqlite-libs; \
     apk add --no-cache --virtual .builddeps \
     sqlite-dev \
     build-base \
