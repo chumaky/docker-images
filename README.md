@@ -18,6 +18,7 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/toleg/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
 [oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/toleg/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/toleg/postgres_sqlite_fdw)|[postgres_sqlite.docker](postgres_sqlite.docker)|[postgres_sqlite_compose.sh](postgres_sqlite_compose.sh)
+[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/toleg/postgres_mongo_fdw)|[postgres_mongo.docker](postgres_mongo.docker)|[postgres_mongo_compose.yml](postgres_mongo_compose.yml)
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.

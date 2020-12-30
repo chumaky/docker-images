@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: test
+    ports:
+      - 27017:27017
+
+  postgres:
+    # if you build image locally and tagged it as "postgres_mongo_fdw"
+    # image: postgres_mongo_fdw
+
+    # if you want to use prebuilt image
+    image: toleg/postgres_mongo_fdw
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sql/postgres_mongo_setup.sql:/docker-entrypoint-initdb.d/postgres_mongo_setup.sql
+    depends_on:
+      - mongo
+
