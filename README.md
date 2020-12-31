@@ -68,3 +68,4 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 - [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
 - [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
+- [Postgres with MongoDB](https://chumaky.team/blog/postgres-mongodb-fdw)
