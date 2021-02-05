@@ -1,6 +1,6 @@
 FROM postgres:alpine
 
-ARG MYSQL_FDW_VERSION=2_5_4
+ARG MYSQL_FDW_VERSION=2_5_5
 ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mysql_fdw
 
