@@ -6,6 +6,7 @@ Postgres database images with different foreign data wrapper extensions installe
 - [Initialization files](#initialization-files)
 - [Image building](#image-building)
 - [Demos](#demos)
+- [Contribution](#contribution)
 
 ### Docker/Image files
 - `postgres_<dbname>.docker`
@@ -69,3 +70,11 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 - [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
 - [Postgres with MongoDB](https://chumaky.team/blog/postgres-mongodb-fdw)
+
+
+### Contribution
+Any contribution is highly welcomed.
+If you implementing new fdw image please keep corresponding file names accordingly to described pattern.
+
+If you want to request some image to be prepared feel free to raise an issue for that.
+List of available `FDW` implementations could be found on official postgres [wiki](https://wiki.postgresql.org/wiki/Foreign_data_wrappers).
