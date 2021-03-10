@@ -3,7 +3,7 @@ Postgres database images with different foreign data wrapper extensions installe
 
 ## Contents
 - [Docker/Image files](#dockerimage-files)
-- [Initialization files](#initialization-files)
+  - [Initialization files](#initialization-files)
 - [Image building](#image-building)
 - [Demos](#demos)
 - [Contribution](#contribution)
@@ -20,13 +20,14 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/toleg/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/toleg/postgres_sqlite_fdw)|[postgres_sqlite.docker](postgres_sqlite.docker)|[postgres_sqlite_compose.sh](postgres_sqlite_compose.sh)
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/toleg/postgres_mongo_fdw)|[postgres_mongo.docker](postgres_mongo.docker)|[postgres_mongo_compose.yml](postgres_mongo_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/toleg/postgres_mssql_fdw)|[postgres_mssql.docker](postgres_mssql.docker)|[postgres_mssql_compose.yml](postgres_mssql_compose.yml)
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
 
-### Initialization files
+#### Initialization files
 `sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
 - `<dbname>_setup.sql`
   - Create _non-postgres_ database and populate it with some data

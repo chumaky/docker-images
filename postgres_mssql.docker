@@ -1,0 +1,27 @@
+FROM postgres:latest
+
+ARG TDS_FDW_VERSION=2.0.2
+ARG TDS_FDW_URL=https://github.com/tds-fdw/tds_fdw/archive/v${TDS_FDW_VERSION}.tar.gz
+ARG SOURCE_FILES=/tmp/tds_fdw
+
+RUN apt-get update;
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    make gcc gnupg \
+    postgresql-server-dev-13 freetds-dev \
+    # runtime deps
+    libsybdb5 freetds-common; \
+    # mongo_fdw
+    mkdir -p ${SOURCE_FILES}; \
+    wget -O - ${TDS_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
+    cd ${SOURCE_FILES}; \
+    # install
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget ca-certificates \
+    make gcc gnupg \
+    postgresql-server-dev-13 freetds-dev; \
+    cd -; \
+    rm -rf ${SOURCE_FILES};

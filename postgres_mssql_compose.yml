@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: mssql_2019
+    ports:
+      - 1433:1433
+    volumes:
+      - "./sql/mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql:z"
+
+  postgres:
+    # if you build image locally and tagged it as "postgres_mssql_fdw"
+    #image: postgres_mssql_fdw
+
+    # if you want to use prebuilt image
+    image: docker.io/toleg/postgres_mssql_fdw
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - "./sql/postgres_mssql_setup.sql:/docker-entrypoint-initdb.d/postgres_mssql_setup.sql:z"
+    depends_on:
+      - mssql
+
