@@ -9,8 +9,8 @@ services:
       SA_PASSWORD: mssql_2019
     ports:
       - 1433:1433
-    volumes:
-      - "./sql/mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql:z"
+    #volumes:
+    #  - "./sql/mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql:z"
 
   postgres:
     # if you build image locally and tagged it as "postgres_mssql_fdw"
