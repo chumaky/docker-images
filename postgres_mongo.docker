@@ -1,6 +1,6 @@
 FROM postgres:latest
 
-ARG MONGO_FDW_VERSION=5_2_8
+ARG MONGO_FDW_VERSION=5_2_9
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=tmp/mongo_fdw
 
