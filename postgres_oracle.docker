@@ -39,7 +39,7 @@ RUN apt-get update; \
 ENV PATH $PATH:${ORACLE_HOME}
 
 
-ARG ORACLE_FDW_VERSION=2_3_0
+ARG ORACLE_FDW_VERSION=2_4_0
 ARG ORACLE_FDW_URL=https://github.com/laurenz/oracle_fdw/archive/ORACLE_FDW_${ORACLE_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=tmp/oracle_fdw
 
