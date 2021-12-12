@@ -4,6 +4,7 @@ Postgres database images with different foreign data wrapper extensions installe
 ## Contents
 - [Docker/Image files](#dockerimage-files)
   - [Initialization files](#initialization-files)
+  - [Available tags](#available-tags)
 - [Image building](#image-building)
 - [Demos](#demos)
 - [Contribution](#contribution)
@@ -34,6 +35,16 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 - `postgres_<dbname> _setup.sql`
   - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
 
+
+#### Available tags
+Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_fdw2.7.0` tag for `postgres_mysql_fdw` image means postgres `13.5` version with `2.7.0` fdw version installed.
+
+Image|Tag
+-|-
+postgres_mysql_fdw|latest
+postgres_mysql_fdw|14.1_fdw2.7.0
+postgres_mysql_fdw|13.5_fdw2.7.0
+postgres_mysql_fdw|13.3_fdw2.6.0
 
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
