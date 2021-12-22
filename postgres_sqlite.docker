@@ -1,6 +1,7 @@
-FROM postgres:alpine
+ARG BASE_TAG=alpine
+FROM postgres:${BASE_TAG}
 
-ARG SQLITE_FDW_VERSION=2.1.0
+ARG SQLITE_FDW_VERSION=2.1.1
 ARG SQLITE_FDW_URL=https://github.com/pgspider/sqlite_fdw/archive/v${SQLITE_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/sqlite_fdw
 

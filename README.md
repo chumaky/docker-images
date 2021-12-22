@@ -45,6 +45,9 @@ postgres_mysql_fdw|latest
 postgres_mysql_fdw|14.1_fdw2.7.0
 postgres_mysql_fdw|13.5_fdw2.7.0
 postgres_mysql_fdw|13.3_fdw2.6.0
+postgres_sqlite_fdw|latest
+postgres_sqlite_fdw|14.1_fdw2.1.1
+postgres_sqlite_fdw|13.5_fdw2.1.1
 
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
