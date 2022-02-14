@@ -1,6 +1,13 @@
 # About
 Postgres database images with different foreign data wrapper extensions installed.
 
+**IMPORTANT:**
+> Docker doesn't support auto builds feature for free anymore.
+>Also it doesn't show any digest or statistics for manually pushed tags.
+> Nevertheless, these tags are fetchable and safe to use.
+> Please check **Tags** tab at Docker hub to see custom tags available.
+
+
 ## Contents
 - [Docker/Image files](#dockerimage-files)
   - [Initialization files](#initialization-files)
