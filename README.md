@@ -49,12 +49,20 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_
 Image|Tag
 -|-
 postgres_mysql_fdw|latest
+postgres_mysql_fdw|14.2_fdw2.8.0
 postgres_mysql_fdw|14.1_fdw2.7.0
 postgres_mysql_fdw|13.5_fdw2.7.0
 postgres_mysql_fdw|13.3_fdw2.6.0
 postgres_sqlite_fdw|latest
 postgres_sqlite_fdw|14.1_fdw2.1.1
 postgres_sqlite_fdw|13.5_fdw2.1.1
+postgres_oracle_fdw|latest
+postgres_oracle_fdw|13.4_fdw2.4.0
+postgres_mssql_fdw|latest
+postgres_mssql_fdw|13.1_fdw2.0.2
+postgres_mongo_fdw|latest
+postgres_mongo_fdw|13.3_fdw5.2.9
+
 
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
