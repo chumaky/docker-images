@@ -1,15 +1,18 @@
 FROM postgres:latest
 
-ARG MONGO_FDW_VERSION=5_2_9
+ARG MONGO_FDW_VERSION=5_4_0
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
-ARG SOURCE_FILES=tmp/mongo_fdw
+ARG SOURCE_FILES=/tmp/mongo_fdw
 
 RUN apt-get update;
+
+ENV PKG_CONFIG_PATH=${SOURCE_FILES}/mongo-c-driver/src/libmongoc/src:${SOURCE_FILES}/mongo-c-driver/src/libbson/src
+ENV LD_LIBRARY_PATH=/lib
 
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-13 libssl-dev libzstd-dev; \
+    postgresql-server-dev-14 libssl-dev libzstd-dev; \
     # mongo_fdw
     mkdir -p ${SOURCE_FILES}; \
     wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
@@ -21,6 +24,6 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-13 libssl-dev libzstd-dev; \
+    postgresql-server-dev-14 libssl-dev libzstd-dev; \
     cd -; \
     rm -rf ${SOURCE_FILES};
