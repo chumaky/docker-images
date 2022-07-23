@@ -12,6 +12,8 @@ Postgres database images with different foreign data wrapper extensions installe
 - [Docker/Image files](#dockerimage-files)
   - [Initialization files](#initialization-files)
   - [Available tags](#available-tags)
+- [All inclusive image](#all-inclusive-image)
+  - [Available tags](#available-image-tags)
 - [Image building](#image-building)
 - [Demos](#demos)
 - [Contribution](#contribution)
@@ -39,8 +41,10 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 `sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
 - `<dbname>_setup.sql`
   - Create _non-postgres_ database and populate it with some data
-- `postgres_<dbname> _setup.sql`
+- `postgres_<dbname>_setup.sql`
   - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
+- `postgres_all_setup.sql`
+  - Create all available foreign data wrapper extensions within `postgres` in a separate schemas. Applicable only for [All inclusive image](#all-inclusive-image)
 
 
 #### Available tags
@@ -59,11 +63,23 @@ postgres_sqlite_fdw|13.5_fdw2.1.1
 postgres_oracle_fdw|latest
 postgres_oracle_fdw|13.4_fdw2.4.0
 postgres_mssql_fdw|latest
+postgres_mssql_fdw|14.3_fdw2.0.2
 postgres_mssql_fdw|13.1_fdw2.0.2
 postgres_mongo_fdw|latest
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
 
+### All inclusive image
+- `postgres_all.docker`
+  - All inclusive image which is built on top of individual postgres images with single FDW installed.
+
+#### Available image tags
+Tag naming pattern corresponds one to one to the official postgres tags.
+
+Image|Tag
+-|-
+postgres_fdw|latest
+postgres_fdw|14.3
 
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.

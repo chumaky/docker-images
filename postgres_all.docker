@@ -1,0 +1,21 @@
+ARG base_tag=14.3
+ARG mongo_tag=fdw5.4.0
+ARG msssql_tag=fdw2.0.2
+
+FROM docker.io/toleg/postgres_mongo_fdw:${base_tag}_${mongo_tag} AS mongo
+FROM docker.io/toleg/postgres_mssql_fdw:${base_tag}_${msssql_tag} AS mssql
+FROM postgres:${base_tag}
+
+ARG extdir=/usr/share/postgresql/14/extension
+ARG extlibdir=/usr/lib/postgresql/14/lib
+ARG libdir=/lib
+
+COPY --from=mongo ${extdir}/mongo* ${extdir}/
+COPY --from=mongo ${extlibdir}/mongo_fdw.so ${extlibdir}/
+COPY --from=mongo ${libdir}/*mongo* ${libdir}/*libbson* ${libdir}/
+
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+COPY --from=mssql ${extdir}/tds_fdw* ${extdir}/
+COPY --from=mssql ${extlibdir}/tds_fdw.so ${extlibdir}/
+COPY --from=mssql ${libdir}/*sybdb* ${libdir}/

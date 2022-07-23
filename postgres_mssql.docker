@@ -9,7 +9,7 @@ RUN apt-get update;
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-13 freetds-dev \
+    postgresql-server-dev-14 freetds-dev \
     # runtime deps
     libsybdb5 freetds-common; \
     # mongo_fdw
@@ -22,6 +22,6 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-13 freetds-dev; \
+    postgresql-server-dev-14 freetds-dev; \
     cd -; \
     rm -rf ${SOURCE_FILES};
