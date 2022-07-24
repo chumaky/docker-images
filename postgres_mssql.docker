@@ -1,4 +1,5 @@
-FROM postgres:latest
+ARG base_tag=14.4
+FROM postgres:${base_tag}
 
 ARG TDS_FDW_VERSION=2.0.2
 ARG TDS_FDW_URL=https://github.com/tds-fdw/tds_fdw/archive/v${TDS_FDW_VERSION}.tar.gz
@@ -12,7 +13,7 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     postgresql-server-dev-14 freetds-dev \
     # runtime deps
     libsybdb5 freetds-common; \
-    # mongo_fdw
+    # tds_fdw
     mkdir -p ${SOURCE_FILES}; \
     wget -O - ${TDS_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
     cd ${SOURCE_FILES}; \

@@ -1,4 +1,4 @@
-ARG base_tag=14.3
+ARG base_tag=14.4
 ARG mongo_tag=fdw5.4.0
 ARG msssql_tag=fdw2.0.2
 

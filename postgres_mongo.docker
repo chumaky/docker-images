@@ -1,4 +1,5 @@
-FROM postgres:latest
+ARG base_tag=14.4
+FROM postgres:${base_tag}
 
 ARG MONGO_FDW_VERSION=5_4_0
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz

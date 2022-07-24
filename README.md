@@ -63,9 +63,11 @@ postgres_sqlite_fdw|13.5_fdw2.1.1
 postgres_oracle_fdw|latest
 postgres_oracle_fdw|13.4_fdw2.4.0
 postgres_mssql_fdw|latest
+postgres_mssql_fdw|14.4_fdw2.0.2
 postgres_mssql_fdw|14.3_fdw2.0.2
 postgres_mssql_fdw|13.1_fdw2.0.2
 postgres_mongo_fdw|latest
+postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
 
@@ -79,6 +81,7 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 Image|Tag
 -|-
 postgres_fdw|latest
+postgres_fdw|14.4
 postgres_fdw|14.3
 
 ### Image building
