@@ -53,19 +53,32 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_
 Image|Tag
 -|-
 postgres_mysql_fdw|latest
+postgres_mysql_fdw|14.4_fdw2.8.0
 postgres_mysql_fdw|14.2_fdw2.8.0
 postgres_mysql_fdw|14.1_fdw2.7.0
 postgres_mysql_fdw|13.5_fdw2.7.0
 postgres_mysql_fdw|13.3_fdw2.6.0
+
+Image|Tag
+-|-
 postgres_sqlite_fdw|latest
 postgres_sqlite_fdw|14.1_fdw2.1.1
 postgres_sqlite_fdw|13.5_fdw2.1.1
+
+Image|Tag
+-|-
 postgres_oracle_fdw|latest
 postgres_oracle_fdw|13.4_fdw2.4.0
+
+Image|Tag
+-|-
 postgres_mssql_fdw|latest
 postgres_mssql_fdw|14.4_fdw2.0.2
 postgres_mssql_fdw|14.3_fdw2.0.2
 postgres_mssql_fdw|13.1_fdw2.0.2
+
+Image|Tag
+-|-
 postgres_mongo_fdw|latest
 postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
@@ -74,6 +87,9 @@ postgres_mongo_fdw|13.3_fdw5.2.9
 ### All inclusive image
 - `postgres_all.docker`
   - All inclusive image which is built on top of individual postgres images with single FDW installed.
+
+Currently it includes FDWs for Mongo, TDS (MSSQL & Sybase), Mysql as well as two built in FDWs for Postgres and Files.
+TODO: Add support for Oracle, SQLite.
 
 #### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
