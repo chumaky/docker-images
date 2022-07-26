@@ -1,5 +1,11 @@
 # About
-Postgres database images with different foreign data wrapper extensions installed.
+Postgres database image with different foreign data wrapper extensions installed.
+Multiple FDWs allow to execute `Heterogeneous SQL` over different by nature databases within single `SELECT` statement!
+
+This project creates two types of images. Individual ones and single all inclusive image.
+Individual images contain _single_ FDW installed. While all inclusive image contains all supported FDWs.
+`Heterogeneous SQL` as a feature is available only with all inclusive image.
+
 
 **IMPORTANT:**
 > Docker doesn't support auto builds feature for free anymore.
@@ -9,14 +15,43 @@ Postgres database images with different foreign data wrapper extensions installe
 
 
 ## Contents
+- [All inclusive image](#all-inclusive-image)
+  - [Available tags](#available-image-tags)
 - [Docker/Image files](#dockerimage-files)
   - [Initialization files](#initialization-files)
   - [Available tags](#available-tags)
-- [All inclusive image](#all-inclusive-image)
-  - [Available tags](#available-image-tags)
 - [Image building](#image-building)
 - [Demos](#demos)
 - [Contribution](#contribution)
+
+### All inclusive image
+All inclusive image which is built on top of individual postgres [images](#dockerimage-files) with single FDW installed.
+It's a mix image which contains all supported FDWs installed.
+Which in fact implements `Heterogeneous SQL` as a feature.
+It makes it possible to query data from different by nature databases withing single `SELECT` statement.
+
+Image|Dockerfile
+-|-
+[postgres_fdw](https://hub.docker.com/r/toleg/postgres_fdw)|[postgres_all.docker](postgres_all.docker)
+
+Included FDWs:
+- Oracle
+- TDS (MSSQL & Sybase)
+- Mysql
+- Postgres (built-in)
+- Flat Files (built-in)
+
+TODO:
+- SQLite
+
+#### Available image tags
+Tag naming pattern corresponds one to one to the official postgres tags.
+
+Image|Tag
+-|-
+postgres_fdw|latest
+postgres_fdw|14.4
+postgres_fdw|14.3
 
 ### Docker/Image files
 - `postgres_<dbname>.docker`
@@ -68,6 +103,7 @@ postgres_sqlite_fdw|13.5_fdw2.1.1
 Image|Tag
 -|-
 postgres_oracle_fdw|latest
+postgres_oracle_fdw|14.4_fdw2.4.0
 postgres_oracle_fdw|13.4_fdw2.4.0
 
 Image|Tag
@@ -83,22 +119,6 @@ postgres_mongo_fdw|latest
 postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
-
-### All inclusive image
-- `postgres_all.docker`
-  - All inclusive image which is built on top of individual postgres images with single FDW installed.
-
-Currently it includes FDWs for Mongo, TDS (MSSQL & Sybase), Mysql as well as two built in FDWs for Postgres and Files.
-TODO: Add support for Oracle, SQLite.
-
-#### Available image tags
-Tag naming pattern corresponds one to one to the official postgres tags.
-
-Image|Tag
--|-
-postgres_fdw|latest
-postgres_fdw|14.4
-postgres_fdw|14.3
 
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.

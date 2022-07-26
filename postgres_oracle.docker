@@ -1,4 +1,5 @@
-FROM postgres:latest
+ARG base_tag=14.4
+FROM postgres:${base_tag}
 
 # Latest version
 ARG ORACLE_CLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-basic-linuxx64.zip
@@ -48,10 +49,10 @@ RUN mkdir -p ${SOURCE_FILES}; \
     wget -O - ${ORACLE_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
     cd ${SOURCE_FILES}; \
     # install
-    apt-get install -y --no-install-recommends make gcc postgresql-server-dev-13; \
+    apt-get install -y --no-install-recommends make gcc postgresql-server-dev-14; \
     make; \
     make install; \
     echo ${ORACLE_HOME} > /etc/ld.so.conf.d/oracle_instantclient.conf; \
     ldconfig; \
     # cleanup
-    apt-get purge -y --auto-remove postgresql-server-dev-13 gcc make
+    apt-get purge -y --auto-remove postgresql-server-dev-14 gcc make

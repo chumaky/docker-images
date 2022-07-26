@@ -11,19 +11,21 @@ services:
       SYS_PASSWORD: Oradoc_db1
     ports:
       - 1521:1521
+    #volumes:
+    #  - "./sql/oracle_setup.sql:/docker-entrypoint-initdb.d/oracle_setup.sql:z"
 
   postgres:
     # if you build image locally and tagged it as "postgres_oracle_fdw"
-    image: postgres_oracle_fdw
+    #image: postgres_oracle_fdw
 
     # if you want to use prebuilt image
-    #image: toleg/postgres_oracle_fdw
+    image: docker.io/toleg/postgres_oracle_fdw:14.4_fdw2.4.0
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
-    #volumes:
-    #  - "./sql/postgres_mysql_setup.sql:/docker-entrypoint-initdb.d/postgres_mysql_setup.sql:z"
+    volumes:
+      - "./sql/postgres_oracle_setup.sql:/docker-entrypoint-initdb.d/postgres_oracle_setup.sql:z"
     depends_on:
       - oracle
 
