@@ -25,10 +25,10 @@ Individual images contain _single_ FDW installed. While all inclusive image cont
 - [Contribution](#contribution)
 
 ### All inclusive image
-All inclusive image which is built on top of individual postgres [images](#dockerimage-files) with single FDW installed.
-It's a mix image which contains all supported FDWs installed.
-Which in fact implements `Heterogeneous SQL` as a feature.
-It makes it possible to query data from different by nature databases withing single `SELECT` statement.
+All inclusive image is built on top of individual postgres [images](#dockerimage-files) with single FDW installed.
+It's a mix image which contains all supported FDWs available for installation.
+It makes it possible to query data from different by nature databases within single `SELECT` statement.
+Which in fact implements `Heterogeneous SQL` feature.
 
 Image|Dockerfile
 -|-
@@ -40,8 +40,6 @@ Included FDWs:
 - Mysql
 - Postgres (built-in)
 - Flat Files (built-in)
-
-TODO:
 - SQLite
 
 #### Available image tags
@@ -97,6 +95,7 @@ postgres_mysql_fdw|13.3_fdw2.6.0
 Image|Tag
 -|-
 postgres_sqlite_fdw|latest
+postgres_sqlite_fdw|14.4_fdw2.1.1
 postgres_sqlite_fdw|14.1_fdw2.1.1
 postgres_sqlite_fdw|13.5_fdw2.1.1
 

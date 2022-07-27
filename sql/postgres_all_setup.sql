@@ -16,6 +16,5 @@ create extension mysql_fdw schema mysql_fdw;
 create schema oracle_fdw;
 create extension oracle_fdw schema oracle_fdw;
 
--- TODO: make "sqlite" FDW part of "postgres_fdw" image
---create schema sqlite_fdw;
---create extension sqlite_fdw schema sqlite_fdw;
+create schema sqlite_fdw;
+create extension sqlite_fdw schema sqlite_fdw;

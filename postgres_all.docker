@@ -3,11 +3,13 @@ ARG mongo_tag=fdw5.4.0
 ARG msssql_tag=fdw2.0.2
 ARG mysql_tag=fdw2.8.0
 ARG oracle_tag=fdw2.4.0
+ARG sqlite_tag=fdw2.1.1
 
 FROM docker.io/toleg/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
 FROM docker.io/toleg/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
 FROM docker.io/toleg/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
 FROM docker.io/toleg/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
+FROM docker.io/toleg/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
 FROM postgres:${base_tag}
 
 ARG extdir=/usr/share/postgresql/14/extension
@@ -24,6 +26,11 @@ COPY --from=mysql ${extdir}/mysql_fdw* ${extdir}/
 COPY --from=mysql ${extlibdir}/mysql_fdw.so ${extlibdir}/
 COPY --from=mysql ${libdir}/*mysql* ${libdir}/
 
+# SQLite
+COPY --from=sqlite ${extdir}/sqlite_fdw* ${extdir}/
+COPY --from=sqlite ${extlibdir}/sqlite_fdw.so ${extlibdir}/
+COPY --from=sqlite ${libdir}/*sqlite* ${libdir}/
+
 # Oracle (includes instantclient & sqlplus)
 # TODO: consider copying only required minimum from instantclient
 ENV ORACLE_HOME /usr/lib/oracle/client
@@ -37,7 +44,9 @@ COPY --from=oracle ${ORACLE_HOME}/ ${ORACLE_HOME}/
 
 WORKDIR ${libdir}
 RUN ln -sf libaio.so.1.0.1 libaio.so.1; \
-    ln -sf libsybdb.so.5.1.0 libsybdb.so.5;
+    ln -sf libsybdb.so.5.1.0 libsybdb.so.5; \
+    ln -sf libsqlite3.so.0.8.6 libsqlite3.so; \
+    ln -sf libsqlite3.so.0.8.6 libsqlite3.so.0;
 
 # Mongo
 ARG libdir=/lib
