@@ -6,18 +6,10 @@ This project creates two types of images. Individual ones and single all inclusi
 Individual images contain _single_ FDW installed. While all inclusive image contains all supported FDWs.
 `Heterogeneous SQL` as a feature is available only with all inclusive image.
 
-
-**IMPORTANT:**
-> Docker doesn't support auto builds feature for free anymore.
->Also it doesn't show any digest or statistics for manually pushed tags.
-> Nevertheless, these tags are fetchable and safe to use.
-> Please check **Tags** tab at Docker hub to see custom tags available.
-
-
 ## Contents
 - [All inclusive image](#all-inclusive-image)
   - [Available tags](#available-image-tags)
-- [Docker/Image files](#dockerimage-files)
+- [Individual FDWs](#individual-fdws)
   - [Initialization files](#initialization-files)
   - [Available tags](#available-tags)
 - [Image building](#image-building)
@@ -45,13 +37,18 @@ Included FDWs:
 #### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
 
+> **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
+Also it doesn't show any digest or statistics for manually pushed tags.
+Nevertheless, these tags are fetchable and safe to use.
+Please check **Tags** tab at Docker hub to see custom tags available.
+
 Image|Tag
 -|-
 postgres_fdw|latest
 postgres_fdw|14.4
 postgres_fdw|14.3
 
-### Docker/Image files
+### Individual FDWs
 - `postgres_<dbname>.docker`
   - Base image building file referenced in docker's documentation as `Dockerfile`.
 - `postgres_<dbname>_compose.yml`
@@ -82,6 +79,12 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 
 #### Available tags
 Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_fdw2.7.0` tag for `postgres_mysql_fdw` image means postgres `13.5` version with `2.7.0` fdw version installed.
+
+
+> **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
+Also it doesn't show any digest or statistics for manually pushed tags.
+Nevertheless, these tags are fetchable and safe to use.
+Please check **Tags** tab at Docker hub to see custom tags available.
 
 Image|Tag
 -|-
