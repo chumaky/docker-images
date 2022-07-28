@@ -1,8 +1,8 @@
 # About
 Postgres database image with different foreign data wrapper extensions installed.
-Multiple FDWs allow to execute `Heterogeneous SQL` over different by nature databases within single `SELECT` statement!
+Multiple FDWs allow to execute `Heterogeneous SQL` over different by nature databases within single `SELECT` statement.
 
-This project creates two types of images. Individual ones and single all inclusive image.
+This project creates two types of images. All inclusive image and individual FDW ones.
 Individual images contain _single_ FDW installed. While all inclusive image contains all supported FDWs.
 `Heterogeneous SQL` as a feature is available only with all inclusive image.
 
@@ -17,7 +17,7 @@ Individual images contain _single_ FDW installed. While all inclusive image cont
 - [Contribution](#contribution)
 
 ### All inclusive image
-All inclusive image is built on top of individual postgres [images](#dockerimage-files) with single FDW installed.
+All inclusive image is built on top of individual postgres [images](#individual-fdws) with single FDW installed.
 It's a mix image which contains all supported FDWs available for installation.
 It makes it possible to query data from different by nature databases within single `SELECT` statement.
 Which in fact implements `Heterogeneous SQL` feature.
