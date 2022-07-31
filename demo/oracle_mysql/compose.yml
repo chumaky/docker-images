@@ -1,15 +1,13 @@
 services:
-  # this is obsolete image. TODO: switch to official Oracle images
   oracle:
-    image: store/oracle/database-enterprise:12.2.0.1
+    image: container-registry.oracle.com/database/express:21.3.0-xe
     environment:
-      # default "sys" user password mentioned in oracle image readme
-      SYS_PASSWORD: Oradoc_db1
+      ORACLE_PWD: admin   # password for SYS, SYSTEM and PDBADMIN
     ports:
-      - 1521:1521
+      - 1521:1521   # JDBC
+      - 5500:5500   # Enterprise Manager GUI
     volumes:
-      # this startup script is for postgres image and is not picked up by oracle
-      #- ./oracle_setup.sql:/docker-entrypoint-initdb.d/oracle_setup.sql
+      - ./oracle_setup.sql:/docker-entrypoint-initdb.d/startup/oracle_setup.sql
 
   mysql:
     image: mysql
