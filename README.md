@@ -30,6 +30,7 @@ Included FDWs:
 - Oracle
 - TDS (MSSQL & Sybase)
 - Mysql
+- Mongo
 - Postgres (built-in)
 - Flat Files (built-in)
 - SQLite

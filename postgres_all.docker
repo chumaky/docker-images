@@ -25,6 +25,7 @@ COPY --from=mssql ${libdir}/*sybdb* ${libdir}/
 COPY --from=mysql ${extdir}/mysql_fdw* ${extdir}/
 COPY --from=mysql ${extlibdir}/mysql_fdw.so ${extlibdir}/
 COPY --from=mysql ${libdir}/*mysql* ${libdir}/
+COPY --from=mysql ${libdir}/libmariadb3/ ${libdir}/libmariadb3/
 
 # SQLite
 COPY --from=sqlite ${extdir}/sqlite_fdw* ${extdir}/
