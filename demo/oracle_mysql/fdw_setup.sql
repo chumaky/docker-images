@@ -1,41 +1,60 @@
-create schema mysql_fdw;
-create extension mysql_fdw schema mysql_fdw;
+-- install extensions
+CREATE SCHEMA mysql_fdw;
+CREATE EXTENSION mysql_fdw SCHEMA mysql_fdw;
 
-create schema oracle_fdw;
-create extension oracle_fdw schema oracle_fdw;
+CREATE SCHEMA oracle_fdw;
+CREATE EXTENSION oracle_fdw SCHEMA oracle_fdw;
 
+-- create foreign servers
+CREATE SERVER oracle FOREIGN DATA WRAPPER oracle_fdw OPTIONS (dbserver '//oracle:1521/xepdb1');
+CREATE USER MAPPING FOR postgres SERVER oracle OPTIONS (user 'test', password 'test');
+CREATE SCHEMA oracle;
 
-create server oracle foreign data wrapper oracle_fdw options (dbserver '//oracle:1521/xepdb1');
-create user mapping for postgres server oracle options (user 'test', password 'test');
-create foreign table oratab (id int options (key 'true')) server oracle options (schema 'TEST', table 'T');
+CREATE SERVER mysql FOREIGN DATA WRAPPER mysql_fdw OPTIONS (host 'mysql', port '3306');
+CREATE USER MAPPING FOR postgres SERVER mysql OPTIONS (username 'test', password 'test');
+CREATE SCHEMA mysql;
 
-create server mysql foreign data wrapper mysql_fdw options (host 'mysql', port '3306');
-create user mapping for postgres server mysql options (username 'root', password 'root');
-create schema mysql;
+-- import foreign schemas after corresponding databases completed initialization within theirs container
+CREATE SCHEMA admin;
+CREATE OR REPLACE FUNCTION admin.import_foreign_schema
+( p_foreign_schema   VARCHAR
+, p_local_schema     VARCHAR
+, p_foreign_server   VARCHAR
+, p_steps            INTEGER DEFAULT 36
+, p_sleep            INTEGER DEFAULT 5
+)
+RETURNS void
+AS
+$import_foreign_schema$
+DECLARE
+   idx   INTEGER;
+BEGIN
+   RAISE INFO USING message = CONCAT_WS(' ',
+      'Importing foreign schema', QUOTE_LITERAL(p_foreign_schema),
+      'from server', QUOTE_LITERAL(p_foreign_server),
+      'into local schema', QUOTE_LITERAL(p_local_schema)
+   );
 
--- mysql startup takes approx 30 secs to initialize the database
--- in contrast postgres starts within second
--- we have to try import schema for one minute before raising an error
-do $$
-declare
-   v_steps  int := 12;
-   v_sleep  int := 5;
-   idx      int;
-begin
-   for idx in 1..v_steps
-   loop
-      begin
-         import foreign schema dev from server mysql into mysql;
-         raise info using message = 'schema "dev" succesfully imported';
-         exit;
-      exception
-         when others then
-            raise info using message = concat('error code: ', sqlstate, ', message: ', sqlerrm);
-            raise warning using message = 'mysql db is not initialized yet. sleeping for ' || v_sleep || ' seconds...';
-            perform pg_sleep(v_sleep);
-      end;
-   end loop;
-end;
-$$;
+   FOR idx IN 1..p_steps
+   LOOP
+      BEGIN
+         EXECUTE CONCAT_WS(' ',
+            'import foreign schema', QUOTE_IDENT(p_foreign_schema),
+            'from server', QUOTE_IDENT(p_foreign_server),
+            'into', QUOTE_IDENT(p_local_schema)
+         );
+         RAISE INFO USING message = 'Schema ' || QUOTE_LITERAL(p_foreign_schema) || ' succesfully imported';
+         EXIT;
+      EXCEPTION
+         WHEN OTHERS THEN
+            RAISE WARNING USING message = CONCAT('error code: ', sqlstate, ', message: ', sqlerrm);
+            RAISE WARNING USING message = 'Error happened. sleeping for ' || p_sleep || ' seconds...';
+            PERFORM pg_sleep(p_sleep);
+      END;
+   END LOOP;
+END;
+$import_foreign_schema$
+LANGUAGE plpgsql;
 
-
+SELECT admin.import_foreign_schema('dev', 'mysql', 'mysql');
+SELECT admin.import_foreign_schema('TEST', 'oracle', 'oracle');
