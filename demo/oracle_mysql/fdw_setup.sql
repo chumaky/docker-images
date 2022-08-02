@@ -58,3 +58,13 @@ LANGUAGE plpgsql;
 
 SELECT admin.import_foreign_schema('dev', 'mysql', 'mysql');
 SELECT admin.import_foreign_schema('TEST', 'oracle', 'oracle');
+
+CREATE OR REPLACE VIEW user_profiles AS
+SELECT u.id             AS user_id
+     , u.name           AS name
+     , p.role           AS role
+  FROM mysql.users      u
+ INNER JOIN
+       oracle.profiles  p
+    ON u.id             = p.user_id
+;

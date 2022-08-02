@@ -1,3 +1,8 @@
-create table t(id int);
-insert into t values (1), (2), (3);
-alter table t add constraint primary key t_pk(id);
+create table users(id int, name text);
+insert
+  into users
+values (1, 'John')
+     , (2, 'Mary')
+     , (3, 'Paul')
+;
+alter table users add constraint primary key u_pk(id);
