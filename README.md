@@ -1,12 +1,10 @@
 # About
 Postgres database image with different foreign data wrapper extensions installed.
-Multiple FDWs allow to execute `Heterogeneous SQL` over different by nature databases within single `SELECT` statement.
-
-This project creates two types of images. All inclusive image and individual FDW ones.
-Individual images contain _single_ FDW installed. While all inclusive image contains all supported FDWs.
-`Heterogeneous SQL` as a feature is available only with all inclusive image.
+Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over different by nature databases within single `SELECT` statement.
 
 ## Contents
+- [Heterogeneous SQL](#heterogeneous-sql)
+- [How It Works](#how-it-works)
 - [All inclusive image](#all-inclusive-image)
   - [Available tags](#available-image-tags)
 - [Individual FDWs](#individual-fdws)
@@ -15,6 +13,39 @@ Individual images contain _single_ FDW installed. While all inclusive image cont
 - [Image building](#image-building)
 - [Demos](#demos)
 - [Contribution](#contribution)
+
+### Heterogeneous SQL
+Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
+Good example could be microservices architecture where each service might have its own database.
+These databases except possibly being different by vendor like `Oracle` or `Postgres`, also might be different by nature. I.e. `SQL` vs `NoSQL`.
+
+Quite often there is a need to combine the data from different systems within the Enterprise.
+Common solution for such task today is to write some `ETL` via one of the numerous tools available.
+Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
+
+This happens mostly because there is absent possibility to fetch and join the data from different databases within _single_ `SELECT` statement. We call such feature `Heterogeneous SQL`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+
+This project fills the gap and makes it possible to join data from different by vendor/nature databases in a single `SELECT` statement.
+
+### How It Works
+`Postgres` database has such a nice feature as `Foreign Data Wrapper`.
+It allows to access data from some external source.
+Be it some other database or just file. In case of database it might be `SQL` or `NoSQL` one.
+There are plenty of different open source `FDW` extensions available.
+
+What the project does is just compiles and packs these `FDW` extensions into the default postgres image.
+All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
+
+For the demo, please have a look into the [demo](demo) folder.
+TODO: Document available examples.
+
+If you don't need to mix the data from different databases
+but just need to access the data from _single_ database while being working within postgres - it's also possible.
+Because this project creates two types of images.
+All inclusive image and individual `FDW` ones.
+Individual images contain _single_ FDW installed.
+While all inclusive image is built on top of individual ones and contains all supported FDWs.
+`Heterogeneous SQL` as a feature is available only with all inclusive image.
 
 ### All inclusive image
 All inclusive image is built on top of individual postgres [images](#individual-fdws) with single FDW installed.
