@@ -14,7 +14,7 @@ CREATE SERVER mysql FOREIGN DATA WRAPPER mysql_fdw OPTIONS (host 'mysql', port '
 CREATE USER MAPPING FOR postgres SERVER mysql OPTIONS (username 'test', password 'test');
 CREATE SCHEMA mysql;
 
--- import foreign schemas after corresponding databases completed initialization within theirs container
+-- import foreign schemas after corresponding databases completed initialization within theirs containers
 CREATE SCHEMA admin;
 CREATE OR REPLACE FUNCTION admin.import_foreign_schema
 ( p_foreign_schema   VARCHAR

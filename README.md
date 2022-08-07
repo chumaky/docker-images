@@ -23,7 +23,7 @@ Quite often there is a need to combine the data from different systems within th
 Common solution for such task today is to write some ETL via one of the numerous tools available.
 Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
 
-This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. We call such feature `Heterogeneous SQL`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. We call such approach `Heterogeneous SQL`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
 
 This project fills the gap and makes it possible to join data from different by vendor/nature databases in a single `SELECT` statement.
 
