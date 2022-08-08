@@ -1,6 +1,7 @@
 services:
   oracle:
     image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: om_oracle
     environment:
       ORACLE_PWD: admin   # password for SYS, SYSTEM and PDBADMIN
     ports:
@@ -11,6 +12,7 @@ services:
 
   mysql:
     image: mysql
+    container_name: om_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: dev
@@ -23,11 +25,13 @@ services:
 
   postgres:
     image: toleg/postgres_fdw
+    container_name: om_postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
+      - ../admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
       - oracle

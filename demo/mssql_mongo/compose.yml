@@ -1,18 +1,18 @@
 services:
   #mssql:
   #  image: mcr.microsoft.com/mssql/server:2019-latest
-  #  container_name: mssql
+  #  container_name: mm_mssql
   #  environment:
   #    ACCEPT_EULA: Y
   #    SA_PASSWORD: mssql_2019
   #  ports:
   #    - 1433:1433
   #  volumes:
-  #    - "./sql/mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql:z"
+  #    - ./mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql
 
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: mm_mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -24,12 +24,14 @@ services:
 
   postgres:
     image: toleg/postgres_fdw
+    container_name: mm_postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
+      - ../admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
-   #   - mssql
+      #- mssql
       - mongo

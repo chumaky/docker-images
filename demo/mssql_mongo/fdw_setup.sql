@@ -14,19 +14,23 @@ CREATE SERVER mssql FOREIGN DATA WRAPPER tds_fdw OPTIONS (servername 'mssql', po
 CREATE USER MAPPING FOR postgres SERVER mssql OPTIONS (username 'sa', password 'mssql_2019');
 CREATE SCHEMA mssql;
 
--- create foregin tables
-CREATE FOREIGN TABLE mssql.banner(version text)
-SERVER MSSQL
-OPTIONS (query 'select @@version as version')
-;
-
-CREATE FOREIGN TABLE mssql.users(id int, name varchar)
-SERVER mssql
-OPTIONS (query 'select * from users')
-;
-
+-- create foreign tables. mongo_fdw doesn't support IMPORT FOREIGN SCHEMA
 CREATE FOREIGN TABLE mongo.regions
 ( _id    name
 , id     int
 , name   text
 ) SERVER mongo;
+
+-- import foreign schemas
+SELECT admin.import_foreign_schema('test', 'mssql', 'mssql');
+
+
+-- heterogeneous sql based view
+CREATE OR REPLACE VIEW company_details AS
+SELECT r.name           AS region
+     , b.name           AS department
+  FROM mongo.regions    r
+ INNER JOIN
+       mssql.branches   b
+    ON b.region_id      = r.id
+;
