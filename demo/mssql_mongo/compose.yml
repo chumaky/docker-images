@@ -1,14 +1,25 @@
 services:
-  #mssql:
-  #  image: mcr.microsoft.com/mssql/server:2019-latest
-  #  container_name: mm_mssql
-  #  environment:
-  #    ACCEPT_EULA: Y
-  #    SA_PASSWORD: mssql_2019
-  #  ports:
-  #    - 1433:1433
-  #  volumes:
-  #    - ./mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mm_mssql
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: mssql_2019
+    ports:
+      - 1433:1433
+
+  mssql_init:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mm_mssql_init
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: mssql_2019
+    volumes:
+      - ./mssql_setup.sh:/docker-entrypoint-initdb.d/mssql_setup.sh
+      - ./mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql
+    working_dir: "/docker-entrypoint-initdb.d"
+    command:  [ "./mssql_setup.sh" ]
+    depends_on: mssql
 
   mongo:
     image: mongo
@@ -33,5 +44,5 @@ services:
       - ../admin.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
-      #- mssql
+      - mssql_init
       - mongo

@@ -22,7 +22,7 @@ CREATE FOREIGN TABLE mongo.regions
 ) SERVER mongo;
 
 -- import foreign schemas
-SELECT admin.import_foreign_schema('test', 'mssql', 'mssql');
+SELECT admin.import_foreign_schema('dbo', 'mssql', 'mssql');
 
 
 -- heterogeneous sql based view
