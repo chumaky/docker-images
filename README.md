@@ -8,10 +8,10 @@ Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over diff
 - [All inclusive image](#all-inclusive-image)
   - [Available tags](#available-image-tags)
 - [Individual FDWs](#individual-fdws)
-  - [Initialization files](#initialization-files)
+  - [Demos](#demos)
   - [Available tags](#available-tags)
+- [Initialization files](#initialization-files)
 - [Image building](#image-building)
-- [Demos](#demos)
 - [Contribution](#contribution)
 
 ### Heterogeneous SQL
@@ -33,7 +33,7 @@ It allows to access data from some external source.
 Be it some other database or just file. In case of database it might be `SQL` or `NoSQL` one.
 There are plenty of different open source `FDW` extensions available.
 
-What this project does is just compiles and packs these `FDW` extensions into the default postgres image.
+What this project does is just compile and pack these `FDW` extensions into the default postgres image.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
 For the demo, please have a look into the [demo](demo) folder.
@@ -90,15 +90,12 @@ For example, `postgres_mysql.docker` file specifies `postgres` database with `my
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
-
-#### Initialization files
-`sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
-- `<dbname>_setup.sql`
-  - Create _non-postgres_ database and populate it with some data
-- `postgres_<dbname>_setup.sql`
-  - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
-- `postgres_all_setup.sql`
-  - Create all available foreign data wrapper extensions within `postgres` in a separate schemas. Applicable only for [All inclusive image](#all-inclusive-image)
+#### Demos
+- [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
+- [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
+- [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
+- [Postgres with MongoDB](https://chumaky.team/blog/postgres-mongodb-fdw)
+- [Postgres with MSSQL](https://chumaky.team/blog/postgres-mssql-fdw)
 
 
 #### Available tags
@@ -146,6 +143,15 @@ postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
 
+### Initialization files
+`sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
+- `<dbname>_setup.sql`
+  - Create _non-postgres_ database and populate it with some data
+- `postgres_<dbname>_setup.sql`
+  - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
+- `postgres_all_setup.sql`
+  - Create all available foreign data wrapper extensions within `postgres` in a separate schemas. Applicable only for [All inclusive image](#all-inclusive-image)
+
 ### Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
@@ -175,14 +181,6 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
  mysql_fdw | 1.1             |                   | Foreign data wrapper for querying a MySQL server
 (1 row)
 ```
-
-
-### Demos
-- [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
-- [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
-- [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
-- [Postgres with MongoDB](https://chumaky.team/blog/postgres-mongodb-fdw)
-- [Postgres with MSSQL](https://chumaky.team/blog/postgres-mssql-fdw)
 
 
 ### Contribution
