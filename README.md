@@ -6,9 +6,10 @@ Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over diff
 - [Heterogeneous SQL](#heterogeneous-sql)
 - [How It Works](#how-it-works)
 - [All inclusive image](#all-inclusive-image)
+  - [Demo](#heterogeneous-sql-demo)
   - [Available tags](#available-image-tags)
 - [Individual FDWs](#individual-fdws)
-  - [Demos](#demos)
+  - [Demo](#individual-fdws-demo)
   - [Available tags](#available-tags)
 - [Initialization files](#initialization-files)
 - [Image building](#image-building)
@@ -36,8 +37,6 @@ There are plenty of different open source `FDW` extensions available.
 What this project does is just compile and pack these `FDW` extensions into the default postgres image.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
-For the demo, please have a look into the [demo](demo) folder.
-TODO: Document available examples.
 
 ### All inclusive image
 All inclusive image is built on top of individual postgres [images](#individual-fdws) with single FDW installed.
@@ -57,6 +56,11 @@ Included FDWs:
 - Postgres (built-in)
 - Flat Files (built-in)
 - SQLite
+
+### Heterogeneous SQL Demo
+- [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
+- [Oracle - Mysql](demo/oracle_mysql/)
+
 
 #### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
@@ -90,7 +94,7 @@ For example, `postgres_mysql.docker` file specifies `postgres` database with `my
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
-#### Demos
+#### Individual FDWs Demo
 - [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
 - [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)

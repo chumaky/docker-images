@@ -1,7 +1,7 @@
 services:
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mm_mssql
+    container_name: mms_mssql
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: mssql_2019
@@ -11,7 +11,7 @@ services:
   # temp container to populate seed data within "mssql" container.
   mssql_init:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: mm_mssql_init
+    container_name: mms_mssql_init
     volumes:
       - ./mssql_setup.sh:/docker-entrypoint-initdb.d/mssql_setup.sh
       - ./mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql
@@ -21,7 +21,7 @@ services:
 
   mongo:
     image: mongo
-    container_name: mm_mongo
+    container_name: mms_mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -33,13 +33,14 @@ services:
 
   postgres:
     image: toleg/postgres_fdw
-    container_name: mm_postgres
+    container_name: mms_postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
       - ../admin.sql:/docker-entrypoint-initdb.d/admin.sql
+      - ./test.db:/tmp/test.db
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
       - mssql_init
