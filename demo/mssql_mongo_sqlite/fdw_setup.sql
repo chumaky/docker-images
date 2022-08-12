@@ -17,7 +17,7 @@ CREATE SERVER mssql FOREIGN DATA WRAPPER tds_fdw OPTIONS (servername 'mssql', po
 CREATE USER MAPPING FOR postgres SERVER mssql OPTIONS (username 'sa', password 'mssql_2019');
 CREATE SCHEMA mssql;
 
-CREATE SERVER sqlite FOREIGN DATA WRAPPER sqlite_fdw OPTIONS (database '/tmp/test.db');
+CREATE SERVER sqlite FOREIGN DATA WRAPPER sqlite_fdw OPTIONS (database '/tmp/sqlite.db');
 CREATE SCHEMA sqlite;
 
 -- create foreign tables. mongo_fdw doesn't support IMPORT FOREIGN SCHEMA
