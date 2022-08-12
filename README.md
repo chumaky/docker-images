@@ -58,6 +58,13 @@ Included FDWs:
 - SQLite
 
 ### Heterogeneous SQL Demo
+Navigate to the corresponding folder listed below and execute from it `docker-compose up -d`.
+It will spin-up a few containers with postgres one at the end.
+Inside postgres container there will be a view created in `public` schema.
+That view will be joining data from foreign tables which are pointed to different source databases.
+
+**TODO:** More detailed explanations for each setup
+
 - [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
 - [Oracle - Mysql](demo/oracle_mysql/)
 
