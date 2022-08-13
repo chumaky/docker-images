@@ -5,8 +5,8 @@ Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over diff
 ## Contents
 - [Heterogeneous SQL](#heterogeneous-sql)
 - [How It Works](#how-it-works)
+- [Heterogeneous SQL Demo](#heterogeneous-sql-demo)
 - [All inclusive image](#all-inclusive-image)
-  - [Demo](#heterogeneous-sql-demo)
   - [Available tags](#available-image-tags)
 - [Individual FDWs](#individual-fdws)
   - [Demo](#individual-fdws-demo)
@@ -37,6 +37,17 @@ There are plenty of different open source `FDW` extensions available.
 What this project does is just compile and pack these `FDW` extensions into the default postgres image.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
+### Heterogeneous SQL Demo
+- [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
+- [Oracle - Mysql](demo/oracle_mysql/)
+
+Navigate to the corresponding folder listed above and execute from it `docker-compose up -d`.
+It will spin-up a few containers with postgres one at the end.
+Inside postgres container there will be a view created in `public` schema.
+That view will be joining data from foreign tables which are pointed to different source databases.
+
+**TODO:** More detailed explanations for each setup
+
 
 ### All inclusive image
 All inclusive image is built on top of individual postgres [images](#individual-fdws) with single FDW installed.
@@ -56,17 +67,6 @@ Included FDWs:
 - Postgres (built-in)
 - Flat Files (built-in)
 - SQLite
-
-### Heterogeneous SQL Demo
-Navigate to the corresponding folder listed below and execute from it `docker-compose up -d`.
-It will spin-up a few containers with postgres one at the end.
-Inside postgres container there will be a view created in `public` schema.
-That view will be joining data from foreign tables which are pointed to different source databases.
-
-**TODO:** More detailed explanations for each setup
-
-- [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
-- [Oracle - Mysql](demo/oracle_mysql/)
 
 
 #### Available image tags
