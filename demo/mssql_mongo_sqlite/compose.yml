@@ -32,7 +32,7 @@ services:
       - ./mongo_setup.js:/docker-entrypoint-initdb.d/mongo_setup.js
 
   postgres:
-    image: toleg/postgres_fdw
+    image: toleg/postgres_hsql
     container_name: mms_postgres
     environment:
       POSTGRES_PASSWORD: postgres

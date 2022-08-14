@@ -4,18 +4,18 @@ Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over diff
 
 ## Contents
 - [Heterogeneous SQL](#heterogeneous-sql)
-- [How It Works](#how-it-works)
-- [Heterogeneous SQL Demo](#heterogeneous-sql-demo)
-- [All inclusive image](#all-inclusive-image)
+  - [How It Works](#how-it-works)
+  - [Demo](#heterogeneous-sql-demo)
+- [Postgres HSQL image](#postgres-hsql-image)
   - [Available tags](#available-image-tags)
-- [Individual FDWs](#individual-fdws)
+- [Individual FDW images](#individual-fdw-images)
   - [Demo](#individual-fdws-demo)
   - [Available tags](#available-tags)
 - [Initialization files](#initialization-files)
 - [Image building](#image-building)
 - [Contribution](#contribution)
 
-### Heterogeneous SQL
+## Heterogeneous SQL
 Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
 Good example could be microservices architecture where each service might have its own database.
 These databases except possibly being different by vendor like `Oracle` or `Postgres`, also might be different by nature. I.e. `SQL` vs `NoSQL`.
@@ -24,7 +24,7 @@ Quite often there is a need to combine the data from different systems within th
 Common solution for such task today is to write some ETL via one of the numerous tools available.
 Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
 
-This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. We call such approach `Heterogeneous SQL`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. We call such approach `Heterogeneous SQL (HSQL)`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
 
 This project fills the gap and makes it possible to join data from different by vendor/nature databases in a single `SELECT` statement.
 
@@ -49,15 +49,15 @@ That view will be joining data from foreign tables which are pointed to differen
 **TODO:** More detailed explanations for each setup
 
 
-### All inclusive image
-All inclusive image is built on top of individual postgres [images](#individual-fdws) with single FDW installed.
+## Postgres HSQL image
+Postgres HSQL image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
 It's a mix image which contains all supported FDWs available for installation.
 It makes it possible to query data from different by nature databases within single `SELECT` statement.
 Which in fact implements `Heterogeneous SQL` feature.
 
 Image|Dockerfile
 -|-
-[postgres_fdw](https://hub.docker.com/r/toleg/postgres_fdw)|[postgres_all.docker](postgres_all.docker)
+[postgres_hsql](https://hub.docker.com/r/toleg/postgres_hsql)|[postgres_hsql.docker](postgres_hsql.docker)
 
 Included FDWs:
 - Oracle
@@ -69,7 +69,7 @@ Included FDWs:
 - SQLite
 
 
-#### Available image tags
+### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
 
 > **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
@@ -83,7 +83,7 @@ postgres_fdw|latest
 postgres_fdw|14.4
 postgres_fdw|14.3
 
-### Individual FDWs
+## Individual FDW images
 - `postgres_<dbname>.docker`
   - Base image building file referenced in docker's documentation as `Dockerfile`.
 - `postgres_<dbname>_compose.yml`
@@ -101,7 +101,7 @@ For example, `postgres_mysql.docker` file specifies `postgres` database with `my
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
-#### Individual FDWs Demo
+### Individual FDWs Demo
 - [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
 - [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
@@ -109,7 +109,7 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 - [Postgres with MSSQL](https://chumaky.team/blog/postgres-mssql-fdw)
 
 
-#### Available tags
+### Available tags
 Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_fdw2.7.0` tag for `postgres_mysql_fdw` image means postgres `13.5` version with `2.7.0` fdw version installed.
 
 
@@ -154,16 +154,16 @@ postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
 
-### Initialization files
+## Initialization files
 `sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
 - `<dbname>_setup.sql`
   - Create _non-postgres_ database and populate it with some data
 - `postgres_<dbname>_setup.sql`
   - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
-- `postgres_all_setup.sql`
+- `postgres_hsql_setup.sql`
   - Create all available foreign data wrapper extensions within `postgres` in a separate schemas. Applicable only for [All inclusive image](#all-inclusive-image)
 
-### Image building
+## Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
 Build image tagged as `postgres_mysql` and launch `pg_fdw_test` container from it
@@ -194,7 +194,7 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 ```
 
 
-### Contribution
+## Contribution
 Any contribution is highly welcomed.
 If you implementing new fdw image please keep corresponding file names accordingly to described pattern.
 

@@ -24,7 +24,7 @@ services:
       - ./mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql
 
   postgres:
-    image: toleg/postgres_fdw
+    image: toleg/postgres_hsql
     container_name: om_postgres
     environment:
       POSTGRES_PASSWORD: postgres
