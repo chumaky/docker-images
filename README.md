@@ -79,9 +79,8 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 
 Image|Tag
 -|-
-postgres_fdw|latest
-postgres_fdw|14.4
-postgres_fdw|14.3
+postgres_hsql|latest
+postgres_hsql|14.4
 
 ## Individual FDW images
 - `postgres_<dbname>.docker`
