@@ -61,4 +61,7 @@ RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
     ln -sf libbson-1.0.so.0 libbson-1.0.so; \
     ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
 
+# Admin scripts
+COPY ./sql/hsql_setup.sql /docker-entrypoint-initdb.d/admin.sql
+
 WORKDIR ${extdir}

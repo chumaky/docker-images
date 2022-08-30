@@ -31,7 +31,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ../admin.sql:/docker-entrypoint-initdb.d/admin.sql
+      - ../../sql/hsql_setup.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
       - oracle

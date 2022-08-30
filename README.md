@@ -51,7 +51,7 @@ That view will be joining data from foreign tables which are pointed to differen
 
 ## Postgres HSQL image
 Postgres HSQL image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
-It's a mix image which contains all supported FDWs available for installation.
+It's a mix image which contains all supported FDW extensions available for installation.
 It makes it possible to query data from different by nature databases within single `SELECT` statement.
 Which in fact implements `Heterogeneous SQL` feature.
 
