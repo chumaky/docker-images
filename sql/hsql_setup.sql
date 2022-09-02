@@ -5,6 +5,7 @@ CREATE OR REPLACE FUNCTION admin.import_foreign_schema
 ( p_foreign_schema   VARCHAR
 , p_local_schema     VARCHAR
 , p_foreign_server   VARCHAR
+, p_options          VARCHAR DEFAULT NULL
 , p_steps            INTEGER DEFAULT 36
 , p_sleep            INTEGER DEFAULT 5
 )
@@ -24,9 +25,10 @@ BEGIN
    LOOP
       BEGIN
          EXECUTE CONCAT_WS(' ',
-            'import foreign schema', QUOTE_IDENT(p_foreign_schema),
-            'from server', QUOTE_IDENT(p_foreign_server),
-            'into', QUOTE_IDENT(p_local_schema)
+            'IMPORT FOREIGN SCHEMA', QUOTE_IDENT(p_foreign_schema),
+            'FROM SERVER', QUOTE_IDENT(p_foreign_server),
+            'INTO', QUOTE_IDENT(p_local_schema),
+            NULLIF(CONCAT('OPTIONS (', p_options, ')'), 'OPTIONS ()')
          );
          RAISE INFO USING message = 'Schema ' || QUOTE_LITERAL(p_foreign_schema) || ' succesfully imported';
          EXIT;
