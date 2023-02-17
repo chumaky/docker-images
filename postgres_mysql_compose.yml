@@ -3,6 +3,7 @@ version: "3.7"
 services:
   mysql:
     image: mysql
+    container_name: mp_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
@@ -15,7 +16,8 @@ services:
     #image: postgres_mysql_fdw
 
     # if you want to use prebuilt image
-    image: toleg/postgres_mysql_fdw
+    image: docker.io/toleg/postgres_mysql_fdw
+    container_name: mp_postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:

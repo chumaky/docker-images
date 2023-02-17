@@ -120,6 +120,7 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 Image|Tag
 -|-
 postgres_mysql_fdw|latest
+postgres_mysql_fdw|15.2_fdw2.9.0
 postgres_mysql_fdw|14.4_fdw2.8.0
 postgres_mysql_fdw|14.2_fdw2.8.0
 postgres_mysql_fdw|14.1_fdw2.7.0
