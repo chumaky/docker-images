@@ -143,6 +143,7 @@ postgres_oracle_fdw|13.4_fdw2.4.0
 Image|Tag
 -|-
 postgres_mssql_fdw|latest
+postgres_mssql_fdw|15.2_fdw2.0.3
 postgres_mssql_fdw|14.4_fdw2.0.2
 postgres_mssql_fdw|14.3_fdw2.0.2
 postgres_mssql_fdw|13.1_fdw2.0.2

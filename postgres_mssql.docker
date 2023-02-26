@@ -1,7 +1,7 @@
-ARG base_tag=14.4
+ARG base_tag=15.2
 FROM postgres:${base_tag}
 
-ARG TDS_FDW_VERSION=2.0.2
+ARG TDS_FDW_VERSION=2.0.3
 ARG TDS_FDW_URL=https://github.com/tds-fdw/tds_fdw/archive/v${TDS_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/tds_fdw
 
@@ -10,7 +10,7 @@ RUN apt-get update;
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-14 freetds-dev \
+    postgresql-server-dev-15 freetds-dev \
     # runtime deps
     libsybdb5 freetds-common; \
     # tds_fdw
@@ -23,6 +23,6 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-14 freetds-dev; \
+    postgresql-server-dev-15 freetds-dev; \
     cd -; \
     rm -rf ${SOURCE_FILES};
