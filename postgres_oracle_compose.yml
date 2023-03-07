@@ -1,25 +1,30 @@
 version: "3.7"
 
-# IMPORTANT: starting this configuration via podman on linux doesn't start oracle services within container
-#            this makes it impossible to connect to oracle database.
-#            for working example with podman please see https://chumaky.team/blog/postgres-oracle-fdw
 services:
   oracle:
-    image: store/oracle/database-enterprise:12.2.0.1
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: oracle
     environment:
-      # default "sys" user password mentioned in oracle image readme
-      SYS_PASSWORD: Oradoc_db1
+      ORACLE_PWD: admin  # SYS, SYSTEM and PDBADMIN password
     ports:
       - 1521:1521
-    #volumes:
-    #  - "./sql/oracle_setup.sql:/docker-entrypoint-initdb.d/oracle_setup.sql:z"
+    volumes:
+      - "./sql/oracle_setup.sql:/opt/oracle/scripts/startup/oracle_setup.sql"
+    #healthcheck:
+    #  test: ["CMD", "sqlplus", "pdbadmin/admin@//localhost:1521/xepdb1"]
+    #  start_period: 5s
+    #  interval: 10s
+    #  timeout: 5s
+    #  retries: 3
+
 
   postgres:
     # if you build image locally and tagged it as "postgres_oracle_fdw"
     #image: postgres_oracle_fdw
 
     # if you want to use prebuilt image
-    image: docker.io/toleg/postgres_oracle_fdw:14.4_fdw2.4.0
+    image: docker.io/toleg/postgres_oracle_fdw
+    container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
@@ -27,6 +32,8 @@ services:
     volumes:
       - "./sql/postgres_oracle_setup.sql:/docker-entrypoint-initdb.d/postgres_oracle_setup.sql:z"
     depends_on:
-      - oracle
+      oracle:
+        condition: service_healthy
+
 
 

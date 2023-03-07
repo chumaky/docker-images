@@ -137,6 +137,7 @@ postgres_sqlite_fdw|13.5_fdw2.1.1
 Image|Tag
 -|-
 postgres_oracle_fdw|latest
+postgres_oracle_fdw|15.2_fdw2.5.0
 postgres_oracle_fdw|14.4_fdw2.4.0
 postgres_oracle_fdw|13.4_fdw2.4.0
 
