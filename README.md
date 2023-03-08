@@ -130,6 +130,7 @@ postgres_mysql_fdw|13.3_fdw2.6.0
 Image|Tag
 -|-
 postgres_sqlite_fdw|latest
+postgres_sqlite_fdw|15.2_fdw2.3.0
 postgres_sqlite_fdw|14.4_fdw2.1.1
 postgres_sqlite_fdw|14.1_fdw2.1.1
 postgres_sqlite_fdw|13.5_fdw2.1.1

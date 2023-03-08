@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 tag=$1
 
 if [ -z "$tag" ]
