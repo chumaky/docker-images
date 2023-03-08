@@ -6,11 +6,15 @@ services:
     container_name: mssql
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: mssql_2019
+      MSSQL_SA_PASSWORD: mssql_2019
     ports:
       - 1433:1433
-    #volumes:
-    #  - "./sql/mssql_setup.sql:/docker-entrypoint-initdb.d/mssql_setup.sql:z"
+    entrypoint:
+      - /usr/config/entrypoint.sh
+    volumes:
+      - ./sql/mssql_setup.sql:/usr/config/setup.sql
+      - ./scripts/mssql_configure_db.sh:/usr/config/configure-db.sh
+      - ./scripts/mssql_entrypoint.sh:/usr/config/entrypoint.sh
 
   postgres:
     # if you build image locally and tagged it as "postgres_mssql_fdw"
