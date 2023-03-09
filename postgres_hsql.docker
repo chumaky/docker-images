@@ -1,9 +1,9 @@
-ARG base_tag=14.4
-ARG mongo_tag=fdw5.4.0
-ARG msssql_tag=fdw2.0.2
-ARG mysql_tag=fdw2.8.0
-ARG oracle_tag=fdw2.4.0
-ARG sqlite_tag=fdw2.1.1
+ARG base_tag=15.2
+ARG mongo_tag=fdw5.5.0
+ARG msssql_tag=fdw2.0.3
+ARG mysql_tag=fdw2.9.0
+ARG oracle_tag=fdw2.5.0
+ARG sqlite_tag=fdw2.3.0
 
 FROM docker.io/toleg/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
 FROM docker.io/toleg/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
@@ -12,8 +12,8 @@ FROM docker.io/toleg/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
 FROM docker.io/toleg/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
 FROM postgres:${base_tag}
 
-ARG extdir=/usr/share/postgresql/14/extension
-ARG extlibdir=/usr/lib/postgresql/14/lib
+ARG extdir=/usr/share/postgresql/15/extension
+ARG extlibdir=/usr/lib/postgresql/15/lib
 ARG libdir=/usr/lib/x86_64-linux-gnu
 
 # TDS - MSSQL & Sybase

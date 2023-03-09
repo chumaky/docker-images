@@ -80,6 +80,7 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 Image|Tag
 -|-
 postgres_hsql|latest
+postgres_hsql|15.2
 postgres_hsql|14.4
 
 ## Individual FDW images
