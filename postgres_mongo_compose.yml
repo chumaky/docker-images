@@ -16,7 +16,7 @@ services:
     # image: postgres_mongo_fdw
 
     # if you want to use prebuilt image
-    image: toleg/postgres_mongo_fdw
+    image: docker.io/toleg/postgres_mongo_fdw
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

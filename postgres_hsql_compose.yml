@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: toleg/postgres_hsql
+    image: docker.io/toleg/postgres_hsql
     container_name: postgres_hsql
     environment:
       POSTGRES_PASSWORD: postgres

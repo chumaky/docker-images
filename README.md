@@ -153,6 +153,7 @@ postgres_mssql_fdw|13.1_fdw2.0.2
 Image|Tag
 -|-
 postgres_mongo_fdw|latest
+postgres_mongo_fdw|15.2_fdw5.5.0
 postgres_mongo_fdw|14.4_fdw5.4.0
 postgres_mongo_fdw|14.3_fdw5.4.0
 postgres_mongo_fdw|13.3_fdw5.2.9
