@@ -23,15 +23,15 @@ services:
     volumes:
       - ./mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql
 
-  postgres:
-    image: toleg/postgres_hsql
-    container_name: om_postgres
+  datero:
+    image: docker.io.chumaky/datero_engine
+    container_name: om_datero
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
-      - ../../sql/hsql_setup.sql:/docker-entrypoint-initdb.d/admin.sql
+      - ../import_schema.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:
       - oracle

@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: docker.io.chumaky/datero_engine
+    container_name: datero_engine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./sql/datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql
+

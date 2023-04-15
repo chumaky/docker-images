@@ -31,15 +31,15 @@ services:
     volumes:
       - ./mongo_setup.js:/docker-entrypoint-initdb.d/mongo_setup.js
 
-  postgres:
-    image: toleg/postgres_hsql
-    container_name: mms_postgres
+  datero:
+    image: docker.io.chumaky/datero_engine
+    container_name: mms_datero
     environment:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
-      - ../../sql/hsql_setup.sql:/docker-entrypoint-initdb.d/admin.sql
+      - ../import_schema.sql:/docker-entrypoint-initdb.d/admin.sql
       - ./sqlite.db:/tmp/sqlite.db
       - ./fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
     depends_on:

@@ -2,11 +2,19 @@
 Postgres database image with different foreign data wrapper extensions installed.
 Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over different by nature databases within single `SELECT` statement.
 
+This approach is implemented in [Datero](https://datero.tech) data platform.
+It's built on top of `postgres` database image with multiple `FDWs` isntalled.
+It also provides GUI for setting up datasource connections and SQL editor.
+Without any coding you could quickly setup data hub and start exploring your data.
+
+Product is containerized and thus could be installed on-prem or in any cloud.
+For more details, please visit [Datero](https://datero.tech) website.
+
 ## Contents
 - [Heterogeneous SQL](#heterogeneous-sql)
   - [How It Works](#how-it-works)
   - [Demo](#heterogeneous-sql-demo)
-- [Postgres HSQL image](#postgres-hsql-image)
+- [Datero image](#datero-image)
   - [Available tags](#available-image-tags)
 - [Individual FDW images](#individual-fdw-images)
   - [Demo](#individual-fdws-demo)
@@ -49,15 +57,15 @@ That view will be joining data from foreign tables which are pointed to differen
 **TODO:** More detailed explanations for each setup
 
 
-## Postgres HSQL image
-Postgres HSQL image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
+## Datero image
+Datero engine image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
 It's a mix image which contains all supported FDW extensions available for installation.
 It makes it possible to query data from different by nature databases within single `SELECT` statement.
 Which in fact implements `Heterogeneous SQL` feature.
 
 Image|Dockerfile
 -|-
-[postgres_hsql](https://hub.docker.com/r/toleg/postgres_hsql)|[postgres_hsql.docker](postgres_hsql.docker)
+[datero_engine](https://https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero_engine.docker)
 
 Included FDWs:
 - Oracle
@@ -79,9 +87,9 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 
 Image|Tag
 -|-
-postgres_hsql|latest
-postgres_hsql|15.2
-postgres_hsql|14.4
+datero_engine|latest
+datero_engine|15.2
+datero_engine|14.4
 
 ## Individual FDW images
 - `postgres_<dbname>.docker`
@@ -91,11 +99,11 @@ postgres_hsql|14.4
 
 FDW official repo|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
-[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/toleg/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
-[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/toleg/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
-[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/toleg/postgres_sqlite_fdw)|[postgres_sqlite.docker](postgres_sqlite.docker)|[postgres_sqlite_compose.sh](postgres_sqlite_compose.sh)
-[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/toleg/postgres_mongo_fdw)|[postgres_mongo.docker](postgres_mongo.docker)|[postgres_mongo_compose.yml](postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/toleg/postgres_mssql_fdw)|[postgres_mssql.docker](postgres_mssql.docker)|[postgres_mssql_compose.yml](postgres_mssql_compose.yml)
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
+[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
+[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](postgres_sqlite.docker)|[postgres_sqlite_compose.sh](postgres_sqlite_compose.sh)
+[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](postgres_mongo.docker)|[postgres_mongo_compose.yml](postgres_mongo_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](postgres_mssql.docker)|[postgres_mssql_compose.yml](postgres_mssql_compose.yml)
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.

@@ -15,8 +15,8 @@ CREATE USER MAPPING FOR postgres SERVER mysql OPTIONS (username 'test', password
 CREATE SCHEMA mysql;
 
 -- import foreign schemas
-SELECT admin.import_foreign_schema('dev', 'mysql', 'mysql');
-SELECT admin.import_foreign_schema('TEST', 'oracle', 'oracle');
+SELECT datero.import_foreign_schema('dev', 'mysql', 'mysql');
+SELECT datero.import_foreign_schema('TEST', 'oracle', 'oracle');
 
 -- heterogeneous sql based view
 CREATE OR REPLACE VIEW user_profiles AS

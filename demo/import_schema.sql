@@ -1,7 +1,7 @@
-CREATE SCHEMA IF NOT EXISTS admin;
+CREATE SCHEMA IF NOT EXISTS datero;
 
 -- import foreign schemas after corresponding databases completed initialization within theirs containers
-CREATE OR REPLACE FUNCTION admin.import_foreign_schema
+CREATE OR REPLACE FUNCTION datero.import_foreign_schema
 ( p_foreign_schema   VARCHAR
 , p_local_schema     VARCHAR
 , p_foreign_server   VARCHAR

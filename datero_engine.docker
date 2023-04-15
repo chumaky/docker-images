@@ -5,11 +5,11 @@ ARG mysql_tag=fdw2.9.0
 ARG oracle_tag=fdw2.5.0
 ARG sqlite_tag=fdw2.3.0
 
-FROM docker.io/toleg/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
-FROM docker.io/toleg/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
-FROM docker.io/toleg/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
-FROM docker.io/toleg/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
-FROM docker.io/toleg/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
+FROM docker.io/chumaky/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
+FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
+FROM docker.io/chumaky/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
+FROM docker.io/chumaky/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
+FROM docker.io/chumaky/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
 FROM postgres:${base_tag}
 
 ARG extdir=/usr/share/postgresql/15/extension
@@ -61,7 +61,5 @@ RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
     ln -sf libbson-1.0.so.0 libbson-1.0.so; \
     ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
 
-# Admin scripts
-COPY ./sql/hsql_setup.sql /docker-entrypoint-initdb.d/admin.sql
 
 WORKDIR ${extdir}
