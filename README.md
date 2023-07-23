@@ -65,7 +65,7 @@ Which in fact implements `Heterogeneous SQL` feature.
 
 Image|Dockerfile
 -|-
-[datero_engine](https://https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero_engine.docker)
+[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero_engine.docker)
 
 Included FDWs:
 - Oracle
