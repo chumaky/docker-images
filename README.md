@@ -85,11 +85,36 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 
 > Please check **Tags** tab at Docker hub to see custom tags available.
 
-Image|Tag
--|-
-datero_engine|latest
-datero_engine|15.2
-datero_engine|14.4
+Image|Tag|Postgres
+-|-|-
+datero_engine|latest|15.2
+datero_engine|15.2|15.2
+datero_engine|14.4|14.4
+
+### Compatibility Matrix
+Table below shows which FDW version is included into which Datero release.
+Datero new version will be created once all currently included FDWs will release a version which is compatible with the latest `postgres` version.
+
+Datero|Postgres|FDW|Version
+-|-|-|-
+n/a|16.1|Mysql|2.9.1
+n/a|16.1|Oracle|**n/a**
+n/a|16.1|SQLite|2.4.0
+n/a|16.1|Mongo|5.5.1
+n/a|16.1|TDS|**n/a**
+-|-|-|-
+15.2|15.2|Mysql|2.9.0
+15.2|15.2|Oracle|2.5.0
+15.2|15.2|SQLite|2.3.0
+15.2|15.2|Mongo|5.5.0
+15.2|15.2|TDS|2.0.3
+-|-|-|-
+14.4|14.4|Mysql|2.8.0
+14.4|14.4|Oracle|2.4.0
+14.4|14.4|SQLite|2.1.1
+14.4|14.4|Mongo|5.4.0
+14.4|14.4|TDS|2.0.2
+
 
 ## Individual FDW images
 - `postgres_<dbname>.docker`
