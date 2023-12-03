@@ -1,17 +1,20 @@
 # About
-Postgres database image with different foreign data wrapper extensions installed.
-Multiple FDWs allow to execute [Heterogeneous SQL](#heterogeneous-sql) over different by nature databases within single `SELECT` statement.
+Postgres database image with different foreign data wrapper (FDW) extensions installed.
+Multiple FDWs allow to access data from different by nature datasources within single `SELECT` statement.
+
+In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
+
 
 This approach is implemented in [Datero](https://datero.tech) data platform.
 It's built on top of `postgres` database image with multiple `FDWs` isntalled.
-It also provides GUI for setting up datasource connections and SQL editor.
+It also provides GUI for setting up datasource connections and `SQL` editor.
 Without any coding you could quickly setup data hub and start exploring your data.
 
 Product is containerized and thus could be installed on-prem or in any cloud.
-For more details, please visit [Datero](https://datero.tech) website.
+For more details, please check `Datero` [docs](https://datero.tech/docs).
 
-## Contents
-- [Heterogeneous SQL](#heterogeneous-sql)
+# Contents
+- [Data Virtualization / Federated Queries](#data-virtualization--federated-queries)
   - [How It Works](#how-it-works)
   - [Demo](#heterogeneous-sql-demo)
 - [Datero image](#datero-image)
@@ -23,7 +26,7 @@ For more details, please visit [Datero](https://datero.tech) website.
 - [Image building](#image-building)
 - [Contribution](#contribution)
 
-## Heterogeneous SQL
+## Data Virtualization / Federated Queries
 Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
 Good example could be microservices architecture where each service might have its own database.
 These databases except possibly being different by vendor like `Oracle` or `Postgres`, also might be different by nature. I.e. `SQL` vs `NoSQL`.
@@ -32,9 +35,9 @@ Quite often there is a need to combine the data from different systems within th
 Common solution for such task today is to write some ETL via one of the numerous tools available.
 Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
 
-This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. We call such approach `Heterogeneous SQL (HSQL)`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. Such type of queries is called `Federated SQL` or `Federated Queries`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
 
-This project fills the gap and makes it possible to join data from different by vendor/nature databases in a single `SELECT` statement.
+This project fills the gap and makes it possible to join data from different by vendor or nature databases and datasources in a single `SELECT` statement.
 
 ### How It Works
 `Postgres` database has such a nice feature as `Foreign Data Wrapper`.
@@ -45,16 +48,18 @@ There are plenty of different open source `FDW` extensions available.
 What this project does is just compile and pack these `FDW` extensions into the default postgres image.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
-### Heterogeneous SQL Demo
+### Demo
+The most detailed demo is available in `Datero` [tutorial](https://datero.tech/docs/tutorial/).
+
+A couple of simple demos are available in `demo` folder:
 - [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
 - [Oracle - Mysql](demo/oracle_mysql/)
 
-Navigate to the corresponding folder listed above and execute from it `docker-compose up -d`.
+Navigate to the `demo` folder and execute from it `docker-compose up -d`.
 It will spin-up a few containers with postgres one at the end.
 Inside postgres container there will be a view created in `public` schema.
 That view will be joining data from foreign tables which are pointed to different source databases.
 
-**TODO:** More detailed explanations for each setup
 
 
 ## Datero image
