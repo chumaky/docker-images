@@ -16,7 +16,7 @@ For more details, please check `Datero` [docs](https://datero.tech/docs).
 # Contents
 - [Data Virtualization / Federated Queries](#data-virtualization--federated-queries)
   - [How It Works](#how-it-works)
-  - [Demo](#heterogeneous-sql-demo)
+  - [Demo](#demo)
 - [Datero image](#datero-image)
   - [Available tags](#available-image-tags)
 - [Individual FDW images](#individual-fdw-images)
@@ -65,8 +65,6 @@ That view will be joining data from foreign tables which are pointed to differen
 ## Datero image
 Datero engine image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
 It's a mix image which contains all supported FDW extensions available for installation.
-It makes it possible to query data from different by nature databases within single `SELECT` statement.
-Which in fact implements `Heterogeneous SQL` feature.
 
 Image|Dockerfile
 -|-
@@ -85,10 +83,7 @@ Included FDWs:
 ### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
 
-> **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
-Also it doesn't show any digest or statistics for manually pushed tags.
-Nevertheless, these tags are fetchable and safe to use.
-Please check **Tags** tab at Docker hub to see custom tags available.
+> Please check **Tags** tab at Docker hub to see custom tags available.
 
 Image|Tag
 -|-
