@@ -93,15 +93,16 @@ datero_engine|14.4|14.4
 
 ### Compatibility Matrix
 Table below shows which FDW version is included into which Datero release.
+If there is no official FDW release, version could be specified by the url to the corresponding source zip archive.
 Datero new version will be created once all currently included FDWs will release a version which is compatible with the latest `postgres` version.
 
 Datero|Postgres|FDW|Version
 -|-|-|-
 n/a|16.1|Mysql|2.9.1
-n/a|16.1|Oracle|**n/a**
+n/a|16.1|Oracle|2.6.0
 n/a|16.1|SQLite|2.4.0
 n/a|16.1|Mongo|5.5.1
-n/a|16.1|TDS|**n/a**
+n/a|16.1|TDS|https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
 -|-|-|-
 15.2|15.2|Mysql|2.9.0
 15.2|15.2|Oracle|2.5.0

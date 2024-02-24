@@ -1,8 +1,10 @@
 ARG base_tag=15.2
 FROM postgres:${base_tag}
 
-ARG TDS_FDW_VERSION=2.0.3
-ARG TDS_FDW_URL=https://github.com/tds-fdw/tds_fdw/archive/v${TDS_FDW_VERSION}.tar.gz
+ARG pg_version=15
+
+ARG fdw_version=2.0.3
+ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
 ARG SOURCE_FILES=/tmp/tds_fdw
 
 RUN apt-get update;
@@ -10,12 +12,12 @@ RUN apt-get update;
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-15 freetds-dev \
+    postgresql-server-dev-${pg_version} freetds-dev \
     # runtime deps
     libsybdb5 freetds-common; \
     # tds_fdw
     mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${TDS_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
+    wget -O - ${fdw_url} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
     cd ${SOURCE_FILES}; \
     # install
     make USE_PGXS=1; \
@@ -23,6 +25,6 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc gnupg \
-    postgresql-server-dev-15 freetds-dev; \
+    postgresql-server-dev-${pg_version} freetds-dev; \
     cd -; \
     rm -rf ${SOURCE_FILES};
