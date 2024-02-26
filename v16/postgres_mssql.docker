@@ -1,24 +1,23 @@
-ARG base_tag=15.2
+ARG base_tag=16.2
 FROM postgres:${base_tag}
 
-ARG pg_version=15
-
-
-#wget -O myfile.zip ${MYSQL_FDW_URL} && \
-#    unzip -d ${source_files} myfile.zip && \
-#    rm myfile.zip
-# tds_fdw-master
-# https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
-
-# tds_fdw-REL-2_0_3
-# https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v2.0.3.zip
-
+ARG pg_version=16
 
 ARG fdw_version=2.0.3
-ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
+
+# TDS_FDW didn't release a new version supporting postgres 16.
+# hence, we use the master branch, which is available in git only in *.zip format
+# this requires the URL and processing to be switched from "tar" to "unzip"
+# and the source root to be changed from "tds_fdw-REL-2_0_3" to "tds_fdw-master"
+
+# must be *.zip resource
+#ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.zip
+ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
+
 ARG source_files=/tmp/tds_fdw
-ARG source_root=tds_fdw-master 
+
 #ARG source_root=tds_fdw-REL-2_0_3 
+ARG source_root=tds_fdw-master 
 
 RUN apt-get update;
 

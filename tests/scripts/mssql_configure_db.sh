@@ -9,17 +9,20 @@ DBSTATUS=1
 ERRCODE=1
 i=0
 
-while [[ $DBSTATUS -ne 0 ]] && [[ $i -lt 60 ]] && [[ $ERRCODE -ne 0 ]]; do
-	i=$((i+1))
-	DBSTATUS=$(/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P $MSSQL_SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
-	ERRCODE=$?
-	sleep 1
+while { [[ $DBSTATUS -ne 0 ]] || [[ $ERRCODE -ne 0 ]]; } && [[ $i -lt 60 ]]; do
+  i=$((i+1))
+  OUTPUT=$(/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P $MSSQL_SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
+  echo "OUTPUT: $OUTPUT"  # Print the output of sqlcmd
+  ERRCODE=$?
+  DBSTATUS=$(echo $OUTPUT | xargs)  # This will trim the spaces
+  sleep 1
   echo "dbstatus: $DBSTATUS, errcode: $ERRCODE, i: $i"
 done
 
+
 if [[ $DBSTATUS -ne 0 ]] || [[ $ERRCODE -ne 0 ]]; then
-	echo "SQL Server took more than 60 seconds to start up or one or more databases are not in an ONLINE state"
-	exit 1
+  echo "SQL Server took more than 60 seconds to start up or one or more databases are not in an ONLINE state"
+  exit 1
 fi
 
 # Run the setup script to create the DB and the schema in the DB

@@ -1,7 +1,7 @@
-ARG base_tag=15.2
+ARG base_tag=16.2
 FROM postgres:${base_tag}
 
-ARG MYSQL_FDW_VERSION=2_9_0
+ARG MYSQL_FDW_VERSION=2_9_1
 ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mysql_fdw
 
@@ -10,7 +10,7 @@ RUN apt-get update;
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc \
-    postgresql-server-dev-15 libmariadb-dev-compat; \
+    postgresql-server-dev-16 libmariadb-dev-compat; \
     # download MYSQL_FDW source files
     mkdir -p ${SOURCE_FILES}; \
     wget -O - ${MYSQL_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
@@ -21,5 +21,5 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc \
-    postgresql-server-dev-15; \
+    postgresql-server-dev-16; \
     rm -rf ${SOURCE_FILES}

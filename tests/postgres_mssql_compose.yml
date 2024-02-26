@@ -21,7 +21,7 @@ services:
     #image: postgres_mssql_fdw
 
     # if you want to use prebuilt image
-    image: docker.io/chumaky/postgres_mssql_fdw
+    image: docker.io/chumaky/postgres_mssql_fdw:16.2_fdw2.0.3
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
