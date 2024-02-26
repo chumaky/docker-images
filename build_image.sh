@@ -23,6 +23,7 @@ then
     exit 1
 fi
 
+
 fdw_version=$(yq ".${major_version}.fdw.${fdw_name}" config.yml)
 if [[ $fdw_version == "null" || -z $fdw_version ]]; 
 then
@@ -30,15 +31,32 @@ then
     echo "Check your inputs against config.yml file. Exiting..."
     exit 1
 else
-    if [[ $fdw_version =~ ^https?:// ]]; 
+    base_url=$(yq ".fdw.${fdw_name}" config.yml)
+
+    if [[ ! $fdw_version =~ "^[0-9]+\.[0-9]+\.[0-9]+$" ]]; 
     then
-        echo "Using custom URL for ${fdw_name} extension"
-        fdw_url=$fdw_version
-        fdw_version=""
+        echo "Using Branch instead of Release for ${fdw_name} extension"
+        source_root=${fdw_name}-${fdw_version}
+        fdw_url=${base_url}/archive/refs/heads/${fdw_version}.zip
     else
+        source_root=${fdw_name}-REL-${fdw_version//./_}
         fdw_url=""
     fi
-fi
+fi  
+
+
+# tds_fdw-master
+# https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
+
+# tds_fdw-REL-2_0_3
+# https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v2.0.3.zip
+
+#ARG fdw_version=2.0.3
+#ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
+#ARG source_files=/tmp/tds_fdw
+#ARG source_root=tds_fdw-master 
+#ARG source_root=tds_fdw-REL-2_0_3 
+
 
 
 echo
@@ -66,7 +84,7 @@ else
         --build-arg base_tag=$base_version \
         --build-arg pg_version=$major_version \
         --build-arg fdw_url=$fdw_url \
-        -t chumaky/postgres_${fdw_name}_fdw:${base_version}_fdw${fdw_version} \
+        -t chumaky/postgres_${fdw_name}_fdw:${base_version}_fdw_latest \
         -f postgres_${fdw_name}.docker \
         .
 fi

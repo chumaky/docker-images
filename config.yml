@@ -1,7 +1,53 @@
+# Current URLs format
+#
+# ARG MONGO_FDW_VERSION=5_5_0
+# ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
+#
+# ARG fdw_version=2.0.3
+# ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
+#
+# ARG MYSQL_FDW_VERSION=2_9_0
+# ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_FDW_VERSION}.tar.gz
+#
+# ARG ORACLE_FDW_VERSION=2_5_0
+# ARG ORACLE_FDW_URL=https://github.com/laurenz/oracle_fdw/archive/ORACLE_FDW_${ORACLE_FDW_VERSION}.tar.gz
+#
+# ARG SQLITE_FDW_VERSION=2.3.0
+# ARG SQLITE_FDW_URL=https://github.com/pgspider/sqlite_fdw/archive/v${SQLITE_FDW_VERSION}.tar.gz
+#
+#
+# Releases URLs format
+# https://github.com/EnterpriseDB/mongo_fdw/archive/refs/tags/REL-5_5_1.zip
+# https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v2.0.3.zip
+# https://github.com/EnterpriseDB/mysql_fdw/archive/refs/tags/REL-2_9_1.zip
+# https://github.com/laurenz/oracle_fdw/archive/refs/tags/ORACLE_FDW_2_6_0.zip
+# https://github.com/pgspider/sqlite_fdw/archive/refs/tags/v2.4.0.zip
+
+#
+# Master branch URLs format
+#
+# https://github.com/EnterpriseDB/mongo_fdw/archive/refs/heads/master.zip
+# https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
+# https://github.com/EnterpriseDB/mysql_fdw/archive/refs/heads/master.zip
+# https://github.com/laurenz/oracle_fdw/archive/refs/heads/master.zip
+# https://github.com/pgspider/sqlite_fdw/archive/refs/heads/master.zip
+
+
+
+# fdw github repositories
+fdw:
+  mysql: https://github.com/EnterpriseDB/mysql_fdw
+  oracle: https://github.com/laurenz/oracle_fdw
+  sqlite: https://github.com/pgspider/sqlite_fdw
+  mongo: https://github.com/EnterpriseDB/mongo_fdw
+  mssql: https://github.com/tds-fdw/tds_fdw
+
+
 # default postgres version which will be used if no version is specified
 default_version: 15
 
 # list of individual FDW versions for corresponding postgres version
+# if version is not in SemVer format, then it will be treated as a branch name
 16:
   pg_base: 16.2
   fdw:
@@ -9,7 +55,7 @@ default_version: 15
     oracle: 2.6.0
     sqlite: 2.4.0
     mongo: 5.5.1
-    tds: https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
+    mssql: master
 
 15:
   pg_base: 15.2
@@ -18,7 +64,7 @@ default_version: 15
     oracle: 2.5.0
     sqlite: 2.3.0
     mongo: 5.5.0
-    tds: 2.0.3
+    mssql: 2.0.3
 
 14:
   pg_base: 14.4
@@ -27,4 +73,5 @@ default_version: 15
     oracle: 2.4.0
     sqlite: 2.1.1
     mongo: 5.4.0
-    tds: 2.0.2
+    mssql: 2.0.2
+

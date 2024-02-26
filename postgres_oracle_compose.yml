@@ -23,7 +23,7 @@ services:
     #image: postgres_oracle_fdw
 
     # if you want to use prebuilt image
-    image: docker.io/toleg/postgres_oracle_fdw
+    image: docker.io/chumaky/postgres_oracle_fdw
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

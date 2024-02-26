@@ -1,0 +1,46 @@
+ARG base_tag=15.2
+FROM postgres:${base_tag}
+
+ARG pg_version=15
+
+
+#wget -O myfile.zip ${MYSQL_FDW_URL} && \
+#    unzip -d ${source_files} myfile.zip && \
+#    rm myfile.zip
+# tds_fdw-master
+# https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
+
+# tds_fdw-REL-2_0_3
+# https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v2.0.3.zip
+
+
+ARG fdw_version=2.0.3
+ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
+ARG source_files=/tmp/tds_fdw
+ARG source_root=tds_fdw-master 
+#ARG source_root=tds_fdw-REL-2_0_3 
+
+RUN apt-get update;
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    make gcc gnupg \
+    postgresql-server-dev-${pg_version} freetds-dev \
+    # runtime deps
+    libsybdb5 freetds-common; \
+    # tds_fdw
+    rm -rf ${source_files}; \
+    mkdir -p ${source_files}; \
+    wget -O sources.zip ${fdw_url}; \
+    unzip sources.zip -d ${source_files}; \
+    rm sources.zip; \
+    cd ${source_files}/${source_root}; \
+    # install
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget unzip ca-certificates \
+    make gcc gnupg \
+    postgresql-server-dev-${pg_version} freetds-dev; \
+    cd -; \
+    rm -rf ${source_files};
