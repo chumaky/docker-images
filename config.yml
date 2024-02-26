@@ -1,48 +1,3 @@
-# Current URLs format
-#
-# ARG MONGO_FDW_VERSION=5_5_0
-# ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
-#
-# ARG fdw_version=2.0.3
-# ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.tar.gz
-#
-# ARG MYSQL_FDW_VERSION=2_9_0
-# ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_FDW_VERSION}.tar.gz
-#
-# ARG ORACLE_FDW_VERSION=2_5_0
-# ARG ORACLE_FDW_URL=https://github.com/laurenz/oracle_fdw/archive/ORACLE_FDW_${ORACLE_FDW_VERSION}.tar.gz
-#
-# ARG SQLITE_FDW_VERSION=2.3.0
-# ARG SQLITE_FDW_URL=https://github.com/pgspider/sqlite_fdw/archive/v${SQLITE_FDW_VERSION}.tar.gz
-#
-#
-# Releases URLs format
-# https://github.com/EnterpriseDB/mongo_fdw/archive/refs/tags/REL-5_5_1.zip
-# https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v2.0.3.zip
-# https://github.com/EnterpriseDB/mysql_fdw/archive/refs/tags/REL-2_9_1.zip
-# https://github.com/laurenz/oracle_fdw/archive/refs/tags/ORACLE_FDW_2_6_0.zip
-# https://github.com/pgspider/sqlite_fdw/archive/refs/tags/v2.4.0.zip
-
-#
-# Master branch URLs format
-#
-# https://github.com/EnterpriseDB/mongo_fdw/archive/refs/heads/master.zip
-# https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
-# https://github.com/EnterpriseDB/mysql_fdw/archive/refs/heads/master.zip
-# https://github.com/laurenz/oracle_fdw/archive/refs/heads/master.zip
-# https://github.com/pgspider/sqlite_fdw/archive/refs/heads/master.zip
-
-
-
-# fdw github repositories
-fdw:
-  mysql: https://github.com/EnterpriseDB/mysql_fdw
-  oracle: https://github.com/laurenz/oracle_fdw
-  sqlite: https://github.com/pgspider/sqlite_fdw
-  mongo: https://github.com/EnterpriseDB/mongo_fdw
-  mssql: https://github.com/tds-fdw/tds_fdw
-
-
 # default postgres version which will be used if no version is specified
 default_version: 15
 
@@ -75,3 +30,24 @@ default_version: 15
     mongo: 5.4.0
     mssql: 2.0.2
 
+
+# fdw github repositories
+fdw:
+  root:
+    mysql: https://github.com/EnterpriseDB/mysql_fdw/archive/refs/
+    oracle: https://github.com/laurenz/oracle_fdw/archive/refs/
+    sqlite: https://github.com/pgspider/sqlite_fdw/archive/refs/
+    mongo: https://github.com/EnterpriseDB/mongo_fdw/archive/refs/
+    mssql: https://github.com/tds-fdw/tds_fdw/archive/refs/
+  release:
+    mysql: tags/REL-${major}_${minor}_${patch}.zip
+    oracle: tags/ORACLE_FDW_${major}_${minor}_${patch}.zip
+    sqlite: tags/v${major}.${minor}.${patch}.zip
+    mongo: tags/REL-${major}_${minor}_${patch}.zip
+    mssql: tags/v${major}.${minor}.${patch}.zip
+  branch:
+    mysql: heads/${branch}.zip
+    oracle: heads/${branch}.zip
+    sqlite: heads/${branch}.zip
+    mongo: heads/${branch}.zip
+    mssql: heads/${branch}.zip

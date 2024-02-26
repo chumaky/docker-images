@@ -1,0 +1,25 @@
+ARG base_tag=15.2
+FROM postgres:${base_tag}
+
+ARG SQLITE_FDW_VERSION=2.3.0
+ARG SQLITE_FDW_URL=https://github.com/pgspider/sqlite_fdw/archive/v${SQLITE_FDW_VERSION}.tar.gz
+ARG SOURCE_FILES=/tmp/sqlite_fdw
+
+RUN apt-get update;
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    make gcc \
+    postgresql-server-dev-15 libsqlite3-dev; \
+    # download SQLITE_FDW source files
+    mkdir -p ${SOURCE_FILES}; \
+    wget -O - ${SQLITE_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
+    cd ${SOURCE_FILES}; \
+    # compilation
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget ca-certificates \
+    make gcc \
+    postgresql-server-dev-15; \
+    rm -rf ${SOURCE_FILES}

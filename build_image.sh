@@ -45,6 +45,18 @@ else
 fi  
 
 
+parse_version() {
+    local version=$1
+    local IFS='.'
+    read -r major minor patch <<< "$version"
+    echo "Major: $major, Minor: $minor, Patch: $patch"
+}
+
+#version="x.y.z"
+#parse_version "$version"
+
+
+
 # tds_fdw-master
 # https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
 
