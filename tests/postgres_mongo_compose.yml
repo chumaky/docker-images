@@ -10,13 +10,11 @@ services:
       MONGO_INITDB_DATABASE: test
     ports:
       - 27017:27017
+    volumes:
+      - ./sql/mongo_setup.js:/docker-entrypoint-initdb.d/mongo_setup.js
 
   postgres:
-    # if you build image locally and tagged it as "postgres_mongo_fdw"
-    # image: postgres_mongo_fdw
-
-    # if you want to use prebuilt image
-    image: docker.io/chumaky/postgres_mongo_fdw
+    image: docker.io/chumaky/postgres_mongo_fdw:latest
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

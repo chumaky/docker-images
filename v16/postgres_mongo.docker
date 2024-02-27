@@ -1,7 +1,7 @@
-ARG base_tag=15.2
+ARG base_tag=16.2
 FROM postgres:${base_tag}
 
-ARG MONGO_FDW_VERSION=5_5_0
+ARG MONGO_FDW_VERSION=5_5_1
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mongo_fdw
 
@@ -13,7 +13,7 @@ ENV LD_LIBRARY_PATH=/lib
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-15 libssl-dev libzstd-dev; \
+    postgresql-server-dev-16 libssl-dev libzstd-dev; \
     # mongo_fdw
     mkdir -p ${SOURCE_FILES}; \
     wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
@@ -25,6 +25,6 @@ RUN apt-get install -y --no-install-recommends wget ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-15 libssl-dev libzstd-dev; \
+    postgresql-server-dev-16 libssl-dev libzstd-dev; \
     cd -; \
     rm -rf ${SOURCE_FILES};

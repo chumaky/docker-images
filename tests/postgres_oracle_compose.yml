@@ -19,11 +19,7 @@ services:
 
 
   postgres:
-    # if you build image locally and tagged it as "postgres_oracle_fdw"
-    #image: postgres_oracle_fdw
-
-    # if you want to use prebuilt image
-    image: docker.io/chumaky/postgres_oracle_fdw
+    image: docker.io/chumaky/postgres_oracle_fdw:latest
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
