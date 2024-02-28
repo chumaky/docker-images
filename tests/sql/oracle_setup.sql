@@ -6,5 +6,9 @@ grant create table to test;
 
 -- next commands have to be executed under "test" user
 conn test/test@//localhost:1521/xepdb1
-create table t as select rownum id from dual connect by level <= 3;
-alter table t add constraint t_pk primary key (id);
+
+create table users(id int, name varchar(10));
+insert into users values (1, 'John');
+insert into users values (2, 'Mary');
+insert into users values (3, 'Peter');
+alter table users add constraint users_pk primary key (id);

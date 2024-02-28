@@ -11,7 +11,7 @@ It also provides GUI for setting up datasource connections and `SQL` editor.
 Without any coding you could quickly setup data hub and start exploring your data.
 
 Product is containerized and thus could be installed on-prem or in any cloud.
-For more details, please check `Datero` [docs](https://datero.tech/docs).
+For more details, please check Datero [docs](https://datero.tech/docs).
 
 # Contents
 - [Data Virtualization / Federated Queries](#data-virtualization--federated-queries)
@@ -29,7 +29,7 @@ For more details, please check `Datero` [docs](https://datero.tech/docs).
 ## Data Virtualization / Federated Queries
 Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
 Good example could be microservices architecture where each service might have its own database.
-These databases except possibly being different by vendor like `Oracle` or `Postgres`, also might be different by nature. I.e. `SQL` vs `NoSQL`.
+These databases might different by vendor like `Oracle` or `Postgres`, or by nature: `SQL` vs `NoSQL`.
 
 Quite often there is a need to combine the data from different systems within the Enterprise.
 Common solution for such task today is to write some ETL via one of the numerous tools available.
@@ -49,7 +49,7 @@ What this project does is just compile and pack these `FDW` extensions into the 
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
 ### Demo
-The most detailed demo is available in `Datero` [tutorial](https://datero.tech/docs/tutorial/).
+The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
 
 A couple of simple demos are available in `demo` folder:
 - [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
@@ -155,43 +155,32 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 Image|Tag
 -|-
 postgres_mysql_fdw|latest
+postgres_mysql_fdw|16.2_fdw2.9.1
 postgres_mysql_fdw|15.2_fdw2.9.0
-postgres_mysql_fdw|14.4_fdw2.8.0
-postgres_mysql_fdw|14.2_fdw2.8.0
-postgres_mysql_fdw|14.1_fdw2.7.0
-postgres_mysql_fdw|13.5_fdw2.7.0
-postgres_mysql_fdw|13.3_fdw2.6.0
 
 Image|Tag
 -|-
 postgres_sqlite_fdw|latest
+postgres_sqlite_fdw|16.2_fdw2.4.0
 postgres_sqlite_fdw|15.2_fdw2.3.0
-postgres_sqlite_fdw|14.4_fdw2.1.1
-postgres_sqlite_fdw|14.1_fdw2.1.1
-postgres_sqlite_fdw|13.5_fdw2.1.1
 
 Image|Tag
 -|-
 postgres_oracle_fdw|latest
+postgres_oracle_fdw|16.2_fdw2.6.0
 postgres_oracle_fdw|15.2_fdw2.5.0
-postgres_oracle_fdw|14.4_fdw2.4.0
-postgres_oracle_fdw|13.4_fdw2.4.0
 
 Image|Tag
 -|-
 postgres_mssql_fdw|latest
+postgres_mssql_fdw|16.2_fdw2.0.3 (from master branch)
 postgres_mssql_fdw|15.2_fdw2.0.3
-postgres_mssql_fdw|14.4_fdw2.0.2
-postgres_mssql_fdw|14.3_fdw2.0.2
-postgres_mssql_fdw|13.1_fdw2.0.2
 
 Image|Tag
 -|-
 postgres_mongo_fdw|latest
+postgres_mongo_fdw|16.2_fdw5.5.1
 postgres_mongo_fdw|15.2_fdw5.5.0
-postgres_mongo_fdw|14.4_fdw5.4.0
-postgres_mongo_fdw|14.3_fdw5.4.0
-postgres_mongo_fdw|13.3_fdw5.2.9
 
 ## Initialization files
 `sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:

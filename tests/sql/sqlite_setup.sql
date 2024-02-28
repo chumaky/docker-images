@@ -1,2 +1,2 @@
-create table t(id int primary key);
-insert into t values (1), (2), (3);
+create table users(id int primary key, name text);
+insert into users values (1, 'John'), (2, 'Mary'), (3, 'Peter');
