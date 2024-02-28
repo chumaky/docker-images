@@ -98,11 +98,11 @@ Datero new version will be created once all currently included FDWs will release
 
 Datero|Postgres|FDW|Version
 -|-|-|-
-n/a|16.2|Mysql|2.9.1
-n/a|16.2|Oracle|2.6.0
-n/a|16.2|SQLite|2.4.0
-n/a|16.2|Mongo|5.5.1
-n/a|16.2|TDS|master branch (2.0.3)
+16.2|16.2|Mysql|2.9.1
+16.2|16.2|Oracle|2.6.0
+16.2|16.2|SQLite|2.4.0
+16.2|16.2|Mongo|5.5.1
+16.2|16.2|TDS|master branch (2.0.3)
 -|-|-|-
 15.2|15.2|Mysql|2.9.0
 15.2|15.2|Oracle|2.5.0
@@ -144,7 +144,7 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 
 
 ### Available tags
-Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `13.5_fdw2.7.0` tag for `postgres_mysql_fdw` image means postgres `13.5` version with `2.7.0` fdw version installed.
+Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_fdw2.9.0` tag for `postgres_mysql_fdw` image means postgres `15.2` version with `2.9.0` fdw version installed.
 
 
 > **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.

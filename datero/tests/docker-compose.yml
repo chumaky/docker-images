@@ -1,0 +1,74 @@
+services:
+  mysql:
+    image: docker.io/library/mysql:latest
+    container_name: datero_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: finance
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_customers.sql:/docker-entrypoint-initdb.d/setup.sql
+
+  postgres:
+    image: docker.io/library/postgres:alpine
+    container_name: datero_postgres
+    environment:
+      POSTGRES_DB: factory
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_products.sql:/docker-entrypoint-initdb.d/setup.sql
+
+  mongo:
+    image: docker.io/library/mongo:latest
+    container_name: datero_mongo
+    environment:
+      MONGO_INITDB_DATABASE: sales
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongo_orders.js:/docker-entrypoint-initdb.d/setup.js
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: datero_mssql
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Mssql_2019
+    ports:
+      - 1433:1433
+    entrypoint:
+      - /usr/config/entrypoint.sh
+    volumes:
+      - ./mssql_entrypoint.sh:/usr/config/entrypoint.sh
+      - ./mssql_configure_db.sh:/usr/config/configure-db.sh
+      - ./mssql_employees.sql:/usr/config/setup.sql
+
+  datero:
+    image: docker.io/chumaky/datero_engine:latest
+    container_name: datero_engine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 4444:5432
+    volumes:
+      - ./sqlite_job_roles.db:/home/data/job_roles.db
+      - ./departments.csv:/home/data/departments.csv
+      - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql
+    depends_on:
+    - mysql:
+        condition: service_healthy
+    - postgres:
+        condition: service_healthy
+    - mongo:
+        condition: service_healthy
+    - mssql:
+        condition: service_healthy

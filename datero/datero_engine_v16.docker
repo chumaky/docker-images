@@ -1,0 +1,65 @@
+ARG base_tag=16.2
+ARG mongo_tag=fdw5.5.1
+ARG msssql_tag=fdw2.0.3
+ARG mysql_tag=fdw2.9.1
+ARG oracle_tag=fdw2.6.0
+ARG sqlite_tag=fdw2.4.0
+
+FROM docker.io/chumaky/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
+FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
+FROM docker.io/chumaky/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
+FROM docker.io/chumaky/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
+FROM docker.io/chumaky/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
+FROM postgres:${base_tag}
+
+ARG extdir=/usr/share/postgresql/16/extension
+ARG extlibdir=/usr/lib/postgresql/16/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+# TDS - MSSQL & Sybase
+COPY --from=mssql ${extdir}/tds_fdw* ${extdir}/
+COPY --from=mssql ${extlibdir}/tds_fdw.so ${extlibdir}/
+COPY --from=mssql ${libdir}/*sybdb* ${libdir}/
+
+# MySQL
+COPY --from=mysql ${extdir}/mysql_fdw* ${extdir}/
+COPY --from=mysql ${extlibdir}/mysql_fdw.so ${extlibdir}/
+COPY --from=mysql ${libdir}/*mysql* ${libdir}/
+COPY --from=mysql ${libdir}/libmariadb3/ ${libdir}/libmariadb3/
+
+# SQLite
+COPY --from=sqlite ${extdir}/sqlite_fdw* ${extdir}/
+COPY --from=sqlite ${extlibdir}/sqlite_fdw.so ${extlibdir}/
+COPY --from=sqlite ${libdir}/*sqlite* ${libdir}/
+
+# Oracle (includes instantclient & sqlplus)
+# TODO: consider copying only required minimum from instantclient
+ENV ORACLE_HOME /usr/lib/oracle/client
+ENV PATH $PATH:${ORACLE_HOME}
+ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:${ORACLE_HOME}
+
+COPY --from=oracle ${extdir}/oracle_fdw* ${extdir}/
+COPY --from=oracle ${extlibdir}/oracle_fdw.so ${extlibdir}/
+COPY --from=oracle ${libdir}/*libaio* ${libdir}/
+COPY --from=oracle ${ORACLE_HOME}/ ${ORACLE_HOME}/
+
+WORKDIR ${libdir}
+RUN ln -sf libaio.so.1.0.1 libaio.so.1; \
+    ln -sf libsybdb.so.5.1.0 libsybdb.so.5; \
+    ln -sf libsqlite3.so.0.8.6 libsqlite3.so; \
+    ln -sf libsqlite3.so.0.8.6 libsqlite3.so.0;
+
+# Mongo
+ARG libdir=/usr/lib
+COPY --from=mongo ${extdir}/mongo_fdw* ${extdir}/
+COPY --from=mongo ${extlibdir}/mongo_fdw.so ${extlibdir}/
+COPY --from=mongo ${libdir}/*mongo* ${libdir}/*libbson* ${libdir}/
+
+WORKDIR ${libdir}
+RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
+    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0; \
+    ln -sf libbson-1.0.so.0 libbson-1.0.so; \
+    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
+
+
+WORKDIR ${extdir}
