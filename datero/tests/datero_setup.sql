@@ -1,21 +1,35 @@
--- csv
-DROP SCHEMA IF EXISTS csv CASCADE;
-CREATE SCHEMA IF NOT EXISTS csv;
+-- sqlite
+create schema sqlite_fdw;
+create extension sqlite_fdw schema sqlite_fdw;
+create server sqlite_server foreign data wrapper sqlite_fdw options (database '/home/data/job_roles.db');
+create foreign table users(id int options (key 'true'), name varchar) server sqlite;
 
-CREATE FOREIGN TABLE csv.departments
+create schema sqlite;
+import foreign schema public from server sqlite_server into sqlite;
+
+-- csv
+create schema file_fdw;
+create extension file_fdw schema file_fdw;
+create server file_server foreign data wrapper file_fdw;
+
+create schema csv;
+create foreign table csv.departments
 ( id        int
 , name      varchar
 )
-SERVER file_fdw_1
-OPTIONS (filename '/home/data/departments.csv', format 'csv', header 'true')
+server file_server
+options (filename '/home/data/departments.csv', format 'csv', header 'true')
 ;
 
 -- mongo
--- create foreign tables. mongo_fdw doesn't support IMPORT FOREIGN SCHEMA
-DROP SCHEMA IF EXISTS mongo CASCADE;
-CREATE SCHEMA IF NOT EXISTS mongo;
+create schema mongo_fdw;
+create extension mongo_fdw schema mongo_fdw;
+create server mongo_server foreign data wrapper mongo_fdw options (address 'mongo', port '27017', authentication_database 'admin');
+create user mapping for postgres server mongo_server options (username 'mongo', password 'mongo');
 
-CREATE FOREIGN TABLE mongo.orders
+-- create foreign tables. mongo_fdw doesn't support import foreign schema
+create schema mongo;
+create foreign table mongo.orders
 ( _id          name
 , id           int
 , customer_id  int
@@ -23,13 +37,12 @@ CREATE FOREIGN TABLE mongo.orders
 , employee_id  int
 , quantity     int
 )
-SERVER mongo_fdw_1
-OPTIONS (database 'sales', collection 'orders')
+server mongo_server
+options (database 'sales', collection 'orders')
 ;
 
 
-
--- Final query that must work
+-- final query that must work
 select c.name                          as customer_name
      , p.name                          as product
      , round(o.quantity * p.price, 2)  as total_amount
