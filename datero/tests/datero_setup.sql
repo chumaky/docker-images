@@ -1,8 +1,34 @@
+-- mysql
+create schema mysql_fdw;
+create extension mysql_fdw schema mysql_fdw;
+create server mysql_server foreign data wrapper mysql_fdw options (host 'mysql', port '3306');
+create user mapping for postgres server mysql_server options (username 'mysql', password 'mysql');
+
+create schema mysql;
+import foreign schema finance from server mysql_server into mysql;
+
+-- postgres
+create schema postgres_fdw;
+create extension postgres_fdw schema postgres_fdw;
+create server postgres_server foreign data wrapper postgres_fdw options (host 'postgres', port '5432', dbname 'factory');
+create user mapping for postgres server postgres_server options (user 'postgres', password 'postgres');
+
+create schema postgres;
+import foreign schema public from server postgres_server into postgres;
+
+-- mssql
+create schema tds_fdw;
+create extension tds_fdw schema tds_fdw;
+create server mssql_server foreign data wrapper tds_fdw options (servername 'mssql', port '1433', database 'hr');
+create user mapping for postgres server mssql_server options (username 'sa', password 'Mssql_2019');
+
+create schema mssql;
+import foreign schema dbo from server mssql_server into mssql;
+
 -- sqlite
 create schema sqlite_fdw;
 create extension sqlite_fdw schema sqlite_fdw;
 create server sqlite_server foreign data wrapper sqlite_fdw options (database '/home/data/job_roles.db');
-create foreign table users(id int options (key 'true'), name varchar) server sqlite;
 
 create schema sqlite;
 import foreign schema public from server sqlite_server into sqlite;

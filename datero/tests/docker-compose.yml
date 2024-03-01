@@ -1,7 +1,7 @@
 services:
   mysql:
     image: docker.io/library/mysql:latest
-    container_name: datero_mysql
+    container_name: datero_source_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: finance
@@ -14,7 +14,7 @@ services:
 
   postgres:
     image: docker.io/library/postgres:alpine
-    container_name: datero_postgres
+    container_name: datero_source_postgres
     environment:
       POSTGRES_DB: factory
       POSTGRES_USER: postgres
@@ -26,7 +26,7 @@ services:
 
   mongo:
     image: docker.io/library/mongo:latest
-    container_name: datero_mongo
+    container_name: datero_source_mongo
     environment:
       MONGO_INITDB_DATABASE: sales
       MONGO_INITDB_ROOT_USERNAME: mongo
@@ -38,7 +38,7 @@ services:
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: datero_mssql
+    container_name: datero_source_mssql
     environment:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: Mssql_2019
@@ -62,13 +62,12 @@ services:
     volumes:
       - ./sqlite_job_roles.db:/home/data/job_roles.db
       - ./departments.csv:/home/data/departments.csv
-      - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql
+      - ./datero_setup.sql:/home/datero_setup.sql         
+      # TODO: implement waiting of the source services actually being ready via "wait-for-it.sh"
+      # and run `datero_setup.sql` after that
+      # - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql         
     depends_on:
-    - mysql:
-        condition: service_healthy
-    - postgres:
-        condition: service_healthy
-    - mongo:
-        condition: service_healthy
-    - mssql:
-        condition: service_healthy
+    - mysql
+    - postgres
+    - mongo
+    - mssql
