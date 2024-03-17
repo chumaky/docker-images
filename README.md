@@ -1,22 +1,7 @@
-# About
-Postgres database image with different foreign data wrapper (FDW) extensions installed.
-Multiple FDWs allow to access data from different by nature datasources within single `SELECT` statement.
-
-In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
-
-
-This approach is implemented in [Datero](https://datero.tech) data platform.
-It's built on top of `postgres` database image with multiple `FDWs` isntalled.
-It also provides GUI for setting up datasource connections and `SQL` editor.
-Without any coding you could quickly setup data hub and start exploring your data.
-
-Product is containerized and thus could be installed on-prem or in any cloud.
-For more details, please check Datero [docs](https://datero.tech/docs).
-
 # Contents
-- [Data Virtualization / Federated Queries](#data-virtualization--federated-queries)
-  - [How It Works](#how-it-works)
-  - [Demo](#demo)
+- [About](#about)
+- [How It Works](#how-it-works)
+- [Demo](#demo)
 - [Datero image](#datero-image)
   - [Available tags](#available-image-tags)
 - [Individual FDW images](#individual-fdw-images)
@@ -26,20 +11,23 @@ For more details, please check Datero [docs](https://datero.tech/docs).
 - [Image building](#image-building)
 - [Contribution](#contribution)
 
-## Data Virtualization / Federated Queries
-Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
-Good example could be microservices architecture where each service might have its own database.
-These databases might different by vendor like `Oracle` or `Postgres`, or by nature: `SQL` vs `NoSQL`.
+## About
+Postgres database image with different foreign data wrapper (FDW) extensions installed.
+Multiple FDWs allow to access data from different by nature datasources within single `SELECT` statement.
 
-Quite often there is a need to combine the data from different systems within the Enterprise.
-Common solution for such task today is to write some ETL via one of the numerous tools available.
-Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
+In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. 
+In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
 
-This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. Such type of queries is called `Federated SQL` or `Federated Queries`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+This approach is implemented in [Datero](https://datero.tech) data platform.
+It's built on top of `postgres` database image with multiple `FDWs` isntalled.
+It also provides GUI for setting up datasource connections and `SQL` editor.
+Without any coding you could quickly setup data hub and start exploring your data.
 
-This project fills the gap and makes it possible to join data from different by vendor or nature databases and datasources in a single `SELECT` statement.
+Product is containerized and thus could be installed on-prem or in any cloud.
+For more details, please check Datero [docs](https://datero.tech/docs).
 
-### How It Works
+
+## How It Works
 `Postgres` database has such a nice feature as `Foreign Data Wrapper`.
 It allows to access data from some external source.
 Be it some other database or just file. In case of database it might be `SQL` or `NoSQL` one.
@@ -48,7 +36,24 @@ There are plenty of different open source `FDW` extensions available.
 What this project does is just compile and pack these `FDW` extensions into the default postgres image.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
 
-### Demo
+### Data Virtualization / Federated Queries
+<details>
+  <summary>See details...</summary>
+  
+  Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
+  Good example could be microservices architecture where each service might have its own database.
+  These databases might different by vendor like `Oracle` or `Postgres`, or by nature: `SQL` vs `NoSQL`.
+
+  Quite often there is a need to combine the data from different systems within the Enterprise.
+  Common solution for such task today is to write some ETL via one of the numerous tools available.
+  Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
+
+  This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. Such type of queries is called `Federated SQL` or `Federated Queries`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
+
+  This project fills the gap and makes it possible to join data from different by vendor or nature databases and datasources in a single `SELECT` statement.
+</details>
+
+## Demo
 The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
 
 A couple of simple demos are available in `demo` folder:
@@ -61,14 +66,13 @@ Inside postgres container there will be a view created in `public` schema.
 That view will be joining data from foreign tables which are pointed to different source databases.
 
 
-
 ## Datero image
 Datero engine image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
 It's a mix image which contains all supported FDW extensions available for installation.
 
 Image|Dockerfile
 -|-
-[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero_engine.docker)
+[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v16.docker)
 
 Included FDWs:
 - Oracle
@@ -97,28 +101,33 @@ Table below shows which FDW version is included into which Datero release.
 If there is no official FDW release, version could be specified by the url to the corresponding source zip archive.
 Datero new version will be created once all currently included FDWs will release a version which is compatible with the latest `postgres` version.
 
-Datero|Postgres|FDW|Version
--|-|-|-
-16.2|16.2|Mysql|2.9.1
-16.2|16.2|Oracle|2.6.0
-16.2|16.2|SQLite|2.4.0
-16.2|16.2|Mongo|5.5.1
-16.2|16.2|TDS|master branch (2.0.3)
--|-|-|-
-15.2|15.2|Mysql|2.9.0
-15.2|15.2|Oracle|2.5.0
-15.2|15.2|SQLite|2.3.0
-15.2|15.2|Mongo|5.5.0
-15.2|15.2|TDS|2.0.3
--|-|-|-
-14.4|14.4|Mysql|2.8.0
-14.4|14.4|Oracle|2.4.0
-14.4|14.4|SQLite|2.1.1
-14.4|14.4|Mongo|5.4.0
-14.4|14.4|TDS|2.0.2
+<details>
+  <summary>Click to expand...</summary>
+
+  Datero|Postgres|FDW|Version
+  -|-|-|-
+  16.2|16.2|Mysql|2.9.1
+  16.2|16.2|Oracle|2.6.0
+  16.2|16.2|SQLite|2.4.0
+  16.2|16.2|Mongo|5.5.1
+  16.2|16.2|TDS|master branch (2.0.3)
+  -|-|-|-
+  15.2|15.2|Mysql|2.9.0
+  15.2|15.2|Oracle|2.5.0
+  15.2|15.2|SQLite|2.3.0
+  15.2|15.2|Mongo|5.5.0
+  15.2|15.2|TDS|2.0.3
+  -|-|-|-
+  14.4|14.4|Mysql|2.8.0
+  14.4|14.4|Oracle|2.4.0
+  14.4|14.4|SQLite|2.1.1
+  14.4|14.4|Mongo|5.4.0
+  14.4|14.4|TDS|2.0.2
+</details>
 
 
 ## Individual FDW images
+File naming pattern is as follow:
 - `postgres_<dbname>.docker`
   - Base image building file referenced in docker's documentation as `Dockerfile`.
 - `postgres_<dbname>_compose.yml`
@@ -126,11 +135,12 @@ Datero|Postgres|FDW|Version
 
 FDW official repo|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
-[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](postgres_mysql.docker)|[postgres_mysql_compose.yml](postgres_mysql_compose.yml)
-[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](postgres_oracle.docker)|[postgres_oracle_compose.yml](postgres_oracle_compose.yml)
-[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](postgres_sqlite.docker)|[postgres_sqlite_compose.sh](postgres_sqlite_compose.sh)
-[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](postgres_mongo.docker)|[postgres_mongo_compose.yml](postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](postgres_mssql.docker)|[postgres_mssql_compose.yml](postgres_mssql_compose.yml)
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v16/postgres_mysql.docker)|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
+[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v16/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
+[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v16/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
+[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
@@ -153,35 +163,41 @@ Also it doesn't show any digest or statistics for manually pushed tags.
 Nevertheless, these tags are fetchable and safe to use.
 Please check **Tags** tab at Docker hub to see custom tags available.
 
-Image|Tag
--|-
-postgres_mysql_fdw|latest
-postgres_mysql_fdw|16.2_fdw2.9.1
-postgres_mysql_fdw|15.2_fdw2.9.0
+<details>
+  <summary>Click to expand...</summary>
 
-Image|Tag
--|-
-postgres_sqlite_fdw|latest
-postgres_sqlite_fdw|16.2_fdw2.4.0
-postgres_sqlite_fdw|15.2_fdw2.3.0
+  Image|Tag
+  -|-
+  postgres_mysql_fdw|latest
+  postgres_mysql_fdw|16.2_fdw2.9.1
+  postgres_mysql_fdw|15.2_fdw2.9.0
 
-Image|Tag
--|-
-postgres_oracle_fdw|latest
-postgres_oracle_fdw|16.2_fdw2.6.0
-postgres_oracle_fdw|15.2_fdw2.5.0
+  Image|Tag
+  -|-
+  postgres_sqlite_fdw|latest
+  postgres_sqlite_fdw|16.2_fdw2.4.0
+  postgres_sqlite_fdw|15.2_fdw2.3.0
 
-Image|Tag
--|-
-postgres_mssql_fdw|latest
-postgres_mssql_fdw|16.2_fdw2.0.3 (from master branch)
-postgres_mssql_fdw|15.2_fdw2.0.3
+  Image|Tag
+  -|-
+  postgres_oracle_fdw|latest
+  postgres_oracle_fdw|16.2_fdw2.6.0
+  postgres_oracle_fdw|15.2_fdw2.5.0
 
-Image|Tag
--|-
-postgres_mongo_fdw|latest
-postgres_mongo_fdw|16.2_fdw5.5.1
-postgres_mongo_fdw|15.2_fdw5.5.0
+  Image|Tag
+  -|-
+  postgres_mssql_fdw|latest
+  postgres_mssql_fdw|16.2_fdw2.0.3 (from master branch)
+  postgres_mssql_fdw|15.2_fdw2.0.3
+
+  Image|Tag
+  -|-
+  postgres_mongo_fdw|latest
+  postgres_mongo_fdw|16.2_fdw5.5.1
+  postgres_mongo_fdw|15.2_fdw5.5.0
+
+</details>
+
 
 ## Initialization files
 `sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
