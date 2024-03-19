@@ -1,18 +1,6 @@
-# Contents
-- [About](#about)
-- [How It Works](#how-it-works)
-- [Demo](#demo)
-- [Datero image](#datero-image)
-  - [Available tags](#available-image-tags)
-- [Individual FDW images](#individual-fdw-images)
-  - [Demo](#individual-fdws-demo)
-  - [Available tags](#available-tags)
-- [Initialization files](#initialization-files)
-- [Image building](#image-building)
-- [Contribution](#contribution)
-
-## About
-Postgres database image with different foreign data wrapper (FDW) extensions installed.
+# About
+Postgres database images with different foreign data wrapper (FDW) extensions installed.
+Individual images with single FDW installed are used as a building blocks for the all inclusive image which contains all FDWs.
 Multiple FDWs allow to access data from different by nature datasources within single `SELECT` statement.
 
 In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. 
@@ -26,6 +14,18 @@ Without any coding you could quickly setup data hub and start exploring your dat
 Product is containerized and thus could be installed on-prem or in any cloud.
 For more details, please check Datero [docs](https://datero.tech/docs).
 
+# Contents
+- [How It Works](#how-it-works)
+- [Demo](#demo)
+- [Datero image](#datero-image)
+  - [Available tags](#available-image-tags)
+- [Individual FDW images](#individual-fdw-images)
+  - [Demo](#individual-fdws-demo)
+  - [Available tags](#available-tags)
+- [Initialization files](#initialization-files)
+- [Image building](#image-building)
+- [Contribution](#contribution)
+
 
 ## How It Works
 `Postgres` database has such a nice feature as `Foreign Data Wrapper`.
@@ -33,25 +33,12 @@ It allows to access data from some external source.
 Be it some other database or just file. In case of database it might be `SQL` or `NoSQL` one.
 There are plenty of different open source `FDW` extensions available.
 
-What this project does is just compile and pack these `FDW` extensions into the default postgres image.
+What this project does is just compile and pack individual `FDW` extensions into the default postgres image.
+Afterwards, uses these images to create all inclusive image which contains all `FDWs`.
+
+Depending on your needs you could use either individual `FDW` image or all inclusive one.
+In both cases you will have `postgres` database with `FDW` extension(s) available for installation/enablement.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
-
-### Data Virtualization / Federated Queries
-<details>
-  <summary>See details...</summary>
-  
-  Enterprise IT infrastructure usually consist of many different systems which could use different database engines for storing the data.
-  Good example could be microservices architecture where each service might have its own database.
-  These databases might different by vendor like `Oracle` or `Postgres`, or by nature: `SQL` vs `NoSQL`.
-
-  Quite often there is a need to combine the data from different systems within the Enterprise.
-  Common solution for such task today is to write some ETL via one of the numerous tools available.
-  Within the ETL you will fetch the data from source systems, process/join them somehow and store the result in a some target system.
-
-  This happens mostly because there is absent possibility to fetch and join the data from different databases within single `SELECT` statement. Such type of queries is called `Federated SQL` or `Federated Queries`. As a feature, it's available in a couple of products like `MS SQL Server` and `Informatica`. But both of them require commercial license to be bought.
-
-  This project fills the gap and makes it possible to join data from different by vendor or nature databases and datasources in a single `SELECT` statement.
-</details>
 
 ## Demo
 The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
