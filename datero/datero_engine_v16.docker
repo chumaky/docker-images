@@ -33,7 +33,6 @@ COPY --from=sqlite ${extlibdir}/sqlite_fdw.so ${extlibdir}/
 COPY --from=sqlite ${libdir}/*sqlite* ${libdir}/
 
 # Oracle (includes instantclient & sqlplus)
-# TODO: consider copying only required minimum from instantclient
 ENV ORACLE_HOME /usr/lib/oracle/client
 ENV PATH $PATH:${ORACLE_HOME}
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:${ORACLE_HOME}

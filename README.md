@@ -22,8 +22,8 @@ For more details, please check Datero [docs](https://datero.tech/docs).
 - [Individual FDW images](#individual-fdw-images)
   - [Demo](#individual-fdws-demo)
   - [Available tags](#available-tags)
-- [Initialization files](#initialization-files)
 - [Image building](#image-building)
+- [Image sizing](#image-sizing)
 - [Contribution](#contribution)
 
 
@@ -186,15 +186,6 @@ Please check **Tags** tab at Docker hub to see custom tags available.
 </details>
 
 
-## Initialization files
-`sql` folder contains initialization files that simplifies creation of _foreign data wrapper_ extension and acessing data from an external database. Naming pattern is as follow:
-- `<dbname>_setup.sql`
-  - Create _non-postgres_ database and populate it with some data
-- `postgres_<dbname>_setup.sql`
-  - Create foreign data wrapper extension from within `postgres` to connect to `<dbname>` and access data from it.
-- `postgres_hsql_setup.sql`
-  - Create all available foreign data wrapper extensions within `postgres` in a separate schemas. Applicable only for [All inclusive image](#all-inclusive-image)
-
 ## Image building
 **Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
 
@@ -224,6 +215,32 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
  mysql_fdw | 1.1             |                   | Foreign data wrapper for querying a MySQL server
 (1 row)
 ```
+
+## Image sizing
+Table below shows additional size of the _decompressed_ images compared to the official postgres image.
+Each FDW is compiled from sources.
+There are cleanup commands are executed after the compilation to minimize the image size.
+But there is no guarantee that it will cleanup everything.
+Hence, added size is not 100% consist of actual compiled FDW binaries.
+
+Surprisingly, all-inclusive `datero_engine` image is identical in size to the `postgres_oracle_fdw` image.
+This is probably because that `oracle_fdw` image generates way more temporary files during the build process.
+And these files are not easily identifiable and removable.
+
+In addition, `oracle_fdw` requires some oracle client to present on the host machine.
+This adds 250 MB to the image size.
+
+Anyway, `datero_engine` image contains all FDWs.
+
+Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|16.2|431|0|0
+postgres_tds_fdw|16.2_fdw2.0.3|455|24|6
+postgres_mongo_fdw|16.2_fdw5.5.1|468|37|9
+postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
+postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
+postgres_oracle_fdw|16.2_fdw2.6.0|727|296|69
+datero_engine|16.2|727|296|69
 
 
 ## Contribution
