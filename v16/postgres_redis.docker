@@ -1,0 +1,32 @@
+ARG base_tag=16.2
+FROM postgres:${base_tag}
+
+ARG pg_version=16
+
+# must be *.zip resource
+ARG fdw_url=https://github.com/pg-redis-fdw/redis_fdw/archive/refs/heads/REL_16_STABLE.zip
+ARG source_files=/tmp/redis_fdw
+ARG source_root=redis_fdw-REL_16_STABLE
+
+RUN apt-get update;
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    make gcc \
+    postgresql-server-dev-${pg_version} libhiredis-dev; \
+    # download source files
+    rm -rf ${source_files}; \
+    mkdir -p ${source_files}; \
+    wget -O sources.zip ${fdw_url}; \
+    unzip sources.zip -d ${source_files}; \
+    rm sources.zip; \
+    cd ${source_files}/${source_root}; \
+    # compilation
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget unzip ca-certificates \
+    make gcc \
+    postgresql-server-dev-${pg_version} libhiredis-dev; \
+    rm -rf ${source_files}; \
+    rm -rf /var/lib/apt/lists/*;

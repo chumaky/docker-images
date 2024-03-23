@@ -227,7 +227,7 @@ Surprisingly, all-inclusive `datero_engine` image is identical in size to the `p
 This is probably because that `oracle_fdw` image generates way more temporary files during the build process.
 And these files are not easily identifiable and removable.
 
-In addition, `oracle_fdw` requires some oracle client to present on the host machine.
+In addition, `oracle_fdw` requires some oracle client to be present on the host machine.
 This adds 250 MB to the image size.
 
 Anyway, `datero_engine` image contains all FDWs.
