@@ -27,6 +27,6 @@ RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
     # cleanup
     apt-get purge -y --auto-remove wget unzip ca-certificates \
     make gcc \
-    postgresql-server-dev-${pg_version} libhiredis-dev; \
+    postgresql-server-dev-${pg_version}; \
     rm -rf ${source_files}; \
     rm -rf /var/lib/apt/lists/*;

@@ -127,6 +127,7 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v16/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
 [tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+[redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
 
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
@@ -183,6 +184,11 @@ Please check **Tags** tab at Docker hub to see custom tags available.
   postgres_mongo_fdw|16.2_fdw5.5.1
   postgres_mongo_fdw|15.2_fdw5.5.0
 
+  Image|Tag
+  -|-
+  postgres_redis_fdw|latest
+  postgres_redis_fdw|16.2_fdw16.2.0
+
 </details>
 
 
@@ -236,6 +242,7 @@ Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
 postgres|16.2|431|0|0
 postgres_tds_fdw|16.2_fdw2.0.3|455|24|6
+postgres_redis_fdw|16.2_fdw16.2.0|455|24|6
 postgres_mongo_fdw|16.2_fdw5.5.1|468|37|9
 postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
 postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
