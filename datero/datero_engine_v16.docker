@@ -1,25 +1,28 @@
 ARG base_tag=16.2
 ARG mongo_tag=fdw5.5.1
-ARG msssql_tag=fdw2.0.3
+ARG tds_tag=fdw2.0.3
 ARG mysql_tag=fdw2.9.1
 ARG oracle_tag=fdw2.6.0
 ARG sqlite_tag=fdw2.4.0
+ARG redis_tag=fdw16.2.0
 
-FROM docker.io/chumaky/postgres_mssql_fdw:${base_tag}_${msssql_tag}   AS mssql
+FROM docker.io/chumaky/postgres_tds_fdw:${base_tag}_${tds_tag}        AS tds
 FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
 FROM docker.io/chumaky/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
 FROM docker.io/chumaky/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
 FROM docker.io/chumaky/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
-FROM postgres:${base_tag}
+FROM docker.io/chumaky/postgres_redis_fdw:${base_tag}_${redis_tag}    AS redis
+
+FROM docker.io/postgres:${base_tag}
 
 ARG extdir=/usr/share/postgresql/16/extension
 ARG extlibdir=/usr/lib/postgresql/16/lib
 ARG libdir=/usr/lib/x86_64-linux-gnu
 
 # TDS - MSSQL & Sybase
-COPY --from=mssql ${extdir}/tds_fdw* ${extdir}/
-COPY --from=mssql ${extlibdir}/tds_fdw.so ${extlibdir}/
-COPY --from=mssql ${libdir}/*sybdb* ${libdir}/
+COPY --from=tds ${extdir}/tds_fdw* ${extdir}/
+COPY --from=tds ${extlibdir}/tds_fdw.so ${extlibdir}/
+COPY --from=tds ${libdir}/*sybdb* ${libdir}/
 
 # MySQL
 COPY --from=mysql ${extdir}/mysql_fdw* ${extdir}/
@@ -31,6 +34,11 @@ COPY --from=mysql ${libdir}/libmariadb3/ ${libdir}/libmariadb3/
 COPY --from=sqlite ${extdir}/sqlite_fdw* ${extdir}/
 COPY --from=sqlite ${extlibdir}/sqlite_fdw.so ${extlibdir}/
 COPY --from=sqlite ${libdir}/*sqlite* ${libdir}/
+
+# Redis
+COPY --from=redis ${extdir}/redis_fdw* ${extdir}/
+COPY --from=redis ${extlibdir}/redis_fdw.so ${extlibdir}/
+COPY --from=redis ${libdir}/*redis* ${libdir}/
 
 # Oracle (includes instantclient & sqlplus)
 ENV ORACLE_HOME /usr/lib/oracle/client
@@ -59,6 +67,5 @@ RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
     ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0; \
     ln -sf libbson-1.0.so.0 libbson-1.0.so; \
     ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
-
 
 WORKDIR ${extdir}

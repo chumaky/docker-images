@@ -67,8 +67,20 @@ server mongo_server
 options (database 'sales', collection 'orders')
 ;
 
+-- redis
+create schema redis_fdw;
+create extension redis_fdw schema redis_fdw;
+create server redis foreign data wrapper redis_fdw options (address 'redis', port '6379');
+create user mapping for postgres server redis /*options (password '')*/;
 
--- final query that must work
+create schema redis;
+create foreign table redis.users(key text, val text[])
+server redis
+options (database '0', tabletype 'hash', tablekeyprefix 'users:')
+;
+
+
+-- final queries that must work
 select c.name                          as customer_name
      , p.name                          as product
      , round(o.quantity * p.price, 2)  as total_amount
@@ -82,3 +94,6 @@ select c.name                          as customer_name
   join sqlite.job_roles  j on j.id = e.job_id
   join csv.departments   d on d.id = j.department_id
 ;
+
+select *
+  from redis.users;
