@@ -66,9 +66,10 @@ Included FDWs:
 - TDS (MSSQL & Sybase)
 - Mysql
 - Mongo
+- Redis
+- SQLite
 - Postgres (built-in)
 - Flat Files (built-in)
-- SQLite
 
 
 ### Available image tags
@@ -85,8 +86,11 @@ datero_engine|14.4|14.4
 
 ### Compatibility Matrix
 Table below shows which FDW version is included into which Datero release.
-If there is no official FDW release, version could be specified by the url to the corresponding source zip archive.
-Datero new version will be created once all currently included FDWs will release a version which is compatible with the latest `postgres` version.
+If there is no official FDW release available, version could be derived from some branch or commit hash.
+For example, `TDS` FDW is built from `master` branch and `Redis` FDW is built from `REL_16_STABLE` branch.
+
+There are also two built-in FDWs are available by default: `postgres_fdw` and `file_fdw`.
+They are part of the official postgres distribution.
 
 <details>
   <summary>Click to expand...</summary>
@@ -98,6 +102,7 @@ Datero new version will be created once all currently included FDWs will release
   16.2|16.2|SQLite|2.4.0
   16.2|16.2|Mongo|5.5.1
   16.2|16.2|TDS|master branch (2.0.3)
+  16.2|16.2|Redis|REL_16_STABLE branch (16.2.0)
   -|-|-|-
   15.2|15.2|Mysql|2.9.0
   15.2|15.2|Oracle|2.5.0
