@@ -55,16 +55,27 @@ services:
     image: docker.io/redis:latest
     container_name: datero_source_redis
     ports:
-    - 6379:6379
+      - 6379:6379
 
   redis_seed:
     image: docker.io/redis:latest
     container_name: redis_seed
     volumes:
-    - ./redis/users.sh:/usr/local/bin/load_data.sh
+      - ./redis/users.sh:/usr/local/bin/load_data.sh
     depends_on:
-    - redis
+      - redis
     command: sh -c "chmod +x /usr/local/bin/load_data.sh && /usr/local/bin/load_data.sh"
+
+  oracle:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: datero_source_oracle
+    environment:
+      ORACLE_PWD: admin   # password for SYS, SYSTEM and PDBADMIN
+    ports:
+      - 1521:1521   # JDBC
+      - 5500:5500   # Enterprise Manager GUI
+    volumes:
+      - ./oracle/customer_profiles.sql:/docker-entrypoint-initdb.d/startup/oracle_setup.sql
 
   datero:
     image: docker.io/chumaky/datero_engine:latest
@@ -82,8 +93,9 @@ services:
       # and run `datero_setup.sql` after that
       # - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql         
     depends_on:
-    - mysql
-    - postgres
-    - mongo
-    - mssql
-    - redis
+      - mysql
+      - postgres
+      - mongo
+      - mssql
+      - oracle
+      - redis

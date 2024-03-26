@@ -51,7 +51,7 @@ COPY --from=oracle ${libdir}/*libaio* ${libdir}/
 COPY --from=oracle ${ORACLE_HOME}/ ${ORACLE_HOME}/
 
 WORKDIR ${libdir}
-RUN ln -sf libaio.so.1.0.1 libaio.so.1; \
+RUN ln -sf libaio.so.1.0.2 libaio.so.1; \
     ln -sf libsybdb.so.5.1.0 libsybdb.so.5; \
     ln -sf libsqlite3.so.0.8.6 libsqlite3.so; \
     ln -sf libsqlite3.so.0.8.6 libsqlite3.so.0;
