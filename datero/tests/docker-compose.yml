@@ -79,12 +79,14 @@ services:
 
   datero:
     image: docker.io/chumaky/datero_engine:latest
+    #image: docker.io/chumaky/datero:latest
     container_name: datero_engine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - 4444:5432
+    #  - 80:80
     volumes:
       - ./sqlite/job_roles.db:/home/data/job_roles.db
       - ./csv/departments.csv:/home/data/departments.csv
