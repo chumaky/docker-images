@@ -1,0 +1,35 @@
+ARG base_tag=16.2
+FROM postgres:${base_tag}
+
+ARG JDBC_FDW_VERSION=0.4.0
+ARG JDBC_FDW_URL=https://github.com/pgspider/jdbc_fdw/archive/refs/tags/v${JDBC_FDW_VERSION}.tar.gz
+ARG SOURCE_FILES=/tmp/jdbc_fdw
+
+RUN apt-get update;
+
+ARG JAVA_LIBS=/usr/lib/jvm/java-17-openjdk-amd64/lib/server
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    default-jdk \
+    make gcc \
+    postgresql-server-dev-16; \
+    # download JDBC_FDW source files
+    mkdir -p ${SOURCE_FILES}; \
+    wget -O - ${JDBC_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
+    cd ${SOURCE_FILES}; \
+    # compilation
+    ln -s ${JAVA_LIBS}/libjvm.so /usr/lib64/libjvm.so; \
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget ca-certificates \
+    make gcc \
+    postgresql-server-dev-16; \
+    # re-install JRE
+    apt-get install -y --no-install-recommends default-jre; \
+    rm -rf ${SOURCE_FILES}; \
+    rm -rf /var/lib/apt/lists/*;
+    
+
+ENV LD_LIBRARY_PATH=${JAVA_LIBS}:$LD_LIBRARY_PATH
