@@ -119,11 +119,8 @@ They are part of the official postgres distribution.
 
 
 ## Individual FDW images
-File naming pattern is as follow:
-- `postgres_<dbname>.docker`
-  - Base image building file referenced in docker's documentation as `Dockerfile`.
-- `postgres_<dbname>_compose.yml`
-  - Compose files to showcase a demo how to connect from `postgres` to different databases such as `mysql`.
+> Addition of `postgres_jdbc_fdw` image opens doors to any data source which has `JDBC` driver available.
+Which is pretty much any database!
 
 FDW official repo|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
@@ -133,7 +130,13 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
 [tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
 [redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
+[**jdbc_fdw**](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
 
+File naming pattern is as follow:
+- `postgres_<dbname>.docker`
+  - Base image building file referenced in docker's documentation as `Dockerfile`.
+- `postgres_<dbname>_compose.yml`
+  - Compose files to showcase a demo how to connect from `postgres` to different databases such as `mysql`.
 
 For example, `postgres_mysql.docker` file specifies `postgres` database with `mysql_fdw` extension installed.
 It will make it listed in `pg_available_extensions` system view but you still have to install it onto specific database as _extension_ via `CREATE EXTENSION` command.
@@ -151,13 +154,13 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_fdw2.9.0` tag for `postgres_mysql_fdw` image means postgres `15.2` version with `2.9.0` fdw version installed.
 
 
-> **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
-Also it doesn't show any digest or statistics for manually pushed tags.
-Nevertheless, these tags are fetchable and safe to use.
-Please check **Tags** tab at Docker hub to see custom tags available.
-
 <details>
   <summary>Click to expand...</summary>
+
+  > **IMPORTANT:** Docker doesn't support auto builds feature for free anymore.
+  Also it doesn't show any digest or statistics for manually pushed tags.
+  Nevertheless, these tags are fetchable and safe to use.
+  Please check **Tags** tab at Docker hub to see custom tags available.
 
   Image|Tag
   -|-
@@ -194,27 +197,30 @@ Please check **Tags** tab at Docker hub to see custom tags available.
   postgres_redis_fdw|latest
   postgres_redis_fdw|16.2_fdw16.2.0
 
+  Image|Tag
+  -|-
+  postgres_jdbc_fdw|latest
+  postgres_jdbc_fdw|16.2_fdw0.4.0
+
 </details>
 
 
 ## Image building
-**Note:** If you use `docker` then just replace `podman` with `docker` in all commands below.
-
 Build image tagged as `postgres_mysql` and launch `pg_fdw_test` container from it
 ```sh
-$ podman build -t postgres_mysql -f postgres_mysql.docker
+$ docker build -t postgres_mysql -f postgres_mysql.docker
 
-$ podman run -d --name pg_fdw_test -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres_mysql
+$ docker run -d --name pg_fdw_test -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres_mysql
 6d6beb18e5b7036c058b2160bb9b57adf9011301658217abf67bea64471f5056
 
-$ podman ps
+$ docker ps
 CONTAINER ID  IMAGE                            COMMAND   CREATED        STATUS            PORTS                   NAMES
 6d6beb18e5b7  localhost/postgres_mysql:latest  postgres  4 seconds ago  Up 4 seconds ago  0.0.0.0:5432->5432/tcp  pg_fdw_test
 ```
 
 Login into the database and check that `mysql_fdw` is available for installation
 ```sh
-$ podman exec -it pg_fdw_test psql postgres postgres
+$ docker exec -it pg_fdw_test psql postgres postgres
 ```
 ```sql
 psql (12.4)
@@ -252,6 +258,7 @@ postgres_mongo_fdw|16.2_fdw5.5.1|468|37|9
 postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
 postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
 postgres_oracle_fdw|16.2_fdw2.6.0|727|296|69
+postgres_jdbc_fdw|16.2_fdw0.4.0|882|451|104
 datero_engine|16.2|727|296|69
 
 
