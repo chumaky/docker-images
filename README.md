@@ -6,6 +6,10 @@ Multiple FDWs allow to access data from different by nature datasources within s
 In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. 
 In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
 
+> ## IMPORTANT
+> with introduced recently [postgres_jdbc_fdw](#individual-fdw-images) image it's possible to connect to any datasource which has `JDBC` driver available.
+This opens doors to almost any datasource from `postgres` database!
+
 This approach is implemented in [Datero](https://datero.tech) data platform.
 It's built on top of `postgres` database image with multiple `FDWs` isntalled.
 It also provides GUI for setting up datasource connections and `SQL` editor.
