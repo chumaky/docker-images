@@ -16,16 +16,18 @@ It also provides GUI for setting up datasource connections and `SQL` editor.
 Without any coding you could quickly setup data hub and start exploring your data.
 
 Product is containerized and thus could be installed on-prem or in any cloud.
+Demo is available in Datero [tutorial](https://datero.tech/docs/tutorial).
 For more details, please check Datero [docs](https://datero.tech/docs).
+
 
 # Contents
 - [How It Works](#how-it-works)
-- [Demo](#demo)
-- [Datero image](#datero-image)
-  - [Available tags](#available-image-tags)
 - [Individual FDW images](#individual-fdw-images)
   - [Demo](#individual-fdws-demo)
   - [Available tags](#available-tags)
+- [Datero image](#datero-image)
+  - [Demo](#demo)
+  - [Available tags](#available-image-tags)
 - [Image building](#image-building)
 - [Image sizing](#image-sizing)
 - [Contribution](#contribution)
@@ -43,83 +45,6 @@ Afterwards, uses these images to create all inclusive image which contains all `
 Depending on your needs you could use either individual `FDW` image or all inclusive one.
 In both cases you will have `postgres` database with `FDW` extension(s) available for installation/enablement.
 All you have to do is enable corresponding extensions, put your credentials to the external datasources and start join them from inside postgres :)
-
-## Demo
-The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
-
-A couple of simple demos are available in `demo` folder:
-- [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
-- [Oracle - Mysql](demo/oracle_mysql/)
-
-Navigate to the `demo` folder and execute from it `docker-compose up -d`.
-It will spin-up a few containers with postgres one at the end.
-Inside postgres container there will be a view created in `public` schema.
-That view will be joining data from foreign tables which are pointed to different source databases.
-
-
-## Datero image
-Datero engine image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
-It's a mix image which contains all supported FDW extensions available for installation.
-
-Image|Dockerfile
--|-
-[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v16.docker)
-
-Included FDWs:
-- Oracle
-- TDS (MSSQL & Sybase)
-- Mysql
-- Mongo
-- Redis
-- SQLite
-- Postgres (built-in)
-- Flat Files (built-in)
-
-
-### Available image tags
-Tag naming pattern corresponds one to one to the official postgres tags.
-
-> Please check **Tags** tab at Docker hub to see custom tags available.
-
-Image|Tag|Postgres
--|-|-
-datero_engine|latest|16.2
-datero_engine|16.2|16.2
-datero_engine|15.2|15.2
-datero_engine|14.4|14.4
-
-### Compatibility Matrix
-Table below shows which FDW version is included into which Datero release.
-If there is no official FDW release available, version could be derived from some branch or commit hash.
-For example, `TDS` FDW is built from `master` branch and `Redis` FDW is built from `REL_16_STABLE` branch.
-
-There are also two built-in FDWs are available by default: `postgres_fdw` and `file_fdw`.
-They are part of the official postgres distribution.
-
-<details>
-  <summary>Click to expand...</summary>
-
-  Datero|Postgres|FDW|Version
-  -|-|-|-
-  16.2|16.2|Mysql|2.9.1
-  16.2|16.2|Oracle|2.6.0
-  16.2|16.2|SQLite|2.4.0
-  16.2|16.2|Mongo|5.5.1
-  16.2|16.2|TDS|master branch (2.0.3)
-  16.2|16.2|Redis|REL_16_STABLE branch (16.2.0)
-  -|-|-|-
-  15.2|15.2|Mysql|2.9.0
-  15.2|15.2|Oracle|2.5.0
-  15.2|15.2|SQLite|2.3.0
-  15.2|15.2|Mongo|5.5.0
-  15.2|15.2|TDS|2.0.3
-  -|-|-|-
-  14.4|14.4|Mysql|2.8.0
-  14.4|14.4|Oracle|2.4.0
-  14.4|14.4|SQLite|2.1.1
-  14.4|14.4|Mongo|5.4.0
-  14.4|14.4|TDS|2.0.2
-</details>
 
 
 ## Individual FDW images
@@ -206,6 +131,84 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_jdbc_fdw|latest
   postgres_jdbc_fdw|16.2_fdw0.4.0
 
+</details>
+
+
+## Datero image
+Datero engine image is built on top of individual postgres [images](#individual-fdw-images) with single FDW installed.
+It's a mix image which contains all supported FDW extensions available for installation.
+
+Image|Dockerfile
+-|-
+[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v16.docker)
+
+Included FDWs:
+- Oracle
+- TDS (MSSQL & Sybase)
+- Mysql
+- Mongo
+- Redis
+- SQLite
+- Postgres (built-in)
+- Flat Files (built-in)
+
+
+### Demo
+The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
+
+A couple of simple demos are available in `demo` folder:
+- [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
+- [Oracle - Mysql](demo/oracle_mysql/)
+
+Navigate to the `demo` folder and execute from it `docker-compose up -d`.
+It will spin-up a few containers with postgres one at the end.
+Inside postgres container there will be a view created in `public` schema.
+That view will be joining data from foreign tables which are pointed to different source databases.
+
+
+### Available image tags
+Tag naming pattern corresponds one to one to the official postgres tags.
+
+> Please check **Tags** tab at Docker hub to see custom tags available.
+
+Image|Tag|Postgres
+-|-|-
+datero_engine|latest|16.2
+datero_engine|16.2|16.2
+datero_engine|15.2|15.2
+datero_engine|14.4|14.4
+
+### Compatibility Matrix
+Table below shows which FDW version is included into which Datero release.
+If there is no official FDW release available, version could be derived from some branch or commit hash.
+For example, `TDS` FDW is built from `master` branch and `Redis` FDW is built from `REL_16_STABLE` branch.
+
+There are also two built-in FDWs are available by default: `postgres_fdw` and `file_fdw`.
+They are part of the official postgres distribution.
+
+<details>
+  <summary>Click to expand...</summary>
+
+  Datero|Postgres|FDW|Version
+  -|-|-|-
+  16.2|16.2|Mysql|2.9.1
+  16.2|16.2|Oracle|2.6.0
+  16.2|16.2|SQLite|2.4.0
+  16.2|16.2|Mongo|5.5.1
+  16.2|16.2|TDS|master branch (2.0.3)
+  16.2|16.2|Redis|REL_16_STABLE branch (16.2.0)
+  -|-|-|-
+  15.2|15.2|Mysql|2.9.0
+  15.2|15.2|Oracle|2.5.0
+  15.2|15.2|SQLite|2.3.0
+  15.2|15.2|Mongo|5.5.0
+  15.2|15.2|TDS|2.0.3
+  -|-|-|-
+  14.4|14.4|Mysql|2.8.0
+  14.4|14.4|Oracle|2.4.0
+  14.4|14.4|SQLite|2.1.1
+  14.4|14.4|Mongo|5.4.0
+  14.4|14.4|TDS|2.0.2
 </details>
 
 
