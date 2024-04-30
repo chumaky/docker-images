@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 
+help() {
+    echo "Usage: $0 <source> [<tag> [<base>]]"
+    echo "  source  : source to build image for: postgres, mysql, etc."
+    echo "  tag     : tag for the image. default: latest"
+    echo "  base    : base postgres version to use. default: v16"
+    exit 1
+}
+
+source=$1
+if [ -z "$source" ]; then
+    help
+fi
+
+tag=$2
+if [ -z "$tag" ]; then
+    tag="latest"
+fi
+
+base=$3
+if [ -z "$base" ]; then
+    base="v16"
+fi
+
 docker build --no-cache \
-    -t chumaky/postgres_duckdb_fdw \
-    -f v16/postgres_duckdb.docker \
-    v16 > build.log 2>&1
+    -t chumaky/postgres_${source}_fdw:${tag} \
+    -f ${base}/postgres_${source}.docker \
+    ${base} > build.log 2>&1
