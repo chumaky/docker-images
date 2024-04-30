@@ -6,9 +6,12 @@ Multiple FDWs allow to access data from different by nature datasources within s
 In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. 
 In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
 
-> ## IMPORTANT
-> with introduced recently [postgres_jdbc_fdw](#individual-fdw-images) image it's possible to connect to any datasource which has `JDBC` driver available.
+> ## LATEST UPDATES
+> With introduced recently [postgres_jdbc_fdw](#individual-fdw-images) image it's possible to connect to any datasource which has `JDBC` driver available.
 This opens doors to almost any datasource from `postgres` database!
+>
+> Latest addition of [postgres_duckdb_fdw](#individual-fdw-images) enables connectivity to the awesome [DuckDB](https://duckdb.org/) database.
+It in turn allows to query JSON, Excel, Parquet, and many other file types with SQL.
 
 This approach is implemented in [Datero](https://datero.tech) data platform.
 It's built on top of `postgres` database image with multiple `FDWs` isntalled.
@@ -59,7 +62,8 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
 [tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
 [redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
-[**jdbc_fdw**](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
+[jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
+[duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v16/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
 
 File naming pattern is as follow:
 - `postgres_<dbname>.docker`
@@ -130,6 +134,11 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   -|-
   postgres_jdbc_fdw|latest
   postgres_jdbc_fdw|16.2_fdw0.4.0
+
+  Image|Tag
+  -|-
+  postgres_duckdb_fdw|latest
+  postgres_duckdb_fdw|16.2_fdw2.1.1
 
 </details>
 
@@ -264,6 +273,7 @@ postgres_redis_fdw|16.2_fdw16.2.0|455|24|6
 postgres_mongo_fdw|16.2_fdw5.5.1|468|37|9
 postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
 postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
+postgres_duckdb_fdw|16.2_fdw2.1.1|550|119|28
 postgres_oracle_fdw|16.2_fdw2.6.0|727|296|69
 postgres_jdbc_fdw|16.2_fdw0.4.0|882|451|104
 datero_engine|16.2|727|296|69
