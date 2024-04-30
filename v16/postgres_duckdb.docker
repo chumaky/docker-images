@@ -1,0 +1,51 @@
+ARG base_tag=16.2
+FROM postgres:${base_tag}
+
+ARG pg_version=16
+ARG fdw_version=2.3.0
+
+# duckdb_fdw doesn't create Releases in github.
+# hence, we use the "main" branch, which is available in git only in *.zip format
+# this requires the URL and processing to be switched from "tar" to "unzip"
+# and the source root to be "duckdb_fdw-main"
+
+# must be *.zip resource
+#ARG fdw_url=https://github.com/alitrack/duckdb_fdw/archive/refs/heads/main.zip
+ARG fdw_url=https://github.com/ahuarte47/duckdb_fdw/archive/refs/heads/main_9x-10x-support.zip
+ARG duckdb_lib_url=https://github.com/duckdb/duckdb/releases/download/v0.10.2/libduckdb-linux-amd64.zip
+            
+ARG source_files=/tmp/duckdb_fdw
+ARG source_root=duckdb_fdw-main_9x-10x-support
+
+RUN apt-get update;
+
+    # compilation deps
+RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    make gcc g++ \
+    postgresql-server-dev-${pg_version}; \
+    # duckdb_fdw 
+    rm -rf ${source_files}; \
+    mkdir -p ${source_files}; \
+    wget -O sources.zip ${fdw_url}; \
+    unzip sources.zip -d ${source_files}; \
+    rm sources.zip; \
+    cd ${source_files}/${source_root}; \
+    # duckdb lib
+    # it must be extracted into the same directory as duckdb_fdw source files
+    # compilation process requires duckdb.h and duckdb.hpp files to be in the same directory
+    # as the duckdb_fdw source files
+    wget -O sources.zip ${duckdb_lib_url}; \
+    unzip sources.zip -d .; \
+    # it's also required to copy the libduckdb.so to the postgresql lib directory
+    cp ./libduckdb.so $(pg_config --libdir); \
+    rm sources.zip; \
+    # install
+    make USE_PGXS=1; \
+    make USE_PGXS=1 install; \
+    # cleanup
+    apt-get purge -y --auto-remove wget unzip ca-certificates \
+    make gcc g++ \
+    postgresql-server-dev-${pg_version}; \
+    cd -; \
+    rm -rf ${source_files}; \
+    rm -rf /var/lib/apt/lists/*;

@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: docker.io/chumaky/postgres_duckdb_fdw:latest
+    container_name: postgres_duckdb_fdw
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./duckdb/file1.json:/home/data/file1.json
+      - ./duckdb/file2.json:/home/data/file2.json
+      - ./duckdb/json_files.duckdb:/home/data/json_files.duckdb
+      - ./duckdb/json_files.duckdb.wal:/home/data/json_files.duckdb.wal
+
