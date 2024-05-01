@@ -152,14 +152,17 @@ Image|Dockerfile
 [datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v16.docker)
 
 Included FDWs:
-- Oracle
-- TDS (MSSQL & Sybase)
-- Mysql
-- Mongo
-- Redis
-- SQLite
-- Postgres (built-in)
-- Flat Files (built-in)
+Data Source|FDW
+-|-
+Oracle | oracle_fdw
+TDS (MSSQL & Sybase) | tds_fdw
+Mysql | mysql_fdw
+Mongo | mongo_fdw
+Redis | redis_fdw
+DuckDB | duckdb_fdw
+SQLite | sqlite_fdw
+Postgres (built-in) | postgres_fdw
+Flat Files (built-in) | file_fdw
 
 
 ### Demo
@@ -206,6 +209,7 @@ They are part of the official postgres distribution.
   16.2|16.2|Mongo|5.5.1
   16.2|16.2|TDS|master branch (2.0.3)
   16.2|16.2|Redis|REL_16_STABLE branch (16.2.0)
+  16.2|16.2|DuckDB|ahuarte47:main_9x-10x-support branch (2.1.1)
   -|-|-|-
   15.2|15.2|Mysql|2.9.0
   15.2|15.2|Oracle|2.5.0
