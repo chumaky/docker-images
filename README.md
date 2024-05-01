@@ -135,10 +135,10 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_jdbc_fdw|latest
   postgres_jdbc_fdw|16.2_fdw0.4.0
 
-  Image|Tag
-  -|-
-  postgres_duckdb_fdw|latest
-  postgres_duckdb_fdw|16.2_fdw2.1.1
+  Image|Tag|DuckDB lib version
+  -|-|-
+  postgres_duckdb_fdw|latest|0.10.2
+  postgres_duckdb_fdw|16.2_fdw2.1.1|0.10.2
 
 </details>
 

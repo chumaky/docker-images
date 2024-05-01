@@ -74,6 +74,13 @@ server redis
 options (database '0', tabletype 'hash', tablekeyprefix 'users:')
 ;
 
+-- duckdb
+create extension duckdb_fdw schema datero_fdw;
+create server duckdb foreign data wrapper duckdb_fdw options (database '/home/data/json_files.duckdb');
+
+create schema duckdb;
+import foreign schema public from server duckdb into duckdb;
+
 -- oracle
 create extension oracle_fdw schema datero_fdw;
 create server oracle foreign data wrapper oracle_fdw options (dbserver '//oracle:1521/xepdb1');
@@ -81,12 +88,12 @@ create user mapping for postgres server oracle options (user 'oracle', password 
 
 create schema oracle;
 
-create foreign table oracle.customer_profiles 
+create foreign table oracle.customer_profiles
 ( id          int options (key 'true')
 , customer_id int
 , category    varchar
-) 
-server oracle 
+)
+server oracle
 options (schema 'ORACLE', table 'CUSTOMER_PROFILES')
 ;
 
@@ -110,3 +117,6 @@ select c.name                          as customer_name
 
 select *
   from redis.users;
+
+select *
+  from duckdb.json_file_v;

@@ -5,6 +5,7 @@ ARG mysql_tag=fdw2.9.1
 ARG oracle_tag=fdw2.6.0
 ARG sqlite_tag=fdw2.4.0
 ARG redis_tag=fdw16.2.0
+ARG duckdb_tag=fdw2.1.1
 
 FROM docker.io/chumaky/postgres_tds_fdw:${base_tag}_${tds_tag}        AS tds
 FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
@@ -12,6 +13,7 @@ FROM docker.io/chumaky/postgres_oracle_fdw:${base_tag}_${oracle_tag}  AS oracle
 FROM docker.io/chumaky/postgres_mongo_fdw:${base_tag}_${mongo_tag}    AS mongo
 FROM docker.io/chumaky/postgres_sqlite_fdw:${base_tag}_${sqlite_tag}  AS sqlite
 FROM docker.io/chumaky/postgres_redis_fdw:${base_tag}_${redis_tag}    AS redis
+FROM docker.io/chumaky/postgres_duckdb_fdw:${base_tag}_${duckdb_tag}  AS duckdb
 
 FROM docker.io/postgres:${base_tag}
 
@@ -39,6 +41,11 @@ COPY --from=sqlite ${libdir}/*sqlite* ${libdir}/
 COPY --from=redis ${extdir}/redis_fdw* ${extdir}/
 COPY --from=redis ${extlibdir}/redis_fdw.so ${extlibdir}/
 COPY --from=redis ${libdir}/*redis* ${libdir}/
+
+# DuckDB
+COPY --from=duckdb ${extdir}/duckdb_fdw* ${extdir}/
+COPY --from=duckdb ${extlibdir}/duckdb_fdw.so ${extlibdir}/
+COPY --from=duckdb ${libdir}/*duckdb* ${libdir}/
 
 # Oracle (includes instantclient & sqlplus)
 ENV ORACLE_HOME /usr/lib/oracle/client

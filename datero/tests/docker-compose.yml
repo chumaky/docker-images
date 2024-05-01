@@ -88,8 +88,16 @@ services:
       - 4444:5432
     #  - 80:80
     volumes:
+      # sqlite_fdw
       - ./sqlite/job_roles.db:/home/data/job_roles.db
+      # file_fdw
       - ./csv/departments.csv:/home/data/departments.csv
+      # duckdb_fdw
+      - ../../tests/duckdb/file1.json:/home/data/file1.json
+      - ../../tests/duckdb/file2.json:/home/data/file2.json
+      - ../../tests/duckdb/json_files.duckdb:/home/data/json_files.duckdb
+      - ../../tests/duckdb/json_files.duckdb.wal:/home/data/json_files.duckdb.wal
+      # datero setup
       - ./datero_setup.sql:/home/datero_setup.sql         
       # TODO: implement waiting of the source services actually being ready via "wait-for-it.sh"
       # and run `datero_setup.sql` after that
