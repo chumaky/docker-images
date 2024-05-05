@@ -207,9 +207,9 @@ They are part of the official postgres distribution.
   16.2|16.2|Oracle|2.6.0
   16.2|16.2|SQLite|2.4.0
   16.2|16.2|Mongo|5.5.1
-  16.2|16.2|TDS|master branch (2.0.3)
-  16.2|16.2|Redis|REL_16_STABLE branch (16.2.0)
-  16.2|16.2|DuckDB|ahuarte47:main_9x-10x-support branch (2.1.1)
+  16.2|16.2|TDS|2.0.3 (master branch)
+  16.2|16.2|Redis|16.2.0 (REL_16_STABLE branch)
+  16.2|16.2|DuckDB|2.1.1 (ahuarte47:main_9x-10x-support branch)
   -|-|-|-
   15.2|15.2|Mysql|2.9.0
   15.2|15.2|Oracle|2.5.0
