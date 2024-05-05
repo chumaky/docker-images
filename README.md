@@ -203,25 +203,25 @@ They are part of the official postgres distribution.
 
   Datero|Postgres|FDW|Version
   -|-|-|-
-  16.2|16.2|Mysql|2.9.1
-  16.2|16.2|Oracle|2.6.0
-  16.2|16.2|SQLite|2.4.0
-  16.2|16.2|Mongo|5.5.1
-  16.2|16.2|TDS|2.0.3 (master branch)
-  16.2|16.2|Redis|16.2.0 (REL_16_STABLE branch)
-  16.2|16.2|DuckDB|2.1.1 (ahuarte47:main_9x-10x-support branch)
+  16.2|16.2|mysql_fdw|2.9.1
+  16.2|16.2|oracle_fdw|2.6.0
+  16.2|16.2|sqlite_fdw|2.4.0
+  16.2|16.2|mongo_fdw|5.5.1
+  16.2|16.2|tds_fdw|2.0.3 (master branch)
+  16.2|16.2|redis_fdw|16.2.0 (REL_16_STABLE branch)
+  16.2|16.2|duckdb_fdw|2.1.1 (ahuarte47:main_9x-10x-support branch)
   -|-|-|-
-  15.2|15.2|Mysql|2.9.0
-  15.2|15.2|Oracle|2.5.0
-  15.2|15.2|SQLite|2.3.0
-  15.2|15.2|Mongo|5.5.0
-  15.2|15.2|TDS|2.0.3
+  15.2|15.2|mysql_fdw|2.9.0
+  15.2|15.2|oracle_fdw|2.5.0
+  15.2|15.2|sqlite_fdw|2.3.0
+  15.2|15.2|mongo_fdw|5.5.0
+  15.2|15.2|tds_fdw|2.0.3
   -|-|-|-
-  14.4|14.4|Mysql|2.8.0
-  14.4|14.4|Oracle|2.4.0
-  14.4|14.4|SQLite|2.1.1
-  14.4|14.4|Mongo|5.4.0
-  14.4|14.4|TDS|2.0.2
+  14.4|14.4|mysql_fdw|2.8.0
+  14.4|14.4|oracle_fdw|2.4.0
+  14.4|14.4|sqlite_fdw|2.1.1
+  14.4|14.4|mongo_fdw|5.4.0
+  14.4|14.4|tds_fdw|2.0.2
 </details>
 
 
@@ -260,14 +260,15 @@ There are cleanup commands are executed after the compilation to minimize the im
 But there is no guarantee that it will cleanup everything.
 Hence, added size is not 100% consist of actual compiled FDW binaries.
 
-Surprisingly, all-inclusive `datero_engine` image is identical in size to the `postgres_oracle_fdw` image.
+The single FDW image that blows up in size the most is `postgres_oracle_fdw`.
 This is probably because that `oracle_fdw` image generates way more temporary files during the build process.
 And these files are not easily identifiable and removable.
-
 In addition, `oracle_fdw` requires some oracle client to be present on the host machine.
 This adds 250 MB to the image size.
 
-Anyway, `datero_engine` image contains all FDWs.
+Currently, `datero_engine` image contains all FDWs except `postgres_jdbc_fdw`.
+Its capabilities are under investigation.
+Once it will be proved that it is stable and reliable, it will be included into the `datero_engine` image as well.
 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
@@ -280,7 +281,8 @@ postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
 postgres_duckdb_fdw|16.2_fdw2.1.1|550|119|28
 postgres_oracle_fdw|16.2_fdw2.6.0|727|296|69
 postgres_jdbc_fdw|16.2_fdw0.4.0|882|451|104
-datero_engine|16.2|727|296|69
+-|-|-|-|-
+datero_engine|16.2|784|353|82
 
 
 ## Contribution
