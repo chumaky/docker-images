@@ -78,27 +78,28 @@ services:
       - ./oracle/customer_profiles.sql:/docker-entrypoint-initdb.d/startup/oracle_setup.sql
 
   datero:
-    image: docker.io/chumaky/datero_engine:latest
-    #image: docker.io/chumaky/datero:latest
+    #image: docker.io/chumaky/datero_engine:latest
+    image: docker.io/chumaky/datero:latest
     container_name: datero_engine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - 4444:5432
-    #  - 80:80
+      - 80:80
     volumes:
       # sqlite_fdw
-      - ./sqlite/job_roles.db:/home/data/job_roles.db
+      - ./sqlite/job_roles.db:/data/job_roles.db
       # file_fdw
-      - ./csv/departments.csv:/home/data/departments.csv
+      - ./csv/departments.csv:/data/departments.csv
       # duckdb_fdw
-      - ../../tests/duckdb/file1.json:/home/data/file1.json
-      - ../../tests/duckdb/file2.json:/home/data/file2.json
-      - ../../tests/duckdb/json_files.duckdb:/home/data/json_files.duckdb
-      - ../../tests/duckdb/json_files.duckdb.wal:/home/data/json_files.duckdb.wal
+      - ../../tests/duckdb/file1.json:/data/file1.json
+      - ../../tests/duckdb/file2.json:/data/file2.json
+      - ../../tests/duckdb/json_files.duckdb:/data/json_files.duckdb
+      - ../../tests/duckdb/json_files.duckdb.wal:/data/json_files.duckdb.wal
       # datero setup
-      - ./datero_setup.sql:/home/datero_setup.sql         
+      - ./datero_setup.sql:/data/datero_setup.sql      
+      - ./config.yaml:/home/instance/config.yaml   
       # TODO: implement waiting of the source services actually being ready via "wait-for-it.sh"
       # and run `datero_setup.sql` after that
       # - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql         

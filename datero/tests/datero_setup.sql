@@ -26,7 +26,7 @@ import foreign schema dbo from server mssql into mssql;
 
 -- sqlite
 create extension sqlite_fdw schema datero_fdw;
-create server sqlite foreign data wrapper sqlite_fdw options (database '/home/data/job_roles.db');
+create server sqlite foreign data wrapper sqlite_fdw options (database '/data/job_roles.db');
 
 create schema sqlite;
 import foreign schema public from server sqlite into sqlite;
@@ -41,7 +41,7 @@ create foreign table csv.departments
 , name      varchar
 )
 server files
-options (filename '/home/data/departments.csv', format 'csv', header 'true')
+options (filename '/data/departments.csv', format 'csv', header 'true')
 ;
 
 -- mongo
@@ -76,7 +76,7 @@ options (database '0', tabletype 'hash', tablekeyprefix 'users:')
 
 -- duckdb
 create extension duckdb_fdw schema datero_fdw;
-create server duckdb foreign data wrapper duckdb_fdw options (database '/home/data/json_files.duckdb');
+create server duckdb foreign data wrapper duckdb_fdw options (database '/data/json_files.duckdb');
 
 create schema duckdb;
 import foreign schema public from server duckdb into duckdb;

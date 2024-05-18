@@ -1,0 +1,76 @@
+# datero connection
+postgres:
+  hostname: localhost
+  port: 5432
+  database: postgres
+  username: postgres
+  password: postgres
+
+
+# foreign servers
+servers:
+  mysql_fdw_1:
+    description: MySQL - Finance
+    fdw_name: mysql_fdw
+    options:
+      host: mysql
+      port: 3306
+    user_mapping:
+      username: mysql
+      password: mysql
+
+  postgres_fdw_1:
+    description: Postgres - Products
+    fdw_name: postgres_fdw
+    options:
+      host: postgres
+      port: 5432
+      dbname: factory
+    user_mapping:
+      user: postgres
+      password: postgres
+
+  mongo_fdw_1:
+    description: Mongo - Orders
+    fdw_name: mongo_fdw
+    options:
+      address: mongo
+      port: 27017
+      authentication_database: admin
+    user_mapping:
+      username: mongo
+      password: mongo
+
+  tds_fdw_1:
+    description: MSSQL - Employees
+    fdw_name: tds_fdw
+    options:
+      servername: mssql
+      port: 1433
+      database: hr
+    user_mapping:
+      username: sa
+      password: Mssql_2019
+
+  sqlite_fdw_1:
+    description: SQLite - Job Roles
+    fdw_name: sqlite_fdw
+    options:
+      database: /data/job_roles.db
+
+  file_fdw_1:
+    description: CSV - Departments
+    fdw_name: file_fdw
+
+  redis_fdw_1:
+    description: Redis - Users
+    fdw_name: redis_fdw
+    options:
+      address: redis
+      port: 6379
+
+  duckdb_fdw_1:
+    description: DuckDB - JSON files
+    fdw_name: duckdb_fdw
+    options:
+      database: /data/json_files.duckdb
