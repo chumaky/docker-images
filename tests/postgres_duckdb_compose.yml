@@ -13,4 +13,4 @@ services:
       - ./duckdb/file2.json:/home/data/file2.json
       - ./duckdb/json_files.duckdb:/home/data/json_files.duckdb
       - ./duckdb/json_files.duckdb.wal:/home/data/json_files.duckdb.wal
-
+      - ./duckdb/fdw_setup.sql:/docker-entrypoint-initdb.d/fdw_setup.sql
