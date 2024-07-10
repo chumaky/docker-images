@@ -1,4 +1,4 @@
-ARG base_tag=16.2
+ARG base_tag=16.3
 FROM postgres:${base_tag}
 
 ARG MONGO_FDW_VERSION=5_5_1

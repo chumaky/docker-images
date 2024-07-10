@@ -2,7 +2,7 @@
 -- postgres: https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
 -- mysql: https://dev.mysql.com/downloads/connector/j/
 -- select Platform Independent (Architecture Independent) from the dropdown
--- download the tar.gz file and extract the jar file - mysql-connector-j-8.3.0.jar
+-- download the tar.gz file and extract the jar file - mysql-connector-j-9.0.0.jar
 -- mount local folder with drivers to "/drivers" in container on run.
 
 
@@ -60,7 +60,7 @@ OPTIONS (
 		drivername 'com.mysql.jdbc.Driver',
 		url 'jdbc:mysql://mysql-rfam-public.ebi.ac.uk:4497/Rfam',
 		querytimeout '60',
-		jarfile '/drivers/mysql-connector-j-8.3.0.jar',
+		jarfile '/drivers/mysql-connector-j-9.0.0.jar',
 		maxheapsize '512'
 );
 

@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: docker.io/chumaky/postgres_jdbc_fdw:16.3_fdw0.4.0
+    container_name: postgres_jdbc_fdw
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./jdbc:/drivers
+      - ./sql/postgres_jdbc_setup.sql:/docker-entrypoint-initdb.d/postgres_jdbc_setup.sql
