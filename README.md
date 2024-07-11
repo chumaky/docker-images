@@ -198,7 +198,8 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 
 Image|Tag|Postgres
 -|-|-
-datero_engine|latest|16.2
+datero_engine|latest|16.3
+datero_engine|16.3|16.3
 datero_engine|16.2|16.2
 datero_engine|15.2|15.2
 datero_engine|14.4|14.4
