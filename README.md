@@ -110,6 +110,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   Image|Tag
   -|-
   postgres_oracle_fdw|latest
+  postgres_oracle_fdw|16.3_fdw2.6.0
   postgres_oracle_fdw|16.2_fdw2.6.0
   postgres_oracle_fdw|15.2_fdw2.5.0
 
@@ -268,7 +269,7 @@ The FDW images that blows up in size the most are `postgres_jdbc_fdw` and `postg
 The `postgres_jdbc_fdw` image requires JRE to be installed. 
 This is the main reason for the size increase. 
 As for `postgres_oracle_fdw`, it requires oracle client to be present on the host machine.
-The most minimal in size oracle client is instant client. But even it adds 250 MB to the image size.
+The most minimal in size oracle client is _basic_ instant client. But even it adds 81 MB to the image size.
 
 Currently, `datero_engine` image contains all FDWs except `postgres_jdbc_fdw`.
 The `jdbc_fdw` connector capabilities are under investigation.
@@ -283,7 +284,7 @@ postgres_mongo_fdw|16.3_fdw5.5.1|468|36|8
 postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
 postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
 postgres_duckdb_fdw|16.3_fdw1.0.0|513|81|19
-postgres_oracle_fdw|16.2_fdw2.6.0|727|296|69
+postgres_oracle_fdw|16.3_fdw2.6.0|617|185|43
 postgres_jdbc_fdw|16.3_fdw0.4.0|882|450|104
 -|-|-|-|-
 datero_engine|16.2|784|353|82

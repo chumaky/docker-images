@@ -17,7 +17,7 @@ services:
 
 
   postgres:
-    image: docker.io/chumaky/postgres_oracle_fdw:latest
+    image: docker.io/chumaky/postgres_oracle_fdw:16.3_fdw2.6.0
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

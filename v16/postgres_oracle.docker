@@ -1,9 +1,11 @@
-ARG base_tag=16.2
+ARG base_tag=16.3
 FROM postgres:${base_tag}
 
+ARG pg_version=16
+
 # Latest version
-ARG ORACLE_CLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-basic-linuxx64.zip
-ARG ORACLE_SQLPLUS_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-sqlplus-linuxx64.zip
+ARG ORACLE_CLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip
+#ARG ORACLE_SQLPLUS_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-sqlplus-linuxx64.zip
 ARG ORACLE_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/instantclient-sdk-linuxx64.zip
 
 # Version specific setup
@@ -23,8 +25,8 @@ RUN apt-get update; \
     wget -O instant_client.zip ${ORACLE_CLIENT_URL}; \
     unzip instant_client.zip; \
     # sqlplus
-    wget -O sqlplus.zip ${ORACLE_SQLPLUS_URL}; \
-    unzip sqlplus.zip; \
+    #wget -O sqlplus.zip ${ORACLE_SQLPLUS_URL}; \
+    #unzip sqlplus.zip; \
     # sdk
     wget -O sdk.zip ${ORACLE_SDK_URL}; \
     unzip sdk.zip; \
@@ -32,7 +34,8 @@ RUN apt-get update; \
     mkdir -p ${ORACLE_HOME}; \
     mv instantclient*/* ${ORACLE_HOME}; \
     rm -r instantclient*; \
-    rm instant_client.zip sqlplus.zip sdk.zip; \
+    rm instant_client.zip sdk.zip; \
+    #rm instant_client.zip sqlplus.zip sdk.zip; \
     # required runtime libs: libaio
     apt-get install -y --no-install-recommends libaio1; \
     apt-get purge -y --auto-remove
@@ -49,10 +52,10 @@ RUN mkdir -p ${SOURCE_FILES}; \
     wget -O - ${ORACLE_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
     cd ${SOURCE_FILES}; \
     # install
-    apt-get install -y --no-install-recommends make gcc postgresql-server-dev-16; \
+    apt-get install -y --no-install-recommends make gcc postgresql-server-dev-${pg_version}; \
     make; \
     make install; \
     echo ${ORACLE_HOME} > /etc/ld.so.conf.d/oracle_instantclient.conf; \
     ldconfig; \
     # cleanup
-    apt-get purge -y --auto-remove postgresql-server-dev-16 gcc make
+    apt-get purge -y --auto-remove postgresql-server-dev-${pg_version} gcc make
