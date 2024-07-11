@@ -1,4 +1,4 @@
-ARG base_tag=16.2
+ARG base_tag=16.3
 FROM postgres:${base_tag}
 
 ARG pg_version=16
@@ -6,11 +6,8 @@ ARG pg_version=16
 ARG fdw_version=2.0.3
 
 # TDS_FDW didn't release a new version supporting postgres 16.
-# hence, we use the master branch, which is available in git only in *.zip format
-# this requires the URL and processing to be switched from "tar" to "unzip"
-# and the source root to be changed from "tds_fdw-REL-2_0_3" to "tds_fdw-master"
+# hence, we use the master branch
 
-# must be *.zip resource
 #ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/v${fdw_version}.zip
 ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/refs/heads/master.zip
 
