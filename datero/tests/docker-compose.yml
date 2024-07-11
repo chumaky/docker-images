@@ -1,7 +1,7 @@
 services:
   mysql:
     image: docker.io/mysql:latest
-    container_name: datero_source_mysql
+    container_name: datero_src_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: finance
@@ -13,8 +13,8 @@ services:
       - ./mysql/customers.sql:/docker-entrypoint-initdb.d/setup.sql
 
   postgres:
-    image: docker.io/postgres:alpine
-    container_name: datero_source_postgres
+    image: docker.io/postgres:latest
+    container_name: datero_src_postgres
     environment:
       POSTGRES_DB: factory
       POSTGRES_USER: postgres
@@ -26,7 +26,7 @@ services:
 
   mongo:
     image: docker.io/mongo:latest
-    container_name: datero_source_mongo
+    container_name: datero_src_mongo
     environment:
       MONGO_INITDB_DATABASE: sales
       MONGO_INITDB_ROOT_USERNAME: mongo
@@ -38,7 +38,7 @@ services:
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    container_name: datero_source_mssql
+    container_name: datero_src_mssql
     environment:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: Mssql_2019
@@ -53,7 +53,7 @@ services:
 
   redis:
     image: docker.io/redis:latest
-    container_name: datero_source_redis
+    container_name: datero_src_redis
     ports:
       - 6379:6379
 
@@ -68,7 +68,7 @@ services:
 
   oracle:
     image: container-registry.oracle.com/database/express:21.3.0-xe
-    container_name: datero_source_oracle
+    container_name: datero_src_oracle
     environment:
       ORACLE_PWD: admin   # password for SYS, SYSTEM and PDBADMIN
     ports:
@@ -78,9 +78,9 @@ services:
       - ./oracle/customer_profiles.sql:/docker-entrypoint-initdb.d/startup/oracle_setup.sql
 
   datero:
-    #image: docker.io/chumaky/datero_engine:latest
-    image: docker.io/chumaky/datero:latest
-    container_name: datero_engine
+    image: docker.io/chumaky/datero_engine:16.3
+    #image: docker.io/chumaky/datero:latest
+    container_name: datero_test_engine
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -93,8 +93,8 @@ services:
       # file_fdw
       - ./csv/departments.csv:/data/departments.csv
       # duckdb_fdw
-      - ../../tests/duckdb/file1.json:/data/file1.json
-      - ../../tests/duckdb/file2.json:/data/file2.json
+      - ../../tests/duckdb/file1.json:/home/data/file1.json
+      - ../../tests/duckdb/file2.json:/home/data/file2.json
       - ../../tests/duckdb/json_files.duckdb:/data/json_files.duckdb
       - ../../tests/duckdb/json_files.duckdb.wal:/data/json_files.duckdb.wal
       # datero setup

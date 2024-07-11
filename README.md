@@ -216,6 +216,14 @@ They are part of the official postgres distribution.
 
   Datero|Postgres|FDW|Version
   -|-|-|-
+  16.3|16.3|mysql_fdw|2.9.1
+  16.3|16.3|oracle_fdw|2.6.0
+  16.3|16.3|sqlite_fdw|2.4.0
+  16.3|16.3|mongo_fdw|5.5.1
+  16.3|16.3|tds_fdw|2.0.3 (master branch)
+  16.3|16.3|redis_fdw|16.3.0 (REL_16_STABLE branch)
+  16.3|16.3|duckdb_fdw|1.0.0
+  -|-|-|-
   16.2|16.2|mysql_fdw|2.9.1
   16.2|16.2|oracle_fdw|2.6.0
   16.2|16.2|sqlite_fdw|2.4.0
@@ -295,7 +303,7 @@ postgres_duckdb_fdw|16.3_fdw1.0.0|513|81|19
 postgres_oracle_fdw|16.3_fdw2.6.0|617|185|43
 postgres_jdbc_fdw|16.3_fdw0.4.0|882|450|104
 -|-|-|-|-
-datero_engine|16.2|784|353|82
+datero_engine|16.3|676|244|56
 
 
 ## Contribution

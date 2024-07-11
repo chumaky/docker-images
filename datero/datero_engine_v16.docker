@@ -1,11 +1,11 @@
-ARG base_tag=16.2
+ARG base_tag=16.3
 ARG mongo_tag=fdw5.5.1
 ARG tds_tag=fdw2.0.3
 ARG mysql_tag=fdw2.9.1
 ARG oracle_tag=fdw2.6.0
 ARG sqlite_tag=fdw2.4.0
-ARG redis_tag=fdw16.2.0
-ARG duckdb_tag=fdw2.1.1
+ARG redis_tag=fdw16.3.0
+ARG duckdb_tag=fdw1.0.0
 
 FROM docker.io/chumaky/postgres_tds_fdw:${base_tag}_${tds_tag}        AS tds
 FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_${mysql_tag}    AS mysql
@@ -47,7 +47,7 @@ COPY --from=duckdb ${extdir}/duckdb_fdw* ${extdir}/
 COPY --from=duckdb ${extlibdir}/duckdb_fdw.so ${extlibdir}/
 COPY --from=duckdb ${libdir}/*duckdb* ${libdir}/
 
-# Oracle (includes instantclient & sqlplus)
+# Oracle (includes instantclient)
 ENV ORACLE_HOME /usr/lib/oracle/client
 ENV PATH $PATH:${ORACLE_HOME}
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:${ORACLE_HOME}
