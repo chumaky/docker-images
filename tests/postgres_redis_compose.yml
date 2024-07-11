@@ -15,7 +15,7 @@ services:
     command: sh -c "chmod +x /usr/local/bin/load_data.sh && /usr/local/bin/load_data.sh"
 
   postgres:
-    image: docker.io/chumaky/postgres_redis_fdw:latest
+    image: docker.io/chumaky/postgres_redis_fdw:16.3_fdw16.3.0
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

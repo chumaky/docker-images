@@ -286,11 +286,11 @@ Once it will be proved that it is stable and reliable, it will be included into 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
 postgres|16.3|432|0|0
-postgres_tds_fdw|16.3_fdw2.0.3|455|24|6
-postgres_redis_fdw|16.2_fdw16.2.0|455|24|6
+postgres_tds_fdw|16.3_fdw2.0.3|455|23|5
+postgres_redis_fdw|16.3_fdw16.3.0|455|23|5
 postgres_mongo_fdw|16.3_fdw5.5.1|468|36|8
-postgres_sqlite_fdw|16.2_fdw2.4.0|477|46|11
-postgres_mysql_fdw|16.2_fdw2.9.1|488|57|13
+postgres_sqlite_fdw|16.3_fdw2.4.0|478|46|11
+postgres_mysql_fdw|16.3_fdw2.9.1|489|57|13
 postgres_duckdb_fdw|16.3_fdw1.0.0|513|81|19
 postgres_oracle_fdw|16.3_fdw2.6.0|617|185|43
 postgres_jdbc_fdw|16.3_fdw0.4.0|882|450|104

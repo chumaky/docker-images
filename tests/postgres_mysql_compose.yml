@@ -10,7 +10,7 @@ services:
       - "./sql/mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql:z"
 
   postgres:
-    image: docker.io/chumaky/postgres_mysql_fdw:latest
+    image: docker.io/chumaky/postgres_mysql_fdw:16.3_fdw2.9.1
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
