@@ -48,10 +48,11 @@ OPTIONS (
     table_name 'xref'
 );
 
+/*
 SELECT *
 FROM rnacen_xref
 LIMIT 10;
-
+*/
 
 -- mysql public server
 CREATE SERVER rfam
@@ -86,7 +87,9 @@ OPTIONS (
     table_name 'taxonomy'
 );
 
+/*
 select * 
   from rfam_taxonomy
   limit 10
 ;
+*/
