@@ -98,12 +98,16 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   Image|Tag
   -|-
   postgres_mysql_fdw|latest
+  postgres_mysql_fdw|17.0_fdw2.9.2
+  postgres_mysql_fdw|16.4_fdw2.9.1
+  postgres_mysql_fdw|16.3_fdw2.9.1
   postgres_mysql_fdw|16.2_fdw2.9.1
   postgres_mysql_fdw|15.2_fdw2.9.0
 
   Image|Tag
   -|-
   postgres_sqlite_fdw|latest
+  postgres_sqlite_fdw|16.3_fdw2.4.0
   postgres_sqlite_fdw|16.2_fdw2.4.0
   postgres_sqlite_fdw|15.2_fdw2.3.0
 
@@ -138,6 +142,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   Image|Tag
   -|-
   postgres_redis_fdw|latest
+  postgres_redis_fdw|16.3_fdw16.3.0
   postgres_redis_fdw|16.2_fdw16.2.0
 
   Image|Tag
