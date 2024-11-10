@@ -135,6 +135,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   Image|Tag
   -|-
   postgres_mongo_fdw|latest
+  postgres_mongo_fdw|17.0_fdw5.5.2
   postgres_mongo_fdw|16.3_fdw5.5.1
   postgres_mongo_fdw|16.2_fdw5.5.1
   postgres_mongo_fdw|15.2_fdw5.5.0

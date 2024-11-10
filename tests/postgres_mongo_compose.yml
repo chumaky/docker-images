@@ -12,7 +12,7 @@ services:
       - ./sql/mongo_setup.js:/docker-entrypoint-initdb.d/mongo_setup.js
 
   postgres:
-    image: docker.io/chumaky/postgres_mongo_fdw:16.3_fdw5.5.1
+    image: docker.io/chumaky/postgres_mongo_fdw:latest
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
