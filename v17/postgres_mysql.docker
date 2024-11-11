@@ -11,17 +11,17 @@ ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_
 ARG SOURCE_FILES=/tmp/mysql_fdw
 
 RUN apt-get update && \
-# compilation deps
-apt-get install -y --no-install-recommends wget ca-certificates \
-make gcc \
-postgresql-server-dev-${pg_version} libmariadb-dev-compat && \
-# download MYSQL_FDW source files
-mkdir -p ${SOURCE_FILES} && \
-wget -O - ${MYSQL_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1 && \
-cd ${SOURCE_FILES} && \
-# compilation
-make USE_PGXS=1 && \
-make USE_PGXS=1 install
+    # compilation deps
+    apt-get install -y --no-install-recommends wget ca-certificates \
+    make gcc \
+    postgresql-server-dev-${pg_version} libmariadb-dev-compat && \
+    # download MYSQL_FDW source files
+    mkdir -p ${SOURCE_FILES} && \
+    wget -O - ${MYSQL_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1 && \
+    cd ${SOURCE_FILES} && \
+    # compilation
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install
 
 
 # final stage
