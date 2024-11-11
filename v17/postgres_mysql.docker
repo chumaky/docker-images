@@ -1,27 +1,38 @@
 ARG base_tag=17.0
-FROM postgres:${base_tag}
-
 ARG pg_version=17
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
 
 ARG MYSQL_FDW_VERSION=2_9_2
 ARG MYSQL_FDW_URL=https://github.com/EnterpriseDB/mysql_fdw/archive/REL-${MYSQL_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mysql_fdw
 
-RUN apt-get update;
+RUN apt-get update && \
+# compilation deps
+apt-get install -y --no-install-recommends wget ca-certificates \
+make gcc \
+postgresql-server-dev-${pg_version} libmariadb-dev-compat && \
+# download MYSQL_FDW source files
+mkdir -p ${SOURCE_FILES} && \
+wget -O - ${MYSQL_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1 && \
+cd ${SOURCE_FILES} && \
+# compilation
+make USE_PGXS=1 && \
+make USE_PGXS=1 install
 
-    # compilation deps
-RUN apt-get install -y --no-install-recommends wget ca-certificates \
-    make gcc \
-    postgresql-server-dev-${pg_version} libmariadb-dev-compat; \
-    # download MYSQL_FDW source files
-    mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${MYSQL_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
-    cd ${SOURCE_FILES}; \
-    # compilation
-    make USE_PGXS=1; \
-    make USE_PGXS=1 install; \
-    # cleanup
-    apt-get purge -y --auto-remove wget ca-certificates \
-    make gcc \
-    postgresql-server-dev-${pg_version}; \
-    rm -rf ${SOURCE_FILES}
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+COPY --from=build ${extdir}/mysql_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/mysql_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/*mysql* ${libdir}/
+COPY --from=build ${libdir}/libmariadb3/ ${libdir}/libmariadb3/

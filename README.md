@@ -288,6 +288,12 @@ There are cleanup commands are executed after the compilation to minimize the im
 But there is no guarantee that it will cleanup everything.
 Hence, added size is not 100% consist of actual compiled FDW binaries.
 
+Starting from 17th Postgres version there is multi-stage build introduced for docker files.
+Now, FDW compilation is happening in the first stage and only binaries are copied to the final image.
+This allows greatly reduce the final image size.
+Now it differs only by the size of the FDW binaries themselves.
+For example, `postgres_mysql_fdw` image size is only 3 MB bigger than the official `postgres` image.
+
 The FDW images that blows up in size the most are `postgres_jdbc_fdw` and `postgres_oracle_fdw`.
 The `postgres_jdbc_fdw` image requires JRE to be installed. 
 This is the main reason for the size increase. 
@@ -297,6 +303,12 @@ The most minimal in size oracle client is _basic_ instant client. But even it ad
 Currently, `datero_engine` image contains all FDWs except `postgres_jdbc_fdw`.
 The `jdbc_fdw` connector capabilities are under investigation.
 Once it will be proved that it is stable and reliable, it will be included into the `datero_engine` image as well.
+
+Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|17.0|434|0|0
+postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
+
 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
