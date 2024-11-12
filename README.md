@@ -284,15 +284,16 @@ postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
 ## Image sizing
 Table below shows additional size of the _decompressed_ images compared to the official postgres image.
 Each FDW is compiled from sources.
-There are cleanup commands are executed after the compilation to minimize the image size.
-But there is no guarantee that it will cleanup everything.
-Hence, added size is not 100% consist of actual compiled FDW binaries.
 
-Starting from 17th Postgres version there is multi-stage build introduced for docker files.
+Starting from 16.4 Postgres version there is multi-stage build introduced for docker files.
 Now, FDW compilation is happening in the first stage and only binaries are copied to the final image.
 This allows greatly reduce the final image size.
 Now it differs only by the size of the FDW binaries themselves.
 For example, `postgres_mysql_fdw` image size is only 3 MB bigger than the official `postgres` image.
+
+For the 16.3 Postgres version and below there were cleanup commands executed after the compilation to minimize the image size.
+But it wasn't cleanup everything.
+Hence, added size is not 100% consisted of actual compiled FDW binaries.
 
 The FDW images that blows up in size the most are `postgres_jdbc_fdw` and `postgres_oracle_fdw`.
 The `postgres_jdbc_fdw` image requires JRE to be installed. 
@@ -309,6 +310,10 @@ Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 postgres|17.0|434|0|0
 postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
 
+Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|16.4|432|0|0
+postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5
 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
