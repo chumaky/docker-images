@@ -309,13 +309,12 @@ Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
 postgres|17.0|434|0|0
 postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
-
-Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|16.5|432|0|0
+postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
 -|-|-|-|-
 postgres|16.4|432|0|0
 postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5
-
-Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
 postgres|16.3|432|0|0
 postgres_tds_fdw|16.3_fdw2.0.3|455|23|5
