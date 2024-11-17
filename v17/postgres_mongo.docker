@@ -1,38 +1,55 @@
 ARG base_tag=17.0
-FROM postgres:${base_tag}
-
 ARG pg_version=17
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
 
 ARG MONGO_FDW_VERSION=5_5_2
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mongo_fdw
 
-RUN apt-get update;
-
 ENV PKG_CONFIG_PATH=${SOURCE_FILES}/mongo-c-driver/src/libmongoc/src:${SOURCE_FILES}/mongo-c-driver/src/libbson/src
-ENV LD_LIBRARY_PATH=/lib
+ENV LD_LIBRARY_PATH=/usr/lib
 
+RUN apt-get update && \
     # compilation deps
-RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-${pg_version} libssl-dev libzstd-dev libmongoc-dev libjson-c-dev; \
+    postgresql-server-dev-${pg_version} libssl-dev libzstd-dev libmongoc-dev libjson-c-dev \
+    # runtime deps
+    libsnappy1v5 libmongocrypt0 && \
     # mongo_fdw
-    mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
-    cd ${SOURCE_FILES}; \
+    mkdir -p ${SOURCE_FILES} && \
+    wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES} && \
+    cd ${SOURCE_FILES} && \
     # install
-    ./autogen.sh; \
-    make USE_PGXS=1; \
-    make USE_PGXS=1 install; \
-    # cleanup
-    apt-get purge -y --auto-remove wget ca-certificates \
-    make gcc cmake pkg-config \
-    postgresql-server-dev-${pg_version} libssl-dev libzstd-dev libmongoc-dev libjson-c-dev; \
-    cd -; \
-    rm -rf ${SOURCE_FILES}; \
-    # install runtime deps libraries 
-    # for some reason `libsnappy1v5` is not compiled by default process even with `libsnappy-dev` installed
-    # other removed by the cleanup process above
-    apt-get install -y --no-install-recommends libsnappy1v5 libmongocrypt0; \
-    # final cleanup
-    rm -rf /var/lib/apt/lists/*;
+    ./autogen.sh && \
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install;
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib
+ARG libdir_gnu=/usr/lib/x86_64-linux-gnu
+
+COPY --from=build ${extdir}/mongo_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/mongo_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/libmongoc-1.0.so.0.0.0 ${libdir}/libbson-1.0.so.0.0.0 ${libdir}/ 
+COPY --from=build ${libdir_gnu}/libmongocrypt.so.0.0.0 ${libdir_gnu}/libsnappy.so.1.1.9 ${libdir_gnu}/
+
+RUN cd ${libdir} && \
+    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0 && \
+    ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so && \
+    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0 && \
+    ln -sf libbson-1.0.so.0 libbson-1.0.so && \
+    cd ${libdir_gnu} && \
+    ln -sf libmongocrypt.so.0.0.0 libmongocrypt.so.0 && \
+    ln -sf libmongocrypt.so.0 libmongocrypt.so && \
+    ln -sf libsnappy.so.1.1.9 libsnappy.so.1 && \
+    ln -sf libsnappy.so.1 libsnappy.so;

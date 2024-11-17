@@ -1,30 +1,47 @@
-ARG base_tag=16.3
-FROM postgres:${base_tag}
+ARG base_tag=16.5
+ARG pg_version=16
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
 
 ARG MONGO_FDW_VERSION=5_5_1
 ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/mongo_fdw
 
-RUN apt-get update;
-
 ENV PKG_CONFIG_PATH=${SOURCE_FILES}/mongo-c-driver/src/libmongoc/src:${SOURCE_FILES}/mongo-c-driver/src/libbson/src
 ENV LD_LIBRARY_PATH=/lib
 
+RUN apt-get update && \
     # compilation deps
-RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    apt-get install -y --no-install-recommends wget ca-certificates \
     make gcc cmake pkg-config \
-    postgresql-server-dev-16 libssl-dev libzstd-dev; \
+    postgresql-server-dev-${pg_version} libssl-dev libzstd-dev && \
     # mongo_fdw
-    mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES}; \
-    cd ${SOURCE_FILES}; \
+    mkdir -p ${SOURCE_FILES} && \
+    wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES} && \
+    cd ${SOURCE_FILES} && \
     # install
-    ./autogen.sh --with-master; \
-    make; \
-    make install; \
-    # cleanup
-    apt-get purge -y --auto-remove wget ca-certificates \
-    make gcc cmake pkg-config \
-    postgresql-server-dev-16 libssl-dev libzstd-dev; \
-    cd -; \
-    rm -rf ${SOURCE_FILES};
+    ./autogen.sh --with-master && \
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install
+
+    
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib
+
+COPY --from=build ${extdir}/mongo_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/mongo_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/*mongo* ${libdir}/*libbson* ${libdir}/
+
+WORKDIR ${libdir}
+RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
+    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0; \
+    ln -sf libbson-1.0.so.0 libbson-1.0.so; \
+    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
