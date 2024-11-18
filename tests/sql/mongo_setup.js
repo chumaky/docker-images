@@ -5,3 +5,9 @@ let objs = [
 ];
 
 db.users.insertMany(objs);
+
+/*
+db.users.find()
+db.users.insertOne({id: 5, name: 'zxcv'})
+db.users.find()
+*/

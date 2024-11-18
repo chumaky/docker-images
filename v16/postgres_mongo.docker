@@ -38,10 +38,10 @@ ARG libdir=/usr/lib
 
 COPY --from=build ${extdir}/mongo_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/mongo_fdw.so ${extlibdir}/
-COPY --from=build ${libdir}/*mongo* ${libdir}/*libbson* ${libdir}/
+COPY --from=build ${libdir}/libmongoc-1.0.so.0.0.0 ${libdir}/libbson-1.0.so.0.0.0 ${libdir}/ 
 
-WORKDIR ${libdir}
-RUN ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so; \
-    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0; \
-    ln -sf libbson-1.0.so.0 libbson-1.0.so; \
-    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0;
+RUN cd ${libdir} && \
+    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0 && \
+    ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so && \
+    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0 && \
+    ln -sf libbson-1.0.so.0 libbson-1.0.so;

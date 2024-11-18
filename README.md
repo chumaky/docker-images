@@ -313,7 +313,7 @@ postgres_mongo_fdw|17.0_fdw5.5.2|441|7|1.6
 -|-|-|-|-
 postgres|16.5|432|0|0
 postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
-postgres_mongo_fdw|16.5_fdw5.5.1|452|20|4.6
+postgres_mongo_fdw|16.5_fdw5.5.1|437|5|1.2
 -|-|-|-|-
 postgres|16.4|432|0|0
 postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5

@@ -8,3 +8,10 @@ create foreign table users
 , id     int
 , name   text
 ) server mongo;
+
+/*
+select * from users;
+insert into users (id, name) values (4, 'asdf');
+update users set name = 'qwer' where id = 2;
+delete from users where id = 1;
+*/
