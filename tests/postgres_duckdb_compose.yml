@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: docker.io/chumaky/postgres_duckdb_fdw:16.3_fdw1.0.0
+    image: docker.io/chumaky/postgres_duckdb_fdw:latest
     container_name: postgres_duckdb_fdw
     environment:
       POSTGRES_PASSWORD: postgres

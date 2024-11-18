@@ -99,54 +99,42 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   -|-
   postgres_mysql_fdw|latest
   postgres_mysql_fdw|17.0_fdw2.9.2
+  postgres_mysql_fdw|16.5_fdw2.9.1
   postgres_mysql_fdw|16.4_fdw2.9.1
   postgres_mysql_fdw|16.3_fdw2.9.1
   postgres_mysql_fdw|16.2_fdw2.9.1
   postgres_mysql_fdw|15.2_fdw2.9.0
-
-  Image|Tag
   -|-
   postgres_sqlite_fdw|latest
   postgres_sqlite_fdw|16.3_fdw2.4.0
   postgres_sqlite_fdw|16.2_fdw2.4.0
   postgres_sqlite_fdw|15.2_fdw2.3.0
-
-  Image|Tag
   -|-
   postgres_oracle_fdw|latest
   postgres_oracle_fdw|16.3_fdw2.6.0
   postgres_oracle_fdw|16.2_fdw2.6.0
   postgres_oracle_fdw|15.2_fdw2.5.0
-
-  Image|Tag
   -|-
   postgres_mssql_fdw|latest
   postgres_mssql_fdw|16.3_fdw2.0.3 (from master branch)
   postgres_mssql_fdw|16.2_fdw2.0.3 (from master branch)
   postgres_mssql_fdw|15.2_fdw2.0.3
-
-  Image|Tag
   -|-
   postgres_tds_fdw|latest
   postgres_tds_fdw|16.3_fdw2.0.3 (from master branch)
   postgres_tds_fdw|16.2_fdw2.0.3 (from master branch)
   postgres_tds_fdw|15.2_fdw2.0.3
-
-  Image|Tag
   -|-
   postgres_mongo_fdw|latest
   postgres_mongo_fdw|17.0_fdw5.5.2
+  postgres_mongo_fdw|16.5_fdw5.5.1
   postgres_mongo_fdw|16.3_fdw5.5.1
   postgres_mongo_fdw|16.2_fdw5.5.1
   postgres_mongo_fdw|15.2_fdw5.5.0
-
-  Image|Tag
   -|-
   postgres_redis_fdw|latest
   postgres_redis_fdw|16.3_fdw16.3.0
   postgres_redis_fdw|16.2_fdw16.2.0
-
-  Image|Tag
   -|-
   postgres_jdbc_fdw|latest
   postgres_jdbc_fdw|16.3_fdw0.4.0
@@ -154,7 +142,8 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
 
   Image|Tag|DuckDB lib version
   -|-|-
-  postgres_duckdb_fdw|latest|1.0.0
+  postgres_duckdb_fdw|latest|1.1.3
+  postgres_duckdb_fdw|17.0_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|16.3_fdw1.0.0|1.0.0
   postgres_duckdb_fdw|16.2_fdw1.0.0|1.0.0
   postgres_duckdb_fdw|16.2_fdw2.1.1|0.10.2
@@ -310,6 +299,7 @@ Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 postgres|17.0|434|0|0
 postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
 postgres_mongo_fdw|17.0_fdw5.5.2|441|7|1.6
+postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
 -|-|-|-|-
 postgres|16.5|432|0|0
 postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
