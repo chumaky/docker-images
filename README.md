@@ -144,6 +144,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   -|-|-
   postgres_duckdb_fdw|latest|1.1.3
   postgres_duckdb_fdw|17.0_fdw1.1.2|1.1.3
+  postgres_duckdb_fdw|16.5_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|16.3_fdw1.0.0|1.0.0
   postgres_duckdb_fdw|16.2_fdw1.0.0|1.0.0
   postgres_duckdb_fdw|16.2_fdw2.1.1|0.10.2
@@ -304,6 +305,7 @@ postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
 postgres|16.5|432|0|0
 postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
 postgres_mongo_fdw|16.5_fdw5.5.1|437|5|1.2
+postgres_duckdb_fdw|16.5_fdw1.1.2|495|63|14.6
 -|-|-|-|-
 postgres|16.4|432|0|0
 postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5

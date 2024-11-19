@@ -1,45 +1,54 @@
-ARG base_tag=16.3
-FROM postgres:${base_tag}
-
+ARG base_tag=16.5
 ARG pg_version=16
-ARG fdw_version=1.0.0
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
+ARG fdw_version=1.1.2
+ARG duckdb_version=1.1.3
 
 # must be *.zip resource
-ARG fdw_url=https://github.com/alitrack/duckdb_fdw/archive/refs/tags/v1.0.0.zip
-ARG duckdb_lib_url=https://github.com/duckdb/duckdb/releases/download/v1.0.0/libduckdb-linux-amd64.zip
-            
+ARG fdw_url=https://github.com/alitrack/duckdb_fdw/archive/refs/tags/v${fdw_version}.zip
+ARG duckdb_lib_url=https://github.com/duckdb/duckdb/releases/download/v${duckdb_version}/libduckdb-linux-amd64.zip
+
 ARG source_files=/tmp/duckdb_fdw
-ARG source_root=duckdb_fdw-1.0.0
+ARG source_root=duckdb_fdw-${fdw_version}
 
 RUN apt-get update;
 
     # compilation deps
 RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
     make gcc g++ \
-    postgresql-server-dev-${pg_version}; \
-    # duckdb_fdw 
-    rm -rf ${source_files}; \
-    mkdir -p ${source_files}; \
-    wget -O sources.zip ${fdw_url}; \
-    unzip sources.zip -d ${source_files}; \
-    rm sources.zip; \
-    cd ${source_files}/${source_root}; \
+    postgresql-server-dev-${pg_version} && \
+    # duckdb_fdw
+    rm -rf ${source_files} && \
+    mkdir -p ${source_files} && \
+    wget -O sources.zip ${fdw_url} && \
+    unzip sources.zip -d ${source_files} && \
+    rm sources.zip && \
+    cd ${source_files}/${source_root} && \
     # duckdb lib
     # it must be extracted into the same directory as duckdb_fdw source files
     # compilation process requires duckdb.h and duckdb.hpp files to be in the same directory
     # as the duckdb_fdw source files
-    wget -O sources.zip ${duckdb_lib_url}; \
-    unzip sources.zip -d .; \
-    # it's also required to copy the libduckdb.so to the postgresql lib directory
-    cp ./libduckdb.so $(pg_config --libdir); \
-    rm sources.zip; \
+    wget -O sources.zip ${duckdb_lib_url} && \
+    unzip -o sources.zip -d . && \
+    # runtime deps
+    cp ./libduckdb.so $(pg_config --libdir) && \
+    rm sources.zip && \
     # install
-    make USE_PGXS=1; \
-    make USE_PGXS=1 install; \
-    # cleanup
-    apt-get purge -y --auto-remove wget unzip ca-certificates \
-    make gcc g++ \
-    postgresql-server-dev-${pg_version}; \
-    cd -; \
-    rm -rf ${source_files}; \
-    rm -rf /var/lib/apt/lists/*;
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install;
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+COPY --from=build ${extdir}/duckdb_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/duckdb_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/libduckdb.so ${libdir}/
