@@ -3,7 +3,7 @@ Postgres database images with different foreign data wrapper (FDW) extensions in
 Individual images with single FDW installed are used as a building blocks for the all inclusive image which contains all FDWs.
 Multiple FDWs allow to access data from different by nature datasources within single `SELECT` statement.
 
-In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard. 
+In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard.
 In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
 
 > ## LATEST UPDATES
@@ -106,11 +106,13 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_mysql_fdw|15.2_fdw2.9.0
   -|-
   postgres_sqlite_fdw|latest
+  postgres_sqlite_fdw|16.5_fdw2.4.0
   postgres_sqlite_fdw|16.3_fdw2.4.0
   postgres_sqlite_fdw|16.2_fdw2.4.0
   postgres_sqlite_fdw|15.2_fdw2.3.0
   -|-
   postgres_oracle_fdw|latest
+  postgres_oracle_fdw|17.1_fdw2.7.0
   postgres_oracle_fdw|16.3_fdw2.6.0
   postgres_oracle_fdw|16.2_fdw2.6.0
   postgres_oracle_fdw|15.2_fdw2.5.0
@@ -286,11 +288,12 @@ But it wasn't cleanup everything.
 Hence, added size is not 100% consisted of actual compiled FDW binaries.
 
 The FDW images that blows up in size the most are `postgres_jdbc_fdw` and `postgres_oracle_fdw`.
-The `postgres_jdbc_fdw` image requires JRE to be installed. 
-This is the main reason for the size increase. 
+The `postgres_jdbc_fdw` image requires JRE to be installed.
+This is the main reason for the size increase.
 
-As for `postgres_oracle_fdw`, it requires oracle client to be present on the host machine.
-The most minimal in size oracle client is _basic lite_ instant client. But even it takes `155` MB which is added to the image size.
+As for the `postgres_oracle_fdw`, it requires oracle client to be present on the host machine.
+The most minimal by size oracle client is _basic lite_ instant client.
+But even it is `155` MB in size.
 Another `10` MB is added by the `sdk` folder. This results in `165` MB of additional size.
 There is no information which components of oracle client are actually used by the FDW.
 Hence, we have to include the whole client.
