@@ -310,6 +310,7 @@ postgres_mongo_fdw|17.0_fdw5.5.2|441|7|1.6
 postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
 -|-|-|-|-
 postgres|16.5|432|0|0
+postgres_sqlite_fdw|16.5_fdw2.4.0|434|2|0.5
 postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
 postgres_mongo_fdw|16.5_fdw5.5.1|437|5|1.2
 postgres_duckdb_fdw|16.5_fdw1.1.2|495|63|14.6
