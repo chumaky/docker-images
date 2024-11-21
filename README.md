@@ -288,14 +288,21 @@ Hence, added size is not 100% consisted of actual compiled FDW binaries.
 The FDW images that blows up in size the most are `postgres_jdbc_fdw` and `postgres_oracle_fdw`.
 The `postgres_jdbc_fdw` image requires JRE to be installed. 
 This is the main reason for the size increase. 
+
 As for `postgres_oracle_fdw`, it requires oracle client to be present on the host machine.
-The most minimal in size oracle client is _basic_ instant client. But even it adds 81 MB to the image size.
+The most minimal in size oracle client is _basic lite_ instant client. But even it takes `155` MB which is added to the image size.
+Another `10` MB is added by the `sdk` folder. This results in `165` MB of additional size.
+There is no information which components of oracle client are actually used by the FDW.
+Hence, we have to include the whole client.
 
 Currently, `datero_engine` image contains all FDWs except `postgres_jdbc_fdw`.
 The `jdbc_fdw` connector capabilities are under investigation.
 Once it will be proved that it is stable and reliable, it will be included into the `datero_engine` image as well.
 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|17.1|435|0|0
+postgres_oracle_fdw|17.1_fdw2.7.0|601|166|38
 -|-|-|-|-
 postgres|17.0|434|0|0
 postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7

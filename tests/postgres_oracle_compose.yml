@@ -8,16 +8,17 @@ services:
       - 1521:1521
     volumes:
       - "./sql/oracle_setup.sql:/opt/oracle/scripts/startup/oracle_setup.sql"
-    #healthcheck:
-    #  test: ["CMD", "sqlplus", "pdbadmin/admin@//localhost:1521/xepdb1"]
-    #  start_period: 5s
-    #  interval: 10s
-    #  timeout: 5s
-    #  retries: 3
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT COUNT(*) FROM users; exit;' | sqlplus hr/hr@//localhost:1521/xepdb1"]
+      interval: 1m
+      timeout: 5s
+      start_interval: 2s
+      start_period: 10s
+      retries: 3
 
 
   postgres:
-    image: docker.io/chumaky/postgres_oracle_fdw:16.3_fdw2.6.0
+    image: docker.io/chumaky/postgres_oracle_fdw:latest
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
