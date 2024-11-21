@@ -51,7 +51,9 @@ RUN apt-get update && \
     cd ${SOURCE_FILES} && \
     # install
     make && \
-    make install;
+    make install && \
+    # delete sdk folder
+    rm -rf ${ORACLE_HOME}/sdk;
 
 # final stage
 FROM docker.io/postgres:${base_tag}

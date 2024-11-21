@@ -302,7 +302,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 -|-|-|-|-
 postgres|17.1|435|0|0
-postgres_oracle_fdw|17.1_fdw2.7.0|601|166|38
+postgres_oracle_fdw|17.1_fdw2.7.0|597|162|37
 -|-|-|-|-
 postgres|17.0|434|0|0
 postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
