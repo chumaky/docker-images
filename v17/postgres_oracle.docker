@@ -1,4 +1,4 @@
-ARG base_tag=17.1
+ARG base_tag=17.2
 ARG pg_version=17
 
 ARG ORACLE_HOME=/usr/lib/oracle/client

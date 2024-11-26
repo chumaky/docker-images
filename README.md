@@ -112,6 +112,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_sqlite_fdw|15.2_fdw2.3.0
   -|-
   postgres_oracle_fdw|latest
+  postgres_oracle_fdw|17.2_fdw2.7.0
   postgres_oracle_fdw|17.1_fdw2.7.0
   postgres_oracle_fdw|16.6_fdw2.7.0
   postgres_oracle_fdw|16.3_fdw2.6.0
@@ -304,6 +305,9 @@ The `jdbc_fdw` connector capabilities are under investigation.
 Once it will be proved that it is stable and reliable, it will be included into the `datero_engine` image as well.
 
 Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+-|-|-|-|-
+postgres|17.2|435|0|0
+postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
 -|-|-|-|-
 postgres|17.1|435|0|0
 postgres_oracle_fdw|17.1_fdw2.7.0|597|162|37
