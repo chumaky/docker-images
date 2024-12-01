@@ -108,6 +108,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_mysql_fdw|15.2_fdw2.9.0
   -|-
   postgres_sqlite_fdw|latest
+  postgres_sqlite_fdw|16.6_fdw2.4.0
   postgres_sqlite_fdw|16.5_fdw2.4.0
   postgres_sqlite_fdw|16.3_fdw2.4.0
   postgres_sqlite_fdw|16.2_fdw2.4.0
@@ -310,50 +311,53 @@ Currently, `datero_engine` image contains all FDWs except `postgres_jdbc_fdw`.
 The `jdbc_fdw` connector capabilities are under investigation.
 Once it will be proved that it is stable and reliable, it will be included into the `datero_engine` image as well.
 
-Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
--|-|-|-|-
-postgres|17.2|435|0|0
-postgres_mysql_fdw|17.2_fdw2.9.2|437|2|0.6
-postgres_mongo_fdw|17.2_fdw5.5.2|442|7|1.6
-postgres_duckdb_fdw|17.2_fdw1.1.2|498|63|14.5
-postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
--|-|-|-|-
-postgres|17.1|435|0|0
-postgres_oracle_fdw|17.1_fdw2.7.0|597|162|37
--|-|-|-|-
-postgres|17.0|434|0|0
-postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
-postgres_mongo_fdw|17.0_fdw5.5.2|441|7|1.6
-postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
--|-|-|-|-
-postgres|16.6|432|0|0
-postgres_sqlite_fdw|16.6_fdw2.4.0|434|2|0.5
-postgres_mysql_fdw|16.6_fdw2.9.1|435|3|0.7
-postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2
-postgres_duckdb_fdw|16.6_fdw1.1.2|495|63|14.6
-postgres_oracle_fdw|16.6_fdw2.7.0|595|163|38
--|-|-|-|-
-postgres|16.5|432|0|0
-postgres_sqlite_fdw|16.5_fdw2.4.0|434|2|0.5
-postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
-postgres_mongo_fdw|16.5_fdw5.5.1|437|5|1.2
-postgres_duckdb_fdw|16.5_fdw1.1.2|495|63|14.6
--|-|-|-|-
-postgres|16.4|432|0|0
-postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5
--|-|-|-|-
-postgres|16.3|432|0|0
-postgres_tds_fdw|16.3_fdw2.0.3|455|23|5
-postgres_redis_fdw|16.3_fdw16.3.0|455|23|5
-postgres_mongo_fdw|16.3_fdw5.5.1|468|36|8
-postgres_sqlite_fdw|16.3_fdw2.4.0|478|46|11
-postgres_mysql_fdw|16.3_fdw2.9.1|489|57|13
-postgres_duckdb_fdw|16.3_fdw1.0.0|513|81|19
-postgres_oracle_fdw|16.3_fdw2.6.0|617|185|43
-postgres_jdbc_fdw|16.3_fdw0.4.0|882|450|104
--|-|-|-|-
-datero_engine|16.3|676|244|56
+<details>
+  <summary>Click to expand...</summary>
 
+  Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
+  -|-|-|-|-
+  postgres|17.2|435|0|0
+  postgres_mysql_fdw|17.2_fdw2.9.2|437|2|0.6
+  postgres_mongo_fdw|17.2_fdw5.5.2|442|7|1.6
+  postgres_duckdb_fdw|17.2_fdw1.1.2|498|63|14.5
+  postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
+  -|-|-|-|-
+  postgres|17.1|435|0|0
+  postgres_oracle_fdw|17.1_fdw2.7.0|597|162|37
+  -|-|-|-|-
+  postgres|17.0|434|0|0
+  postgres_mysql_fdw|17.0_fdw2.9.2|437|3|0.7
+  postgres_mongo_fdw|17.0_fdw5.5.2|441|7|1.6
+  postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
+  -|-|-|-|-
+  postgres|16.6|432|0|0
+  postgres_sqlite_fdw|16.6_fdw2.4.0|434|2|0.5
+  postgres_mysql_fdw|16.6_fdw2.9.1|435|3|0.7
+  postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2
+  postgres_duckdb_fdw|16.6_fdw1.1.2|495|63|14.6
+  postgres_oracle_fdw|16.6_fdw2.7.0|595|163|38
+  -|-|-|-|-
+  postgres|16.5|432|0|0
+  postgres_sqlite_fdw|16.5_fdw2.4.0|434|2|0.5
+  postgres_mysql_fdw|16.5_fdw2.9.1|435|3|0.7
+  postgres_mongo_fdw|16.5_fdw5.5.1|437|5|1.2
+  postgres_duckdb_fdw|16.5_fdw1.1.2|495|63|14.6
+  -|-|-|-|-
+  postgres|16.4|432|0|0
+  postgres_mysql_fdw|16.4_fdw2.9.1|434|2|0.5
+  -|-|-|-|-
+  postgres|16.3|432|0|0
+  postgres_tds_fdw|16.3_fdw2.0.3|455|23|5
+  postgres_redis_fdw|16.3_fdw16.3.0|455|23|5
+  postgres_mongo_fdw|16.3_fdw5.5.1|468|36|8
+  postgres_sqlite_fdw|16.3_fdw2.4.0|478|46|11
+  postgres_mysql_fdw|16.3_fdw2.9.1|489|57|13
+  postgres_duckdb_fdw|16.3_fdw1.0.0|513|81|19
+  postgres_oracle_fdw|16.3_fdw2.6.0|617|185|43
+  postgres_jdbc_fdw|16.3_fdw0.4.0|882|450|104
+  -|-|-|-|-
+  datero_engine|16.3|676|244|56
+</details>
 
 ## Contribution
 Any contribution is highly welcomed.
