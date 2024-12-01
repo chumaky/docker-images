@@ -1,4 +1,4 @@
-ARG base_tag=16.5
+ARG base_tag=16.6
 ARG pg_version=16
 
 # build stage
