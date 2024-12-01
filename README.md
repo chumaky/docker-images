@@ -151,7 +151,9 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   Image|Tag|DuckDB lib version
   -|-|-
   postgres_duckdb_fdw|latest|1.1.3
+  postgres_duckdb_fdw|17.2_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|17.0_fdw1.1.2|1.1.3
+  postgres_duckdb_fdw|16.6_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|16.5_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|16.3_fdw1.0.0|1.0.0
   postgres_duckdb_fdw|16.2_fdw1.0.0|1.0.0
@@ -313,6 +315,7 @@ Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
 postgres|17.2|435|0|0
 postgres_mysql_fdw|17.2_fdw2.9.2|437|2|0.6
 postgres_mongo_fdw|17.2_fdw5.5.2|442|7|1.6
+postgres_duckdb_fdw|17.2_fdw1.1.2|498|63|14.5
 postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
 -|-|-|-|-
 postgres|17.1|435|0|0
@@ -326,6 +329,7 @@ postgres_duckdb_fdw|17.0_fdw1.1.2|497|63|14.5
 postgres|16.6|432|0|0
 postgres_mysql_fdw|16.6_fdw2.9.1|435|3|0.7
 postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2
+postgres_duckdb_fdw|16.6_fdw1.1.2|495|63|14.6
 postgres_oracle_fdw|16.6_fdw2.7.0|595|163|38
 -|-|-|-|-
 postgres|16.5|432|0|0
