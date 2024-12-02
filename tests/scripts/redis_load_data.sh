@@ -5,5 +5,5 @@ sleep 10
 
 # Load data into Redis
 redis-cli -h redis hset users:1 id 1 name John
-redis-cli -h redis hset users:2 id 2 name Sarah
-redis-cli -h redis hset users:3 id 3 name T-800
+redis-cli -h redis hset users:2 id 2 name Mary
+redis-cli -h redis hset users:3 id 3 name Peter

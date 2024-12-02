@@ -1,5 +1,5 @@
-ARG base_tag=16.6
-ARG pg_version=16
+ARG base_tag=17.2
+ARG pg_version=17
 
 # build stage
 FROM docker.io/postgres:${base_tag} AS build
