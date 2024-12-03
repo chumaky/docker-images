@@ -14,7 +14,7 @@ CREATE USER MAPPING FOR postgres SERVER mongo OPTIONS (username 'root', password
 CREATE SCHEMA mongo;
 
 CREATE SERVER mssql FOREIGN DATA WRAPPER tds_fdw OPTIONS (servername 'mssql', port '1433', database 'test');
-CREATE USER MAPPING FOR postgres SERVER mssql OPTIONS (username 'sa', password 'mssql_2019');
+CREATE USER MAPPING FOR postgres SERVER mssql OPTIONS (username 'sa', password 'Mssql_2019');
 CREATE SCHEMA mssql;
 
 CREATE SERVER sqlite FOREIGN DATA WRAPPER sqlite_fdw OPTIONS (database '/tmp/sqlite.db');

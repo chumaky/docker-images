@@ -4,7 +4,7 @@ services:
     container_name: mms_mssql
     environment:
       ACCEPT_EULA: Y
-      SA_PASSWORD: mssql_2019
+      SA_PASSWORD: Mssql_2019
     ports:
       - 1433:1433
 

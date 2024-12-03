@@ -4,7 +4,7 @@ services:
     container_name: mssql
     environment:
       ACCEPT_EULA: Y
-      MSSQL_SA_PASSWORD: mssql_2019
+      MSSQL_SA_PASSWORD: Mssql_2019
     ports:
       - 1433:1433
     entrypoint:
@@ -15,7 +15,7 @@ services:
       - ./scripts/mssql_entrypoint.sh:/usr/config/entrypoint.sh
 
   postgres:
-    image: docker.io/chumaky/postgres_mssql_fdw:16.3_fdw2.0.3
+    image: docker.io/chumaky/postgres_tds_fdw:latest
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres

@@ -60,7 +60,7 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v16/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v16/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_mssql_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
 [redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
 [jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
 [duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v16/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
@@ -122,12 +122,13 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_oracle_fdw|16.2_fdw2.6.0
   postgres_oracle_fdw|15.2_fdw2.5.0
   -|-
-  postgres_mssql_fdw|latest
+  postgres_mssql_fdw|latest (DEPRECATED. Use `postgres_tds_fdw` instead)
   postgres_mssql_fdw|16.3_fdw2.0.3 (from master branch)
   postgres_mssql_fdw|16.2_fdw2.0.3 (from master branch)
   postgres_mssql_fdw|15.2_fdw2.0.3
   -|-
   postgres_tds_fdw|latest
+  postgres_tds_fdw|16.6_fdw2.0.4
   postgres_tds_fdw|16.3_fdw2.0.3 (from master branch)
   postgres_tds_fdw|16.2_fdw2.0.3 (from master branch)
   postgres_tds_fdw|15.2_fdw2.0.3
@@ -335,6 +336,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
   -|-|-|-|-
   postgres|16.6|432|0|0
   postgres_redis_fdw|16.6_fdw16.6.0|433|1|0.2
+  postgres_tds_fdw|16.6_fdw2.0.4|433|1|0.2
   postgres_sqlite_fdw|16.6_fdw2.4.0|434|2|0.5
   postgres_mysql_fdw|16.6_fdw2.9.1|435|3|0.7
   postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2

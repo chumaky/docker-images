@@ -11,7 +11,7 @@ i=0
 
 while { [[ $DBSTATUS -ne 0 ]] || [[ $ERRCODE -ne 0 ]]; } && [[ $i -lt 60 ]]; do
   i=$((i+1))
-  OUTPUT=$(/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P $MSSQL_SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
+  OUTPUT=$(/opt/mssql-tools18/bin/sqlcmd -h -1 -t 1 -No -U sa -P $MSSQL_SA_PASSWORD -Q "SET NOCOUNT ON; Select SUM(state) from sys.databases")
   echo "OUTPUT: $OUTPUT"  # Print the output of sqlcmd
   ERRCODE=$?
   DBSTATUS=$(echo $OUTPUT | xargs)  # This will trim the spaces
@@ -26,4 +26,4 @@ if [[ $DBSTATUS -ne 0 ]] || [[ $ERRCODE -ne 0 ]]; then
 fi
 
 # Run the setup script to create the DB and the schema in the DB
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.sql
+/opt/mssql-tools18/bin/sqlcmd -S localhost -No -U sa -P $MSSQL_SA_PASSWORD -d master -i /usr/config/setup.sql
