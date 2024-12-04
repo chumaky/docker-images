@@ -6,13 +6,6 @@ Multiple FDWs allow to access data from different by nature datasources within s
 In terms of classical definitions, it turns `postgres` into a [federated database system](https://en.wikipedia.org/wiki/Federated_database_system) which implements [SQL/MED](https://en.wikipedia.org/wiki/SQL/MED) extension of `SQL` standard.
 In more modern terms, it implements [data virtualization](https://en.wikipedia.org/wiki/Data_virtualization) feature.
 
-> ## LATEST UPDATES
-> With introduced recently [postgres_jdbc_fdw](#individual-fdw-images) image it's possible to connect to any datasource which has `JDBC` driver available.
-This opens doors to almost any datasource from `postgres` database!
->
-> Latest addition of [postgres_duckdb_fdw](#individual-fdw-images) enables connectivity to the awesome [DuckDB](https://duckdb.org/) database.
-It in turn allows to query JSON, Excel, Parquet, and many other file types with SQL.
-
 This approach is implemented in [Datero](https://datero.tech) data platform.
 It's built on top of `postgres` database image with multiple `FDWs` isntalled.
 It also provides GUI for setting up datasource connections and `SQL` editor.
@@ -51,8 +44,13 @@ All you have to do is enable corresponding extensions, put your credentials to t
 
 
 ## Individual FDW images
-> Addition of `postgres_jdbc_fdw` image opens doors to any data source which has `JDBC` driver available.
-Which is pretty much any database!
+> ### Latest Updates
+> With introduced recently [postgres_jdbc_fdw](#individual-fdw-images) image it's possible to connect to any datasource which has `JDBC` driver available.
+This opens doors to almost any datasource from `postgres` database!
+>
+> Latest addition of [postgres_duckdb_fdw](#individual-fdw-images) enables connectivity to the awesome [DuckDB](https://duckdb.org/) database.
+It in turn allows to query JSON, Excel, Parquet, and many other file types with SQL.
+
 
 FDW official repo|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
@@ -60,7 +58,7 @@ FDW official repo|Image|Dockerfile|Demo compose/schell script
 [oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v16/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v16/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_mssql_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_tds_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
 [redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
 [jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
 [duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v16/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
@@ -204,8 +202,6 @@ That view will be joining data from foreign tables which are pointed to differen
 ### Available image tags
 Tag naming pattern corresponds one to one to the official postgres tags.
 
-> Please check **Tags** tab at Docker hub to see custom tags available.
-
 Image|Tag|Postgres
 -|-|-
 datero_engine|latest|16.3
@@ -258,32 +254,37 @@ They are part of the official postgres distribution.
 
 
 ## Image building
-Build image tagged as `postgres_mysql` and launch `pg_fdw_test` container from it
-```sh
-$ docker build -t postgres_mysql -f postgres_mysql.docker
+<details>
+  <summary>Click to expand...</summary>
 
-$ docker run -d --name pg_fdw_test -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres_mysql
-6d6beb18e5b7036c058b2160bb9b57adf9011301658217abf67bea64471f5056
+  Build image tagged as `postgres_mysql` and launch `pg_fdw_test` container from it
+  ```sh
+  $ docker build -t postgres_mysql -f postgres_mysql.docker
 
-$ docker ps
-CONTAINER ID  IMAGE                            COMMAND   CREATED        STATUS            PORTS                   NAMES
-6d6beb18e5b7  localhost/postgres_mysql:latest  postgres  4 seconds ago  Up 4 seconds ago  0.0.0.0:5432->5432/tcp  pg_fdw_test
-```
+  $ docker run -d --name pg_fdw_test -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres_mysql
+  6d6beb18e5b7036c058b2160bb9b57adf9011301658217abf67bea64471f5056
 
-Login into the database and check that `mysql_fdw` is available for installation
-```sh
-$ docker exec -it pg_fdw_test psql postgres postgres
-```
-```sql
-psql (12.4)
-Type "help" for help.
+  $ docker ps
+  CONTAINER ID  IMAGE                            COMMAND   CREATED        STATUS            PORTS                   NAMES
+  6d6beb18e5b7  localhost/postgres_mysql:latest  postgres  4 seconds ago  Up 4 seconds ago  0.0.0.0:5432->5432/tcp  pg_fdw_test
+  ```
 
-postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
-   name    | default_version | installed_version |                     comment
------------+-----------------+-------------------+--------------------------------------------------
- mysql_fdw | 1.1             |                   | Foreign data wrapper for querying a MySQL server
-(1 row)
-```
+  Login into the database and check that `mysql_fdw` is available for installation
+  ```sh
+  $ docker exec -it pg_fdw_test psql postgres postgres
+  ```
+  ```sql
+  psql (12.4)
+  Type "help" for help.
+
+  postgres=# select * from pg_available_extensions where name = 'mysql_fdw';
+    name    | default_version | installed_version |                     comment
+  -----------+-----------------+-------------------+--------------------------------------------------
+  mysql_fdw | 1.1             |                   | Foreign data wrapper for querying a MySQL server
+  (1 row)
+  ```
+</details>
+
 
 ## Image sizing
 Table below shows additional size of the _decompressed_ images compared to the official postgres image.

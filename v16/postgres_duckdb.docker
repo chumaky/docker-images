@@ -15,10 +15,9 @@ ARG duckdb_lib_url=https://github.com/duckdb/duckdb/releases/download/v${duckdb_
 ARG source_files=/tmp/duckdb_fdw
 ARG source_root=duckdb_fdw-${fdw_version}
 
-RUN apt-get update;
-
+RUN apt-get update && \
     # compilation deps
-RUN apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    apt-get install -y --no-install-recommends wget unzip ca-certificates \
     make gcc g++ \
     postgresql-server-dev-${pg_version} && \
     # duckdb_fdw
