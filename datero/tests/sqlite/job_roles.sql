@@ -1,3 +1,4 @@
+drop table if exists job_roles;
 create table job_roles(id int primary key, name text, department_id int);
 
 insert
@@ -7,4 +8,4 @@ values (1, 'owner', 1)
      , (3, 'salesman', 3)
 ;
 
--- database file is created via "sqlite3 sqlite_job_roles.db < sqlite_job_roles.sql" command
+-- database file is created via "sqlite3 job_roles.db < job_roles.sql" command

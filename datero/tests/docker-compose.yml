@@ -76,6 +76,13 @@ services:
       - 5500:5500   # Enterprise Manager GUI
     volumes:
       - ./oracle/customer_profiles.sql:/docker-entrypoint-initdb.d/startup/oracle_setup.sql
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT COUNT(*) FROM customer_profiles; exit;' | sqlplus oracle/oracle@//localhost:1521/xepdb1"]
+      interval: 1m
+      timeout: 5s
+      start_interval: 2s
+      start_period: 15s
+      retries: 3
 
   datero:
     image: docker.io/chumaky/datero_engine:16.6
@@ -89,7 +96,7 @@ services:
       - 80:80
     volumes:
       # sqlite_fdw
-      - ./sqlite/job_roles.db:/data/job_roles.db
+      - ./sqlite:/data/sqlite
       # file_fdw
       - ./csv/departments.csv:/data/departments.csv
       # duckdb_fdw
@@ -104,9 +111,15 @@ services:
       # and run `datero_setup.sql` after that
       # - ./datero_setup.sql:/docker-entrypoint-initdb.d/datero_setup.sql         
     depends_on:
-      - mysql
-      - postgres
-      - mongo
-      - mssql
-      - oracle
-      - redis
+      mysql:
+        condition: service_started
+      postgres:
+        condition: service_started
+      mongo:
+        condition: service_started
+      mssql:
+        condition: service_started
+      oracle:
+        condition: service_healthy
+      redis:
+        condition: service_started
