@@ -204,7 +204,8 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 
 Image|Tag|Postgres
 -|-|-
-datero_engine|latest|16.3
+datero_engine|latest|16.6
+datero_engine|16.6|16.6
 datero_engine|16.3|16.3
 datero_engine|16.2|16.2
 datero_engine|15.2|15.2
@@ -222,6 +223,14 @@ They are part of the official postgres distribution.
   <summary>Click to expand...</summary>
 
   Datero|Postgres|FDW|Version
+  -|-|-|-
+  16.6|16.6|mysql_fdw|2.9.1
+  16.6|16.6|oracle_fdw|2.7.0
+  16.6|16.6|sqlite_fdw|2.4.0
+  16.6|16.6|mongo_fdw|5.5.1
+  16.6|16.6|tds_fdw|2.0.4
+  16.6|16.6|redis_fdw|16.6.0 (REL_16_STABLE branch)
+  16.6|16.6|duckdb_fdw|1.1.2
   -|-|-|-
   16.3|16.3|mysql_fdw|2.9.1
   16.3|16.3|oracle_fdw|2.6.0
@@ -343,6 +352,8 @@ Once it will be proved that it is stable and reliable, it will be included into 
   postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2
   postgres_duckdb_fdw|16.6_fdw1.1.2|495|63|14.6
   postgres_oracle_fdw|16.6_fdw2.7.0|595|163|38
+  -|-|-|-|-
+  datero_engine|16.6|666|234|54
   -|-|-|-|-
   postgres|16.5|432|0|0
   postgres_sqlite_fdw|16.5_fdw2.4.0|434|2|0.5
