@@ -27,6 +27,9 @@ RUN apt-get update && \
 # final stage
 FROM docker.io/postgres:${base_tag}
 
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with mysql_fdw foreign data wrapper extension installed."
+
 ARG pg_version
 ARG extdir=/usr/share/postgresql/${pg_version}/extension
 ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
@@ -34,5 +37,5 @@ ARG libdir=/usr/lib/x86_64-linux-gnu
 
 COPY --from=build ${extdir}/mysql_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/mysql_fdw.so ${extlibdir}/
-COPY --from=build ${libdir}/*mysql* ${libdir}/
+COPY --from=build ${libdir}/libmysqlclient.so ${libdir}/libmysqlclient_r.so ${libdir}/
 COPY --from=build ${libdir}/libmariadb3/ ${libdir}/libmariadb3/

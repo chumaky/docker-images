@@ -294,7 +294,7 @@ Starting from 16.4 Postgres version there is multi-stage build introduced for do
 Now, FDW compilation is happening in the first stage and only binaries are copied to the final image.
 This allows greatly reduce the final image size.
 Now it differs only by the size of the FDW binaries themselves.
-For example, `postgres_mysql_fdw` image size is only 3 MB bigger than the official `postgres` image.
+For example, `postgres_mysql_fdw` image size is only 1 MB bigger than the official `postgres` image.
 
 For the 16.3 Postgres version and below there were cleanup commands executed after the compilation to minimize the image size.
 But it wasn't cleanup everything.
@@ -322,7 +322,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
   -|-|-|-|-
   postgres|17.2|435|0|0
   postgres_redis_fdw|17.2_fdw17.2.0|435|0|0
-  postgres_mysql_fdw|17.2_fdw2.9.2|437|2|0.6
+  postgres_mysql_fdw|17.2_fdw2.9.2|436|1|0.2
   postgres_mongo_fdw|17.2_fdw5.5.2|442|7|1.6
   postgres_duckdb_fdw|17.2_fdw1.1.2|498|63|14.5
   postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
@@ -339,7 +339,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
   postgres_redis_fdw|16.6_fdw16.6.0|433|1|0.2
   postgres_tds_fdw|16.6_fdw2.0.4|433|1|0.2
   postgres_sqlite_fdw|16.6_fdw2.4.0|434|2|0.5
-  postgres_mysql_fdw|16.6_fdw2.9.1|435|3|0.7
+  postgres_mysql_fdw|16.6_fdw2.9.1|434|2|0.5
   postgres_mongo_fdw|16.6_fdw5.5.1|437|5|1.2
   postgres_duckdb_fdw|16.6_fdw1.1.2|495|63|14.6
   postgres_oracle_fdw|16.6_fdw2.7.0|595|163|38
