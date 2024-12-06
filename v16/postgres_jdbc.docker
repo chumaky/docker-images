@@ -1,35 +1,51 @@
-ARG base_tag=16.3
-FROM postgres:${base_tag}
+ARG base_tag=16.6
+ARG pg_version=16
+
+ARG JAVA_LIBS=/usr/lib/jvm/java-17-openjdk-amd64/lib/server
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
+ARG JAVA_LIBS
 
 ARG JDBC_FDW_VERSION=0.4.0
 ARG JDBC_FDW_URL=https://github.com/pgspider/jdbc_fdw/archive/refs/tags/v${JDBC_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=/tmp/jdbc_fdw
 
-RUN apt-get update;
-
-ARG JAVA_LIBS=/usr/lib/jvm/java-17-openjdk-amd64/lib/server
-
+RUN apt-get update && \
     # compilation deps
-RUN apt-get install -y --no-install-recommends wget ca-certificates \
+    apt-get install -y --no-install-recommends wget ca-certificates \
     default-jdk \
     make gcc \
-    postgresql-server-dev-16; \
+    postgresql-server-dev-${pg_version} && \
     # download JDBC_FDW source files
-    mkdir -p ${SOURCE_FILES}; \
-    wget -O - ${JDBC_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1; \
-    cd ${SOURCE_FILES}; \
+    mkdir -p ${SOURCE_FILES} && \
+    wget -O - ${JDBC_FDW_URL} | tar -zx -C ${SOURCE_FILES} --strip-components=1 && \
+    cd ${SOURCE_FILES} && \
     # compilation
-    ln -s ${JAVA_LIBS}/libjvm.so /usr/lib64/libjvm.so; \
-    make USE_PGXS=1; \
-    make USE_PGXS=1 install; \
-    # cleanup
-    apt-get purge -y --auto-remove wget ca-certificates \
-    make gcc \
-    postgresql-server-dev-16; \
-    # re-install JRE
-    apt-get install -y --no-install-recommends default-jre; \
-    rm -rf ${SOURCE_FILES}; \
-    rm -rf /var/lib/apt/lists/*;
-    
+    ln -s ${JAVA_LIBS}/libjvm.so /usr/lib64/libjvm.so && \
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install;
 
-ENV LD_LIBRARY_PATH=${JAVA_LIBS}:$LD_LIBRARY_PATH
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with jdbc_fdw foreign data wrapper extension installed."
+
+ARG pg_version
+ARG JAVA_LIBS
+
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+
+COPY --from=build ${extdir}/jdbc_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/jdbc_fdw.so ${extlibdir}/*.class ${extlibdir}/
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openjdk-17-jre-headless && \
+    rm -rf /var/lib/apt/lists/*;
+
+ENV LD_LIBRARY_PATH=${JAVA_LIBS}

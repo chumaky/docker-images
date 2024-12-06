@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: docker.io/chumaky/postgres_jdbc_fdw:16.3_fdw0.4.0
+    image: docker.io/chumaky/postgres_jdbc_fdw:latest
     container_name: postgres_jdbc_fdw
     environment:
       POSTGRES_PASSWORD: postgres
