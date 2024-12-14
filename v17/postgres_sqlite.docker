@@ -26,6 +26,9 @@ RUN apt-get update && \
 # final stage
 FROM docker.io/postgres:${base_tag}
 
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with sqlite_fdw foreign data wrapper extension installed."
+
 ARG pg_version
 ARG extdir=/usr/share/postgresql/${pg_version}/extension
 ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib

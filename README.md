@@ -54,14 +54,14 @@ It in turn allows to query JSON, Excel, Parquet, and many other file types with 
 
 FDW official repo|Image|Dockerfile|Demo compose/schell script
 -|-|-|-
-[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v16/postgres_mysql.docker)|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
-[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v16/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
-[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v16/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
-[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v16/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_tds_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_mssql.docker](v16/postgres_mssql.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
-[redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v16/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
+[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v17/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
+[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v17/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
+[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v17/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_tds_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_tds.docker](v17/postgres_tds.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+[redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v17/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
 [jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
-[duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v16/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
+[duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v17/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
 
 File naming pattern is as follow:
 - `postgres_<dbname>.docker`
@@ -173,7 +173,7 @@ It's a mix image which contains all supported FDW extensions available for insta
 
 Image|Dockerfile
 -|-
-[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v16.docker)
+[datero_engine](https://hub.docker.com/r/chumaky/datero_engine)|[datero_engine.docker](datero/datero_engine_v17.docker)
 
 Included FDWs:
 Data Source|FDW
@@ -207,7 +207,8 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 
 Image|Tag|Postgres
 -|-|-
-datero_engine|latest|16.6
+datero_engine|latest|17.2
+datero_engine|17.2|17.2
 datero_engine|16.6|16.6
 datero_engine|16.3|16.3
 datero_engine|16.2|16.2
@@ -226,6 +227,14 @@ They are part of the official postgres distribution.
   <summary>Click to expand...</summary>
 
   Datero|Postgres|FDW|Version
+  -|-|-|-
+  17.2|17.2|mysql_fdw|2.9.2
+  17.2|17.2|oracle_fdw|2.7.0
+  17.2|17.2|sqlite_fdw|2.5.0
+  17.2|17.2|mongo_fdw|5.5.2
+  17.2|17.2|tds_fdw|2.0.4
+  17.2|17.2|redis_fdw|17.2.0 (REL_17_STABLE branch)
+  17.2|17.2|duckdb_fdw|1.1.2
   -|-|-|-
   16.6|16.6|mysql_fdw|2.9.1
   16.6|16.6|oracle_fdw|2.7.0
@@ -337,9 +346,11 @@ Once it will be proved that it is stable and reliable, it will be included into 
   postgres_mysql_fdw|17.2_fdw2.9.2|436|1|0.2
   postgres_tds_fdw|17.2_fdw2.0.4|436|1|0.2
   postgres_sqlite_fdw|17.2_fdw2.5.0|437|2|0.5
-  postgres_mongo_fdw|17.2_fdw5.5.2|442|7|1.6
+  postgres_mongo_fdw|17.2_fdw5.5.2|439|4|0.9
   postgres_duckdb_fdw|17.2_fdw1.1.2|498|63|14.5
   postgres_oracle_fdw|17.2_fdw2.7.0|597|162|37
+  -|-|-|-|-
+  datero_engine|17.2|669|234|54
   -|-|-|-|-
   postgres|17.1|435|0|0
   postgres_oracle_fdw|17.1_fdw2.7.0|597|162|37

@@ -58,6 +58,9 @@ RUN apt-get update && \
 # final stage
 FROM docker.io/postgres:${base_tag}
 
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with oracle_fdw foreign data wrapper extension installed."
+
 ARG pg_version
 ARG ORACLE_HOME
 ARG extdir=/usr/share/postgresql/${pg_version}/extension
@@ -66,8 +69,8 @@ ARG libdir=/usr/lib/x86_64-linux-gnu
 
 # Set the environment variable using the ARG value
 ENV ORACLE_HOME=${ORACLE_HOME}
-ENV PATH $PATH:${ORACLE_HOME}
-ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:${ORACLE_HOME}
+ENV PATH=$PATH:${ORACLE_HOME}
+ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${ORACLE_HOME}
 
 COPY --from=build ${extdir}/oracle_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/oracle_fdw.so ${extlibdir}/

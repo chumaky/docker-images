@@ -11,7 +11,9 @@ ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_
 ARG SOURCE_FILES=/tmp/mongo_fdw
 
 ENV PKG_CONFIG_PATH=${SOURCE_FILES}/mongo-c-driver/src/libmongoc/src:${SOURCE_FILES}/mongo-c-driver/src/libbson/src
-ENV LD_LIBRARY_PATH=/usr/lib
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
+ENV MONGOC_INSTALL_DIR=${LD_LIBRARY_PATH}
+ENV JSONC_INSTALL_DIR=${LD_LIBRARY_PATH}
 
 RUN apt-get update && \
     # compilation deps
@@ -32,23 +34,27 @@ RUN apt-get update && \
 # final stage
 FROM docker.io/postgres:${base_tag}
 
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with mongo_fdw foreign data wrapper extension installed."
+
 ARG pg_version
 ARG extdir=/usr/share/postgresql/${pg_version}/extension
 ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
-ARG libdir=/usr/lib
-ARG libdir_gnu=/usr/lib/x86_64-linux-gnu
+ARG libdir=/usr/lib/x86_64-linux-gnu
 
 COPY --from=build ${extdir}/mongo_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/mongo_fdw.so ${extlibdir}/
-COPY --from=build ${libdir}/libmongoc-1.0.so.0.0.0 ${libdir}/libbson-1.0.so.0.0.0 ${libdir}/ 
-COPY --from=build ${libdir_gnu}/libmongocrypt.so.0.0.0 ${libdir_gnu}/libsnappy.so.1.1.9 ${libdir_gnu}/
+COPY --from=build ${libdir}/libmongoc-1.0.so.0.0.0 \
+                  ${libdir}/libbson-1.0.so.0.0.0 \
+                  ${libdir}/libmongocrypt.so.0.0.0 \
+                  ${libdir}/libsnappy.so.1.1.9 \
+                  ${libdir}/ 
 
 RUN cd ${libdir} && \
     ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0 && \
     ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so && \
     ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0 && \
     ln -sf libbson-1.0.so.0 libbson-1.0.so && \
-    cd ${libdir_gnu} && \
     ln -sf libmongocrypt.so.0.0.0 libmongocrypt.so.0 && \
     ln -sf libmongocrypt.so.0 libmongocrypt.so && \
     ln -sf libsnappy.so.1.1.9 libsnappy.so.1 && \

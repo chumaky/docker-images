@@ -1,0 +1,100 @@
+ARG base_tag=17.2
+ARG pg_version=17
+
+ARG mysql_tag=2.9.2
+ARG oracle_tag=2.7.0
+ARG tds_tag=2.0.4
+ARG mongo_tag=5.5.2
+ARG sqlite_tag=2.5.0
+ARG redis_tag=17.2.0
+ARG duckdb_tag=1.1.2
+
+FROM docker.io/chumaky/postgres_mysql_fdw:${base_tag}_fdw${mysql_tag}    AS mysql
+FROM docker.io/chumaky/postgres_oracle_fdw:${base_tag}_fdw${oracle_tag}  AS oracle
+FROM docker.io/chumaky/postgres_tds_fdw:${base_tag}_fdw${tds_tag}        AS tds
+FROM docker.io/chumaky/postgres_mongo_fdw:${base_tag}_fdw${mongo_tag}    AS mongo
+FROM docker.io/chumaky/postgres_sqlite_fdw:${base_tag}_fdw${sqlite_tag}  AS sqlite
+FROM docker.io/chumaky/postgres_redis_fdw:${base_tag}_fdw${redis_tag}    AS redis
+FROM docker.io/chumaky/postgres_duckdb_fdw:${base_tag}_fdw${duckdb_tag}  AS duckdb
+
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with different foreign data wrapper (FDW) extensions installed."
+LABEL fdw_list="mysql_fdw, oracle_fdw, tds_fdw, mongo_fdw, sqlite_fdw, redis_fdw, duckdb_fdw"
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+# TDS - MSSQL & Sybase
+COPY --from=tds ${extdir}/tds_fdw* ${extdir}/
+COPY --from=tds ${extlibdir}/tds_fdw.so ${extlibdir}/
+COPY --from=tds ${libdir}/libsybdb.so.5.1.0 ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libsybdb.so.5.1.0 libsybdb.so.5 && \
+    ln -sf libsybdb.so.5 libsybdb.so;
+
+# MySQL
+COPY --from=mysql ${extdir}/mysql_fdw* ${extdir}/
+COPY --from=mysql ${extlibdir}/mysql_fdw.so ${extlibdir}/
+COPY --from=mysql ${libdir}/libmysqlclient.so ${libdir}/libmysqlclient_r.so ${libdir}/
+COPY --from=mysql ${libdir}/libmariadb3/ ${libdir}/libmariadb3/
+
+# SQLite
+COPY --from=sqlite ${extdir}/sqlite_fdw* ${extdir}/
+COPY --from=sqlite ${extlibdir}/sqlite_fdw.so ${extlibdir}/
+COPY --from=sqlite ${libdir}/libsqlite3.so.0.8.6 ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libsqlite3.so.0.8.6 libsqlite3.so.0 && \
+    ln -sf libsqlite3.so.0 libsqlite3.so;
+
+# Redis
+COPY --from=redis ${extdir}/redis_fdw* ${extdir}/
+COPY --from=redis ${extlibdir}/redis_fdw.so ${extlibdir}/
+COPY --from=redis ${libdir}/libhiredis.so.0.14 ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libhiredis.so.0.14 libhiredis.so.0;
+
+# DuckDB
+COPY --from=duckdb ${extdir}/duckdb_fdw* ${extdir}/
+COPY --from=duckdb ${extlibdir}/duckdb_fdw.so ${extlibdir}/
+COPY --from=duckdb ${libdir}/libduckdb.so ${libdir}/
+
+# Oracle (includes instantclient)
+ENV ORACLE_HOME=/usr/lib/oracle/client
+ENV PATH=$PATH:${ORACLE_HOME}
+ENV LD_LIBRARY_PATH=${ORACLE_HOME}
+
+COPY --from=oracle ${extdir}/oracle_fdw* ${extdir}/
+COPY --from=oracle ${extlibdir}/oracle_fdw.so ${extlibdir}/
+COPY --from=oracle ${libdir}/libaio.so.1.0.2 ${libdir}/
+COPY --from=oracle ${ORACLE_HOME}/ ${ORACLE_HOME}/
+
+RUN cd ${libdir} && \
+    ln -sf libaio.so.1.0.2 libaio.so.1;
+
+# Mongo
+COPY --from=mongo ${extdir}/mongo_fdw* ${extdir}/
+COPY --from=mongo ${extlibdir}/mongo_fdw.so ${extlibdir}/
+COPY --from=mongo ${libdir}/libmongoc-1.0.so.0.0.0 \
+                  ${libdir}/libbson-1.0.so.0.0.0 \
+                  ${libdir}/libmongocrypt.so.0.0.0 \
+                  ${libdir}/libsnappy.so.1.1.9 \
+                  ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0 && \
+    ln -sf libmongoc-1.0.so.0 libmongoc-1.0.so && \
+    ln -sf libbson-1.0.so.0.0.0 libbson-1.0.so.0 && \
+    ln -sf libbson-1.0.so.0 libbson-1.0.so && \
+    ln -sf libmongocrypt.so.0.0.0 libmongocrypt.so.0 && \
+    ln -sf libmongocrypt.so.0 libmongocrypt.so && \
+    ln -sf libsnappy.so.1.1.9 libsnappy.so.1 && \
+    ln -sf libsnappy.so.1 libsnappy.so;

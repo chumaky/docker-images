@@ -30,11 +30,13 @@ RUN apt-get update && \
 # final stage
 FROM docker.io/postgres:${base_tag}
 
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with redis_fdw foreign data wrapper extension installed."
+
 ARG pg_version
 ARG extdir=/usr/share/postgresql/${pg_version}/extension
 ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
 ARG libdir=/usr/lib/x86_64-linux-gnu
-
 
 COPY --from=build ${extdir}/redis_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/redis_fdw.so ${extlibdir}/
