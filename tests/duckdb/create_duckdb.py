@@ -8,7 +8,7 @@ conn = duckdb.connect(database_path, read_only=False)
 # Create views
 conn.execute("""
     CREATE OR REPLACE VIEW json_file_v AS 
-        SELECT * FROM read_json_auto(['/home/data/file1.json', '/home/data/file2.json']);
+        SELECT * FROM read_json_auto(['/data/file1.json', '/data/file2.json']);
 """)
 
 

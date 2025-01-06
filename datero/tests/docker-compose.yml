@@ -100,10 +100,10 @@ services:
       # file_fdw
       - ./csv/departments.csv:/data/departments.csv
       # duckdb_fdw
-      - ../../tests/duckdb/file1.json:/home/data/file1.json
-      - ../../tests/duckdb/file2.json:/home/data/file2.json
+      - ../../tests/duckdb/file1.json:/data/file1.json
+      - ../../tests/duckdb/file2.json:/data/file2.json
       - ../../tests/duckdb/json_files.duckdb:/data/json_files.duckdb
-      - ../../tests/duckdb/json_files.duckdb.wal:/data/json_files.duckdb.wal
+      #- ../../tests/duckdb/json_files.duckdb.wal:/data/json_files.duckdb.wal
       # datero setup
       - ./datero_setup.sql:/data/datero_setup.sql      
       - ./config.yaml:/home/instance/config.yaml   

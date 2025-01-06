@@ -1,28 +1,35 @@
-# datero connection
+# for list of available options see "default.yaml" and "schema.yaml"
+
+# section placeholders to override default values
 postgres:
-  hostname: localhost
-  port: 5432
-  database: postgres
-  username: postgres
-  password: postgres
+  #port: 4444
+  #username: datero
+  #password: datero
 
-
-# foreign servers
 servers:
-  mysql_fdw_1:
-    description: MySQL - Finance
+  mysql_customers:
+    description: MySQL - Customers
     fdw_name: mysql_fdw
-    options:
+    foreign_server:
       host: mysql
       port: 3306
     user_mapping:
       username: mysql
       password: mysql
 
-  postgres_fdw_1:
+  oracle_customer-profiles:
+    description: Oracle - Customer profiles
+    fdw_name: oracle_fdw
+    foreign_server:
+      dbserver: "oracle:1521/xepdb1"
+    user_mapping:
+      user: oracle
+      password: oracle
+
+  postgres_products:
     description: Postgres - Products
     fdw_name: postgres_fdw
-    options:
+    foreign_server:
       host: postgres
       port: 5432
       dbname: factory
@@ -30,10 +37,10 @@ servers:
       user: postgres
       password: postgres
 
-  mongo_fdw_1:
+  mongo_orders:
     description: Mongo - Orders
     fdw_name: mongo_fdw
-    options:
+    foreign_server:
       address: mongo
       port: 27017
       authentication_database: admin
@@ -41,10 +48,10 @@ servers:
       username: mongo
       password: mongo
 
-  tds_fdw_1:
+  mssql_employees:
     description: MSSQL - Employees
     fdw_name: tds_fdw
-    options:
+    foreign_server:
       servername: mssql
       port: 1433
       database: hr
@@ -52,25 +59,26 @@ servers:
       username: sa
       password: Mssql_2019
 
-  sqlite_fdw_1:
+  sqlite_job-roles:
     description: SQLite - Job Roles
     fdw_name: sqlite_fdw
-    options:
-      database: /data/job_roles.db
+    foreign_server:
+      database: /data/sqlite/job_roles.db
 
-  file_fdw_1:
+  csv_departments:
     description: CSV - Departments
     fdw_name: file_fdw
 
-  redis_fdw_1:
+  redis_users:
     description: Redis - Users
     fdw_name: redis_fdw
-    options:
+    foreign_server:
       address: redis
       port: 6379
+    user_mapping:
 
-  duckdb_fdw_1:
+  duckdb_json-files:
     description: DuckDB - JSON files
     fdw_name: duckdb_fdw
-    options:
+    foreign_server:
       database: /data/json_files.duckdb
