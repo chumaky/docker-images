@@ -192,7 +192,7 @@ Flat Files (built-in) | file_fdw
 ### Demo
 The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
 
-A couple of simple demos are available in `demo` folder:
+A couple of simple but obsolete demos are available in `demo` folder. They are not maintained anymore:
 - [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
 - [Oracle - Mysql](demo/oracle_mysql/)
 
