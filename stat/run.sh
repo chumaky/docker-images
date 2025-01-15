@@ -3,6 +3,10 @@
 URL="https://hub.docker.com/v2/repositories/chumaky?page_size=25&ordering=last_updated"
 JQ_TRANSFORM='.results[] | [.name, .pull_count, (.last_updated | sub("T"; " ") | sub("\\..*"; ""))] | @tsv'
 
+# output current date and time
+date
+echo
+
 printf "%-25s %-15s %-25s\n" "NAME" "PULL_COUNT" "LAST_UPDATED"
 printf "%-25s %-15s %-25s\n" "----" "----------" "------------"
 curl -sS "$URL" | jq -r "$JQ_TRANSFORM" | 
