@@ -55,7 +55,7 @@ It in turn allows to query JSON, Excel, Parquet, and many other file types with 
 FDW official repo|Image|Dockerfile|Demo target|Demo script
 -|-|-|-|-
 [mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|MySQL|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
-[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|MariaDB|[postgres_mariadb_compose.yml](tests/postgres_mysql_compose.yml)
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|MariaDB|[postgres_mariadb_compose.yml](tests/postgres_mariadb_compose.yml)
 [oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v17/postgres_oracle.docker)|Oracle|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
 [sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v17/postgres_sqlite.docker)|SQLite|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
 [mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v17/postgres_mongo.docker)|MongoDB|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
