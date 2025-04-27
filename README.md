@@ -52,16 +52,17 @@ This opens doors to almost any datasource from `postgres` database!
 It in turn allows to query JSON, Excel, Parquet, and many other file types with SQL.
 
 
-FDW official repo|Image|Dockerfile|Demo compose/schell script
--|-|-|-
-[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
-[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v17/postgres_oracle.docker)|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
-[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v17/postgres_sqlite.docker)|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
-[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v17/postgres_mongo.docker)|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
-[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_tds_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_tds.docker](v17/postgres_tds.docker)|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
-[redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v17/postgres_redis.docker)|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
-[jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
-[duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v17/postgres_duckdb.docker)|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
+FDW official repo|Image|Dockerfile|Demo target|Demo script
+-|-|-|-|-
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|MySQL|[postgres_mysql_compose.yml](tests/postgres_mysql_compose.yml)
+[mysql_fdw](https://github.com/EnterpriseDB/mysql_fdw)|[postgres_mysql_fdw](https://hub.docker.com/r/chumaky/postgres_mysql_fdw)|[postgres_mysql.docker](v17/postgres_mysql.docker)|MariaDB|[postgres_mariadb_compose.yml](tests/postgres_mysql_compose.yml)
+[oracle_fdw](https://github.com/laurenz/oracle_fdw)|[postgres_oracle_fdw](https://hub.docker.com/r/chumaky/postgres_oracle_fdw)|[postgres_oracle.docker](v17/postgres_oracle.docker)|Oracle|[postgres_oracle_compose.yml](tests/postgres_oracle_compose.yml)
+[sqlite_fdw](https://github.com/pgspider/sqlite_fdw)|[postgres_sqlite_fdw](https://hub.docker.com/r/chumaky/postgres_sqlite_fdw)|[postgres_sqlite.docker](v17/postgres_sqlite.docker)|SQLite|[postgres_sqlite_compose.sh](tests/postgres_sqlite_compose.sh)
+[mongo_fdw](https://github.com/EnterpriseDB/mongo_fdw)|[postgres_mongo_fdw](https://hub.docker.com/r/chumaky/postgres_mongo_fdw)|[postgres_mongo.docker](v17/postgres_mongo.docker)|MongoDB|[postgres_mongo_compose.yml](tests/postgres_mongo_compose.yml)
+[tds_fdw](https://github.com/tds-fdw/tds_fdw)|[postgres_tds_fdw](https://hub.docker.com/r/chumaky/postgres_tds_fdw)|[postgres_tds.docker](v17/postgres_tds.docker)|MSSQL|[postgres_mssql_compose.yml](tests/postgres_mssql_compose.yml)
+[redis_fdw](https://github.com/pg-redis-fdw/redis_fdw)|[postgres_redis_fdw](https://hub.docker.com/r/chumaky/postgres_redis_fdw)|[postgres_redis.docker](v17/postgres_redis.docker)|Redis|[postgres_redis_compose.yml](tests/postgres_redis_compose.yml)
+[jdbc_fdw](https://github.com/pgspider/jdbc_fdw)|[postgres_jdbc_fdw](https://hub.docker.com/r/chumaky/postgres_jdbc_fdw)|[postgres_jdbc.docker](v16/postgres_jdbc.docker)|Postgres|[postgres_jdbc_setup.sql](tests/sql/postgres_jdbc_setup.sql)
+[duckdb_fdw](https://github.com/alitrack/duckdb_fdw)|[postgres_duckdb_fdw](https://hub.docker.com/r/chumaky/postgres_duckdb_fdw)|[postgres_duckdb.docker](v17/postgres_duckdb.docker)|DuckDB|[postgres_duckdb_compose.yml](tests/postgres_duckdb_compose.yml)
 
 File naming pattern is as follow:
 - `postgres_<dbname>.docker`

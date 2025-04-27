@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mariadb
+    container_name: mysql
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - "./sql/mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql:z"
+
+  postgres:
+    image: docker.io/chumaky/postgres_mysql_fdw:latest
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - "./sql/postgres_mysql_setup.sql:/docker-entrypoint-initdb.d/postgres_mysql_setup.sql:z"
+    depends_on:
+      - mysql
+
