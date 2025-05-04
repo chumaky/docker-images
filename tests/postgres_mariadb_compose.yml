@@ -1,13 +1,17 @@
 services:
-  mysql:
+  mariadb:
     image: mariadb
-    container_name: mysql
+    container_name: mariadb
     environment:
       MARIADB_ROOT_PASSWORD: root
     ports:
       - 3306:3306
     volumes:
       - "./sql/mysql_setup.sql:/docker-entrypoint-initdb.d/mysql_setup.sql:z"
+    networks:
+      default:
+        aliases:
+          - mysql  # Add 'mysql' as a hostname alias
 
   postgres:
     image: docker.io/chumaky/postgres_mysql_fdw:latest
@@ -19,5 +23,4 @@ services:
     volumes:
       - "./sql/postgres_mysql_setup.sql:/docker-entrypoint-initdb.d/postgres_mysql_setup.sql:z"
     depends_on:
-      - mysql
-
+      - mariadb
