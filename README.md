@@ -80,6 +80,7 @@ Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` 
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
 - [Postgres with MongoDB](https://chumaky.team/blog/postgres-mongodb-fdw)
 - [Postgres with MSSQL](https://chumaky.team/blog/postgres-mssql-fdw)
+- [Postgres with MariaDB](https://chumaky.team/blog/postgres-mariadb-fdw/)
 
 
 ### Available tags
