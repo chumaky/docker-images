@@ -1,4 +1,4 @@
-ARG base_tag=17.2
+ARG base_tag=17.6
 ARG pg_version=17
 
 ARG ORACLE_HOME=/usr/lib/oracle/client
@@ -27,15 +27,15 @@ ARG ORACLE_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/
 #ARG ORACLE_SQLPLUS_URL=https://download.oracle.com/otn_software/linux/instantclient/${ORACLE_CLIENT_PATH}/instantclient-sqlplus-linux.x64-${ORACLE_CLIENT_VERSION}dbru.zip
 #ARG ORACLE_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/${ORACLE_CLIENT_PATH}/instantclient-sdk-linux.x64-${ORACLE_CLIENT_VERSION}dbru.zip
 
-ARG ORACLE_FDW_VERSION=2_7_0
+ARG ORACLE_FDW_VERSION=2_8_0
 ARG ORACLE_FDW_URL=https://github.com/laurenz/oracle_fdw/archive/ORACLE_FDW_${ORACLE_FDW_VERSION}.tar.gz
 ARG SOURCE_FILES=tmp/oracle_fdw
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ca-certificates wget unzip \
     make gcc postgresql-server-dev-${pg_version} \
-    # runtime deps
-    libaio1 && \
+    # runtime deps - changed from libaio1 to libaio1t64
+    libaio1t64 && \
     # instant client
     wget -O instant_client.zip ${ORACLE_CLIENT_URL} && \
     unzip instant_client.zip && \
@@ -74,8 +74,8 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${ORACLE_HOME}
 
 COPY --from=build ${extdir}/oracle_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/oracle_fdw.so ${extlibdir}/
-COPY --from=build ${libdir}/libaio.so.1.0.2 ${libdir}/
+COPY --from=build ${libdir}/libaio.so.1t64.0.2 ${libdir}/
 COPY --from=build ${ORACLE_HOME}/ ${ORACLE_HOME}/
 
 RUN cd ${libdir} && \
-    ln -sf libaio.so.1.0.2 libaio.so.1;
+    ln -sf libaio.so.1t64.0.2 libaio.so.1;
