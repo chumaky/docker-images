@@ -1,4 +1,4 @@
-ARG base_tag=17.2
+ARG base_tag=17.6
 ARG pg_version=17
 
 # build stage
@@ -7,8 +7,11 @@ FROM docker.io/postgres:${base_tag} AS build
 ARG pg_version
 
 ARG MONGO_FDW_VERSION=5_5_2
-ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
+#ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/REL-${MONGO_FDW_VERSION}.tar.gz
+ARG MONGO_FDW_URL=https://github.com/EnterpriseDB/mongo_fdw/archive/refs/heads/master.zip
+
 ARG SOURCE_FILES=/tmp/mongo_fdw
+ARG SOURCE_ROOT=mongo_fdw-master
 
 ENV PKG_CONFIG_PATH=${SOURCE_FILES}/mongo-c-driver/src/libmongoc/src:${SOURCE_FILES}/mongo-c-driver/src/libbson/src
 ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
@@ -17,15 +20,21 @@ ENV JSONC_INSTALL_DIR=${LD_LIBRARY_PATH}
 
 RUN apt-get update && \
     # compilation deps
-    apt-get install -y --no-install-recommends wget ca-certificates \
+    apt-get install -y --no-install-recommends wget unzip ca-certificates \
     make gcc cmake pkg-config \
     postgresql-server-dev-${pg_version} libssl-dev libzstd-dev libmongoc-dev libjson-c-dev \
     # runtime deps
     libsnappy1v5 libmongocrypt0 && \
     # mongo_fdw
+    #mkdir -p ${SOURCE_FILES} && \
+    #wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES} && \
+    #cd ${SOURCE_FILES} && \
+    rm -rf ${SOURCE_FILES} && \
     mkdir -p ${SOURCE_FILES} && \
-    wget -O - ${MONGO_FDW_URL} | tar -zx --strip-components=1 -C ${SOURCE_FILES} && \
-    cd ${SOURCE_FILES} && \
+    wget -O sources.zip ${MONGO_FDW_URL} && \
+    unzip sources.zip -d ${SOURCE_FILES} && \
+    rm sources.zip && \
+    cd ${SOURCE_FILES}/${SOURCE_ROOT} && \
     # install
     ./autogen.sh && \
     make USE_PGXS=1 && \
@@ -47,8 +56,9 @@ COPY --from=build ${extlibdir}/mongo_fdw.so ${extlibdir}/
 COPY --from=build ${libdir}/libmongoc-1.0.so.0.0.0 \
                   ${libdir}/libbson-1.0.so.0.0.0 \
                   ${libdir}/libmongocrypt.so.0.0.0 \
-                  ${libdir}/libsnappy.so.1.1.9 \
-                  ${libdir}/ 
+                  ${libdir}/libsnappy.so.1.2.2 \
+                  ${libdir}/libutf8proc.so.3.0.0 \
+                  ${libdir}/
 
 RUN cd ${libdir} && \
     ln -sf libmongoc-1.0.so.0.0.0 libmongoc-1.0.so.0 && \
@@ -57,5 +67,7 @@ RUN cd ${libdir} && \
     ln -sf libbson-1.0.so.0 libbson-1.0.so && \
     ln -sf libmongocrypt.so.0.0.0 libmongocrypt.so.0 && \
     ln -sf libmongocrypt.so.0 libmongocrypt.so && \
-    ln -sf libsnappy.so.1.1.9 libsnappy.so.1 && \
-    ln -sf libsnappy.so.1 libsnappy.so;
+    ln -sf libsnappy.so.1.2.2 libsnappy.so.1 && \
+    ln -sf libsnappy.so.1 libsnappy.so && \
+    ln -sf libutf8proc.so.3.0.0 libutf8proc.so.3 && \
+    ln -sf libutf8proc.so.3 libutf8proc.so;
