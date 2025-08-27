@@ -1,4 +1,4 @@
-ARG base_tag=17.2
+ARG base_tag=17.6
 ARG pg_version=17
 
 # build stage
@@ -40,7 +40,7 @@ ARG libdir=/usr/lib/x86_64-linux-gnu
 
 COPY --from=build ${extdir}/redis_fdw* ${extdir}/
 COPY --from=build ${extlibdir}/redis_fdw.so ${extlibdir}/
-COPY --from=build ${libdir}/libhiredis.so.0.14 ${libdir}/
+COPY --from=build ${libdir}/libhiredis.so.1.1.0 ${libdir}/
 
 RUN cd ${libdir} && \
-    ln -sf libhiredis.so.0.14 libhiredis.so.0;
+    ln -sf libhiredis.so.1.1.0 libhiredis.so.0;

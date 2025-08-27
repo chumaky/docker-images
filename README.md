@@ -150,6 +150,7 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
   postgres_mongo_fdw|15.2_fdw5.5.0
   -|-
   postgres_redis_fdw|latest
+  postgres_redis_fdw|17.6_fdw17.6.0
   postgres_redis_fdw|17.2_fdw17.2.0
   postgres_redis_fdw|16.6_fdw16.6.0
   postgres_redis_fdw|16.3_fdw16.3.0
@@ -349,6 +350,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
   Image|Tag|Size, MB|Additional Size, MB|Size Grow, %
   -|-|-|-|-
   postgres|17.6|454|0|0
+  postgres_redis_fdw|17.6_fdw17.6.0|455|1|0.2
   postgres_tds_fdw|17.6_fdw2.0.4|455|1|0.2
   postgres_mysql_fdw|17.6_fdw2.9.2|456|2|0.4
   postgres_sqlite_fdw|17.6_fdw2.5.0|456|2|0.4
