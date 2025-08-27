@@ -1,10 +1,17 @@
-ARG base_tag=17.2
+ARG base_tag=17.6
 ARG pg_version=17
 
 # build stage
 FROM docker.io/postgres:${base_tag} AS build
 
 ARG pg_version
+
+# there is a bug which prevents usage of the duckdb_fdw version 1.1.3
+# https://github.com/alitrack/duckdb_fdw/issues/64
+# it is possible to workaround it by renaming "libduckdb.so" to "libduckdb.1.1.3.so" during compilation
+# and copying "libduckdb.so.1.1.3" as "libduckdb.so" to the final image
+# or, just copy the "libduckdb.so.1.1.3" and create a symlink "libduckdb.so" -> "libduckdb.so.1.1.3"
+# but since it's bug in the extension, let's just use the previous version which works fine
 ARG fdw_version=1.1.2
 ARG duckdb_version=1.1.3
 
