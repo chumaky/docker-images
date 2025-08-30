@@ -85,7 +85,7 @@ services:
       retries: 3
 
   datero:
-    image: docker.io/chumaky/datero_engine:17.2
+    image: docker.io/chumaky/datero_engine:17.6
     #image: docker.io/chumaky/datero:latest
     container_name: datero_test_engine
     environment:
@@ -100,10 +100,10 @@ services:
       # file_fdw
       - ./csv/departments.csv:/data/departments.csv
       # duckdb_fdw
-      - ../../tests/duckdb/file1.json:/data/file1.json
-      - ../../tests/duckdb/file2.json:/data/file2.json
-      - ../../tests/duckdb/json_files.duckdb:/data/json_files.duckdb
-      #- ../../tests/duckdb/json_files.duckdb.wal:/data/json_files.duckdb.wal
+      - ../../tests/duckdb/file1.json:/home/data/file1.json
+      - ../../tests/duckdb/file2.json:/home/data/file2.json
+      - ../../tests/duckdb/json_files.duckdb:/home/data/json_files.duckdb
+      #- ../../tests/duckdb/json_files.duckdb.wal:/home/data/json_files.duckdb.wal
       # datero setup
       - ./datero_setup.sql:/data/datero_setup.sql      
       - ./config.yaml:/home/instance/config.yaml   

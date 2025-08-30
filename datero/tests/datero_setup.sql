@@ -76,7 +76,7 @@ options (database '0', tabletype 'hash', tablekeyprefix 'users:')
 
 -- duckdb
 create extension duckdb_fdw schema datero_fdw;
-create server duckdb foreign data wrapper duckdb_fdw options (database '/data/json_files.duckdb');
+create server duckdb foreign data wrapper duckdb_fdw options (database '/home/data/json_files.duckdb');
 
 create schema duckdb;
 import foreign schema public from server duckdb into duckdb;
@@ -131,7 +131,7 @@ select *
   from redis.users;
 
 select *
-  from duckdb.json_file_v;
+  from duckdb.json_files_v;
 
 -- DML tests
 -- delete the last row from the orders table

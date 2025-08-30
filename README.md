@@ -75,6 +75,8 @@ It will make it listed in `pg_available_extensions` system view but you still ha
 Consequently, `postgres_mysql_compose.yml` file launches `postgres` and `mysql` databases within the same network as `postgres` and `mysql` hosts.
 
 ### Individual FDWs Demo
+Tests for individual FDWs are available in [tests](tests/) folder.
+More detailed blog posts are available as well:
 - [Postgres with MySQL](https://chumaky.team/blog/postgres-mysql-fdw)
 - [Postgres with Oracle](https://chumaky.team/blog/postgres-oracle-fdw)
 - [Postgres with SQLite](https://chumaky.team/blog/postgres-sqlite-fdw)
@@ -201,15 +203,11 @@ Flat Files (built-in) | file_fdw
 
 ### Demo
 The most detailed demo is available in Datero [tutorial](https://datero.tech/docs/tutorial/).
+Tests which include connection to all FDWs are available in [tests](datero/tests/) folder.
 
 A couple of simple but obsolete demos are available in `demo` folder. They are not maintained anymore:
 - [MSSQL - Mongo - SQLite](demo/mssql_mongo_sqlite/)
 - [Oracle - Mysql](demo/oracle_mysql/)
-
-Navigate to the `demo` folder and execute from it `docker-compose up -d`.
-It will spin-up a few containers with postgres one at the end.
-Inside postgres container there will be a view created in `public` schema.
-That view will be joining data from foreign tables which are pointed to different source databases.
 
 
 ### Available image tags
@@ -217,7 +215,8 @@ Tag naming pattern corresponds one to one to the official postgres tags.
 
 Image|Tag|Postgres
 -|-|-
-datero_engine|latest|17.2
+datero_engine|latest|17.6
+datero_engine|17.6|17.6
 datero_engine|17.2|17.2
 datero_engine|16.6|16.6
 datero_engine|16.3|16.3
@@ -237,6 +236,14 @@ They are part of the official postgres distribution.
   <summary>Click to expand...</summary>
 
   Datero|Postgres|FDW|Version
+  -|-|-|-
+  17.6|17.6|mysql_fdw|2.9.2
+  17.6|17.6|oracle_fdw|2.8.0
+  17.6|17.6|sqlite_fdw|2.5.0
+  17.6|17.6|mongo_fdw|5.5.2
+  17.6|17.6|tds_fdw|2.0.4
+  17.6|17.6|redis_fdw|17.6.0 (REL_17_STABLE branch)
+  17.6|17.6|duckdb_fdw|1.1.3
   -|-|-|-
   17.2|17.2|mysql_fdw|2.9.2
   17.2|17.2|oracle_fdw|2.7.0
@@ -360,6 +367,8 @@ Once it will be proved that it is stable and reliable, it will be included into 
   postgres_duckdb_fdw|17.6_fdw1.1.3|517|63|14
   postgres_oracle_fdw|17.6_fdw2.8.0|626|172|38
   postgres_jdbc_fdw|17.6_fdw0.5.0|667|213|47
+  -|-|-|-|-
+  datero_engine|17.6|700|246|54
   -|-|-|-|-
   postgres|17.2|435|0|0
   postgres_redis_fdw|17.2_fdw17.2.0|435|0|0
