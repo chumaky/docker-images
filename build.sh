@@ -4,7 +4,7 @@ help() {
     echo "Usage: $0 <source> [<tag> [<base>]]"
     echo "  source  : source to build image for: postgres, mysql, etc."
     echo "  tag     : tag for the image. default: latest"
-    echo "  base    : base postgres version to use. default: v17"
+    echo "  base    : base postgres version to use. default: v18"
     exit 1
 }
 
@@ -20,7 +20,7 @@ fi
 
 base=$3
 if [ -z "$base" ]; then
-    base="v17"
+    base="v18"
 fi
 
 docker build --no-cache \

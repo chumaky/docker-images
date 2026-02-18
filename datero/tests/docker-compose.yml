@@ -85,8 +85,8 @@ services:
       retries: 3
 
   datero:
-    image: docker.io/chumaky/datero_engine:17.6
-    #image: docker.io/chumaky/datero:latest
+    #image: docker.io/chumaky/datero_engine:17.6
+    image: docker.io/chumaky/datero:latest
     container_name: datero_test_engine
     environment:
       POSTGRES_USER: postgres
