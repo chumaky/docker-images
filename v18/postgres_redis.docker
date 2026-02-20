@@ -1,0 +1,46 @@
+ARG base_tag=18.2
+ARG pg_version=18
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
+
+# must be *.zip resource
+ARG fdw_url=https://github.com/pg-redis-fdw/redis_fdw/archive/refs/heads/REL_${pg_version}_STABLE.zip
+ARG source_files=/tmp/redis_fdw
+ARG source_root=redis_fdw-REL_${pg_version}_STABLE
+
+RUN apt-get update && \
+    # compilation deps
+    apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    make gcc \
+    postgresql-server-dev-${pg_version} libhiredis-dev && \
+    # download source files
+    rm -rf ${source_files} && \
+    mkdir -p ${source_files} && \
+    wget -O sources.zip ${fdw_url} && \
+    unzip sources.zip -d ${source_files} && \
+    rm sources.zip && \
+    cd ${source_files}/${source_root} && \
+    # compilation
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install;
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with redis_fdw foreign data wrapper extension installed."
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+COPY --from=build ${extdir}/redis_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/redis_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/libhiredis.so.1.1.0 ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libhiredis.so.1.1.0 libhiredis.so.0;
