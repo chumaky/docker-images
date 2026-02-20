@@ -1,0 +1,50 @@
+ARG base_tag=18.2
+ARG pg_version=18
+
+# build stage
+FROM docker.io/postgres:${base_tag} AS build
+
+ARG pg_version
+ARG fdw_version=2.0.5
+
+ARG fdw_url=https://github.com/tds-fdw/tds_fdw/archive/refs/tags/v${fdw_version}.zip
+
+ARG source_files=/tmp/tds_fdw
+ARG source_root=tds_fdw-${fdw_version}
+
+RUN apt-get update && \
+    # compilation deps
+    apt-get install -y --no-install-recommends wget unzip ca-certificates \
+    make gcc gnupg \
+    postgresql-server-dev-${pg_version} freetds-dev \
+    # runtime deps
+    libsybdb5 freetds-common && \
+    # tds_fdw
+    rm -rf ${source_files} && \
+    mkdir -p ${source_files} && \
+    wget -O sources.zip ${fdw_url} && \
+    unzip sources.zip -d ${source_files} && \
+    rm sources.zip && \
+    cd ${source_files}/${source_root} && \
+    # install
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install;
+
+# final stage
+FROM docker.io/postgres:${base_tag}
+
+LABEL maintainer="https://chumaky.team/"
+LABEL description="Postgres database with tds_fdw foreign data wrapper extension installed."
+
+ARG pg_version
+ARG extdir=/usr/share/postgresql/${pg_version}/extension
+ARG extlibdir=/usr/lib/postgresql/${pg_version}/lib
+ARG libdir=/usr/lib/x86_64-linux-gnu
+
+COPY --from=build ${extdir}/tds_fdw* ${extdir}/
+COPY --from=build ${extlibdir}/tds_fdw.so ${extlibdir}/
+COPY --from=build ${libdir}/libsybdb.so.5.1.0 ${libdir}/
+
+RUN cd ${libdir} && \
+    ln -sf libsybdb.so.5.1.0 libsybdb.so.5 && \
+    ln -sf libsybdb.so.5 libsybdb.so;
