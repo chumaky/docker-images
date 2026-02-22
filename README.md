@@ -171,7 +171,8 @@ Tag naming pattern is `<postgres_version>_fdw<fdw_version>`. For example, `15.2_
 
   Image|Tag|DuckDB lib version
   -|-|-
-  postgres_duckdb_fdw|latest|1.1.3
+  postgres_duckdb_fdw|latest|1.4.4
+  postgres_duckdb_fdw|18.2_fdw1.4.1|1.4.4
   postgres_duckdb_fdw|17.6_fdw1.1.3|1.1.3
   postgres_duckdb_fdw|17.2_fdw1.1.2|1.1.3
   postgres_duckdb_fdw|17.0_fdw1.1.2|1.1.3
@@ -368,6 +369,7 @@ Once it will be proved that it is stable and reliable, it will be included into 
   postgres_tds_fdw|18.2_fdw2.0.5|457|1|0.2
   postgres_mysql_fdw|18.2_fdw2.9.3|458|2|0.4
   postgres_mongo_fdw|18.2_fdw5.5.3|462|6|1.3
+  postgres_duckdb_fdw|18.2_fdw1.4.1|528|72|16
   postgres_oracle_fdw|18.2_fdw2.8.0|634|178|39
   -|-|-|-|-
   postgres|17.6|454|0|0
