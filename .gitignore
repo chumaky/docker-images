@@ -1,3 +1,4 @@
 build.log
 __pycache__/
 *.duckdb
+*.env

@@ -1,29 +1,34 @@
 # Docker Hub Stats Collector
 
-This directory contains scripts for collecting Docker Hub image statistics for the `chumaky` namespace and storing them in DuckDB.
+This directory contains scripts for collecting Docker Hub image statistics for the `chumaky` namespace and storing them in PostgreSQL.
 
 ## Files
 
 - `run.sh`: Existing read-only script that prints current stats table to stdout.
-- `fetch_docker_stats.py`: Python collector that fetches API data and writes a snapshot to DuckDB.
+- `fetch_docker_stats.py`: Python collector that fetches API data and writes a snapshot to PostgreSQL.
 - `run_daily_stats.sh`: Shell wrapper intended to be called by an external scheduler.
 
 ## Requirements
 
 - Host Python 3.10+ (or compatible)
-- Python package: `duckdb`
+- Python package: `psycopg` (psycopg3)
+- PostgreSQL database (local or remote)
 
 Install dependency:
 
 ```bash
-pip install duckdb
+pip install psycopg[binary]
 ```
 
 ## Configuration
 
-Required environment variable:
+Required environment variables:
 
-- `DOCKER_STATS_DB_PATH`: absolute or relative path to the DuckDB file.
+- `DB_HOST`: PostgreSQL host (default: `localhost`)
+- `DB_PORT`: PostgreSQL port (default: `5432`)
+- `DB_NAME`: PostgreSQL database name (default: `stats`)
+- `DB_USER`: PostgreSQL user (default: `postgres`)
+- `DB_PASSWORD`: PostgreSQL password (optional)
 
 Optional environment variables:
 
@@ -33,20 +38,28 @@ Optional environment variables:
 - `DOCKER_STATS_TIMEOUT` (default: `30` seconds)
 - `PYTHON_BIN` for wrapper (default: `python3`)
 
-`DOCKER_STATS_DB_PATH` should point to persistent server storage and should not be committed into git.
-
 ## Usage
 
 Run through wrapper:
 
 ```bash
-DOCKER_STATS_DB_PATH=/var/lib/chumaky/docker_stats.duckdb ./stat/run_daily_stats.sh
+DB_HOST=localhost \
+DB_PORT=15432 \
+DB_NAME=stats \
+DB_USER=postgres \
+DB_PASSWORD=yourpassword \
+./stat/run_daily_stats.sh
 ```
 
 Optional overrides:
 
 ```bash
-DOCKER_STATS_DB_PATH=/var/lib/chumaky/docker_stats.duckdb ./stat/run_daily_stats.sh --page-size 25 --ordering last_updated
+DB_HOST=db.example.com \
+DB_PORT=15432 \
+DB_NAME=stats \
+DB_USER=postgres \
+DB_PASSWORD=yourpassword \
+./stat/run_daily_stats.sh --page-size 25 --ordering last_updated
 ```
 
 ## Stored Data
@@ -69,5 +82,5 @@ One snapshot run inserts one row per image with:
 Scheduling is external by design. Example cron entry:
 
 ```cron
-10 2 * * * DOCKER_STATS_DB_PATH=/var/lib/chumaky/docker_stats.duckdb /home/toleg/chumaky/github/docker-images/stat/run_daily_stats.sh >> /var/log/chumaky/docker_stats.log 2>&1
+10 2 * * * /home/toleg/chumaky/github/docker-images/stat/run_daily_stats.sh >> /var/log/chumaky/docker_stats.log 2>&1
 ```

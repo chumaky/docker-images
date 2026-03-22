@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch Docker Hub repository stats and store daily snapshots in DuckDB."""
+"""Fetch Docker Hub repository stats and store daily snapshots in PostgreSQL."""
 
 from __future__ import annotations
 
@@ -16,17 +16,26 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 try:
-    import duckdb
+    import psycopg
 except ImportError:
     print(
-        "ERROR: Python package 'duckdb' is required. Install with: pip install duckdb",
+        "ERROR: Python package 'psycopg' is required. Install with: pip install psycopg[binary]",
         file=sys.stderr,
     )
     sys.exit(2)
 
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = None  # type: ignore[assignment]
+
 DEFAULT_BASE_URL = "https://hub.docker.com/v2/repositories/chumaky"
 DEFAULT_PAGE_SIZE = 25
 DEFAULT_TIMEOUT_SECONDS = 30
+DEFAULT_DB_HOST = "localhost"
+DEFAULT_DB_PORT = 15432
+DEFAULT_DB_NAME = "stats"
+DEFAULT_DB_USER = "postgres"
 
 
 @dataclass
@@ -41,12 +50,33 @@ class ImageStat:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Fetch Docker Hub image stats and store snapshots in DuckDB"
+        description="Fetch Docker Hub image stats and store snapshots in PostgreSQL"
     )
     parser.add_argument(
-        "--db-path",
-        default=os.environ.get("DOCKER_STATS_DB_PATH"),
-        help="DuckDB file path (or set DOCKER_STATS_DB_PATH)",
+        "--db-host",
+        default=os.environ.get("DB_HOST", DEFAULT_DB_HOST),
+        help="PostgreSQL host (or set DB_HOST)",
+    )
+    parser.add_argument(
+        "--db-port",
+        type=int,
+        default=int(os.environ.get("DB_PORT", DEFAULT_DB_PORT)),
+        help="PostgreSQL port (or set DB_PORT)",
+    )
+    parser.add_argument(
+        "--db-name",
+        default=os.environ.get("DB_NAME", DEFAULT_DB_NAME),
+        help="PostgreSQL database name (or set DB_NAME)",
+    )
+    parser.add_argument(
+        "--db-user",
+        default=os.environ.get("DB_USER", DEFAULT_DB_USER),
+        help="PostgreSQL user (or set DB_USER)",
+    )
+    parser.add_argument(
+        "--db-password",
+        default=os.environ.get("DB_PASSWORD"),
+        help="PostgreSQL password (or set DB_PASSWORD)",
     )
     parser.add_argument(
         "--url",
@@ -137,70 +167,77 @@ def fetch_stats(url: str, page_size: int, ordering: str, timeout: int) -> list[I
     return parsed
 
 
-def store_snapshot(db_path: str, rows: list[ImageStat]) -> tuple[str, datetime]:
+def store_snapshot(
+    db_host: str,
+    db_port: int,
+    db_name: str,
+    db_user: str,
+    db_password: str | None,
+    rows: list[ImageStat],
+) -> tuple[str, datetime]:
     run_id = str(uuid.uuid4())
     ingested_at = datetime.now(timezone.utc)
 
-    conn = duckdb.connect(db_path)
-    try:
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS docker_image_stats_snapshot
-            ( run_id          TEXT        NOT NULL
-            , ingested_at     TIMESTAMPTZ NOT NULL
-            , namespace       TEXT        NOT NULL
-            , image_name      TEXT        NOT NULL
-            , pull_count      BIGINT      NOT NULL
-            , star_count      BIGINT      NOT NULL
-            , status          INTEGER
-            , last_updated_at TIMESTAMPTZ
-            )
-            """
-        )
+    conninfo = f"host={db_host} port={db_port} dbname={db_name} user={db_user}"
+    if db_password:
+        conninfo += f" password={db_password}"
 
-        conn.executemany(
-            """
-            INSERT INTO docker_image_stats_snapshot (
-                run_id,
-                ingested_at,
-                namespace,
-                image_name,
-                pull_count,
-                star_count,
-                status,
-                last_updated_at
+    with psycopg.connect(conninfo) as conn:
+        with conn.cursor() as cur:
+            cur.execute("CREATE SCHEMA IF NOT EXISTS docker_images")
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS docker_images.stat_snapshot
+                ( run_id          TEXT        NOT NULL
+                , ingested_at     TIMESTAMPTZ NOT NULL
+                , namespace       TEXT        NOT NULL
+                , image_name      TEXT        NOT NULL
+                , pull_count      BIGINT      NOT NULL
+                , star_count      BIGINT      NOT NULL
+                , status          INTEGER
+                , last_updated_at TIMESTAMPTZ
+                )
+                """
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            [
-                (
+
+            cur.executemany(
+                """
+                INSERT INTO docker_images.stat_snapshot (
                     run_id,
                     ingested_at,
-                    row.namespace,
-                    row.name,
-                    row.pull_count,
-                    row.star_count,
-                    row.status,
-                    row.last_updated_ts,
+                    namespace,
+                    image_name,
+                    pull_count,
+                    star_count,
+                    status,
+                    last_updated_at
                 )
-                for row in rows
-            ],
-        )
-    finally:
-        conn.close()
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                [
+                    (
+                        run_id,
+                        ingested_at,
+                        row.namespace,
+                        row.name,
+                        row.pull_count,
+                        row.star_count,
+                        row.status,
+                        row.last_updated_ts,
+                    )
+                    for row in rows
+                ],
+            )
+        conn.commit()
 
     return run_id, ingested_at
 
 
 def main() -> int:
-    args = parse_args()
+    if load_dotenv is not None:
+        load_dotenv()
 
-    if not args.db_path:
-        print(
-            "ERROR: DuckDB path is required. Set DOCKER_STATS_DB_PATH or pass --db-path.",
-            file=sys.stderr,
-        )
-        return 2
+    args = parse_args()
 
     try:
         stats = fetch_stats(
@@ -217,16 +254,24 @@ def main() -> int:
         print("WARNING: No image records returned from Docker Hub.", file=sys.stderr)
 
     try:
-        run_id, ingested_at = store_snapshot(args.db_path, stats)
+        run_id, ingested_at = store_snapshot(
+            db_host=args.db_host,
+            db_port=args.db_port,
+            db_name=args.db_name,
+            db_user=args.db_user,
+            db_password=args.db_password,
+            rows=stats,
+        )
     except Exception as exc:  # noqa: BLE001
-        print(f"ERROR: Failed to write DuckDB snapshot: {exc}", file=sys.stderr)
+        print(f"ERROR: Failed to write PostgreSQL snapshot: {exc}", file=sys.stderr)
         return 1
 
     print(
         "Stored snapshot:",
         f"run_id={run_id}",
         f"rows={len(stats)}",
-        f"db_path={args.db_path}",
+        f"db_host={args.db_host}",
+        f"db_name={args.db_name}",
         f"ingested_at={ingested_at.isoformat()}",
     )
     return 0
